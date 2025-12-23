@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1h1cpfn" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="decision_mammogram" name="Breast Cancer Screening">
+    <decisionTable id="DecisionTable_0eho2ve">
+      <input id="Input_1" label="Gender">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>Gender</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1vkuht5">
+          <text>"female","male"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0bqz60w" label="Age In Years">
+        <inputExpression id="LiteralExpression_0s86spv" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_199beiy" label="Mammogram In Last Two Years">
+        <inputExpression id="LiteralExpression_02ek8tf" typeRef="boolean">
+          <text>MammogramInLastTwoYears</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Recommend Mammogram?" name="RecommendMammogram" typeRef="boolean" />
+      <rule id="DecisionRule_0a3y6uy">
+        <inputEntry id="UnaryTests_1frudkh">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r1gpjl">
+          <text>[40..74]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gurfgx">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03wpyib">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x0ygsm">
+        <inputEntry id="UnaryTests_00p9q44">
+          <text>"male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17wmwhq">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01iwvtc">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14na8dn">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1aylfav">
+        <inputEntry id="UnaryTests_1qa5mxg">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04ojcze">
+          <text>&lt;40</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1beugta">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1om1q9x">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0yslelc">
+        <inputEntry id="UnaryTests_0mnc2jt">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kujs00">
+          <text>&gt;74</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cdq0cb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0a4eh2y">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="decision_mammogram">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

@@ -1,0 +1,17 @@
+{
+  "name": "model-mammo",
+  "version": "1.0.0",
+  "description": "Breast Cancer Screening Clinical Decision Model",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "generate:library": "node src/generate-library.js input/cql/BreastCancerScreening.cql"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.0"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.5.0"
+  }
+}

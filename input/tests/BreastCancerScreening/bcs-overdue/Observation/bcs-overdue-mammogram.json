@@ -1,0 +1,93 @@
+{
+  "resourceType": "Observation",
+  "id": "overdue-mammogram",
+  "meta": {
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/StructureDefinition/instance-name",
+        "valueString": "Mammogram Findings Example"
+      },
+      {
+        "url": "http://hl7.org/fhir/StructureDefinition/instance-description",
+        "valueMarkdown": "This example of a US Core Observation Imaging Result Profile illustrates its use to capture information about a patient's radiology study findings."
+      }
+    ],
+    "profile": [
+      "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-imaging"
+    ]
+  },
+  "status": "final",
+  "category": [
+    {
+      "coding": [
+        {
+          "code": "imaging",
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "display": "Imaging"
+        }
+      ],
+      "text": "Imaging"
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "code": "24606-6",
+        "system": "http://loinc.org",
+        "display": "MG Breast Screening"
+      }
+    ],
+    "text": "MG Breast Screening"
+  },
+  "subject": {
+    "reference": "Patient/bcs-overdue"
+  },
+  "effectiveDateTime": "2022-01-01",
+  "issued": "2022-01-01",
+  "valueCodeableConcept": {
+    "coding": [
+      {
+        "code": "Category2",
+        "system": "http://hl7.org/fhir/us/breast-radiology/CodeSystem/BiRadsAssessmentCategoriesCS",
+        "display": "Category 2 (Benign)"
+      }
+    ],
+    "text": "Category 2 (Benign)"
+  },
+  "interpretation": [
+    {
+      "coding": [
+        {
+          "code": "N",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+          "display": "Normal"
+        }
+      ]
+    }
+  ],
+  "bodySite": {
+    "coding": [
+      {
+        "code": "63762007",
+        "system": "http://snomed.info/sct",
+        "display": "Both breasts (body structure)"
+      }
+    ],
+    "text": "Both breasts (body structure)"
+  },
+  "method": {
+    "coding": [
+      {
+        "code": "24623002",
+        "system": "http://snomed.info/sct",
+        "display": "Screening mammography (procedure)"
+      }
+    ],
+    "text": "Screening mammography (procedure)"
+  },
+  "note": [
+    {
+      "text": "BIRADS Category 2 (Benign)"
+    }
+  ]
+}

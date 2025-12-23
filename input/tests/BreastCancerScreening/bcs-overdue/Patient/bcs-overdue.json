@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-overdue",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "overdue"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Mammogram > 2 years => true"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1966-07-01",
+  "gender": "female", 
+  "active": true, 
+  "deceasedBoolean": false
+}

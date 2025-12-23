@@ -1,0 +1,40 @@
+{
+  "resourceType": "Condition",
+  "id" : "bcs-breast-cancer-cond",
+  "clinicalStatus": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+          "version": "0.5.0",
+          "code": "active",
+          "display": "Active"
+        }
+      ]
+    }
+  ],
+  "verificationStatus": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "version": "0.5.0",
+          "code": "confirmed",
+          "display": "Confirmed"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [ {
+      "system": "http://hl7.org/fhir/sid/icd-10-cm",
+			"version": "2025",
+      "code": "C50.919",
+      "display": "Malignant neoplasm of unspecified site of unspecified female breast"
+    }]
+  },
+  "subject": {
+    "reference": "Patient/bcs-breast-cancer"
+  },
+  "onsetDateTime": "2023-01-01"
+}

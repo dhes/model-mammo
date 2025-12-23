@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hfjgci" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <bpmn:process id="Process_1uagxb8" name="Mammography" isExecutable="true">
+    <bpmn:extensionElements />
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0vhrpoa</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:businessRuleTask id="Activity_0m80g37" name="Mammogram">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="decision_mammogram" resultVariable="RecommendMammogram" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=gender" target="Gender" />
+          <zeebe:input source="=ageInYears" target="AgeInYears" />
+          <zeebe:input source="=mammogramInLastTwoYears" target="MammogramInLastTwoYears" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vhrpoa</bpmn:incoming>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_0vhrpoa" sourceRef="StartEvent_1" targetRef="Activity_0m80g37" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1uagxb8">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="192" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m80g37_di" bpmnElement="Activity_0m80g37">
+        <dc:Bounds x="160" y="230" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vhrpoa_di" bpmnElement="Flow_0vhrpoa">
+        <di:waypoint x="210" y="118" />
+        <di:waypoint x="210" y="230" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

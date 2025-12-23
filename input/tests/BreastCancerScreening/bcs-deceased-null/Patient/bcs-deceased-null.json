@@ -1,0 +1,27 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-deceased-null",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "deceased-null"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "deceased-null => true"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1966-07-01",
+  "gender": "female", 
+  "active": true
+}

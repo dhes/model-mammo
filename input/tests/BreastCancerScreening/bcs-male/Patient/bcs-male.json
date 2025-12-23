@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-male",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "male"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Not Woman => false"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1966-07-01",
+  "gender": "male", 
+  "active": true, 
+  "deceasedBoolean": false
+}

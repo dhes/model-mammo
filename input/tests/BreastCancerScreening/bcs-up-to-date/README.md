@@ -1,0 +1,1 @@
+The original contained CarePlan.activity[0].reference.reference element in GuidanceResponse.json probably should be CarePlan.activity.plannedActivityReference.reference. 

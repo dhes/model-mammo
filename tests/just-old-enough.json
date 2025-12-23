@@ -1,0 +1,10 @@
+{
+  "input": {
+    "Gender": "female",
+    "AgeInYears": 40,
+    "MammogramInLastTwoYears": false
+  },
+  "expected": {
+    "RecommendMammogram": true
+  }
+}

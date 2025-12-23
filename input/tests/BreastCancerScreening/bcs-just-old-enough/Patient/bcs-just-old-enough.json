@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-just-old-enough",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "just-old-enough"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Age=40 => true"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1984-01-01",
+  "gender": "female", 
+  "active": true, 
+  "deceasedBoolean": false
+}

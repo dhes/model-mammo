@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-base",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "base"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Base case => true"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1966-07-01",
+  "gender": "female", 
+  "active": true, 
+  "deceasedBoolean": false
+}

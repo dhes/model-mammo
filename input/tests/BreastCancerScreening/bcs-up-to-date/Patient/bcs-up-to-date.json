@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-up-to-date",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "up-to-date"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Mammogram within 2 years => false"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Absolutely"
+      ]
+    }
+  ],
+  "birthDate": "1966-07-01",
+  "gender": "female", 
+  "active": true, 
+  "deceasedBoolean": false
+}

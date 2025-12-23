@@ -1,0 +1,28 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-too-young",
+  "identifier": [
+    {
+      "system": "http://example.org/breast-cancer-screening",
+      "value": "too-young"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://example.org/fhir/StructureDefinition/patient-annotation",
+      "valueString": "Due? Age < 40 => false"
+    }
+  ],
+  "name": [
+    {
+      "family": "Nobody",
+      "given": [
+        "Jane"
+      ]
+    }
+  ],
+  "birthDate": "1984-01-02",
+  "gender": "female", 
+  "active": true, 
+  "deceasedBoolean": false
+}

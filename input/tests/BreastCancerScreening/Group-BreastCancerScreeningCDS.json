@@ -1,0 +1,77 @@
+{
+  "resourceType": "Group",
+  "id": "BreastCancerScreeningCDS",
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/artifact-testArtifact",
+    "valueCanonical": "http://ecqi.healthit.gov/ecqms/Measure/BreastCancerScreeningCDS"
+  } ],
+  "active": true,
+  "type": "person",
+  "actual": true,
+  "member": [ {
+    "entity": {
+      "reference": "Patient/bcs-overdue",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-up-to-date",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-too-old",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-mastectomy",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-deceased-null",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-just-old-enough",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-just-young-enough",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-deceased",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-too-young",
+      "display": "Jane Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-inactive",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-base",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-male",
+      "display": "Absolutely Nobody"
+    }
+  }, {
+    "entity": {
+      "reference": "Patient/bcs-breast-cancer",
+      "display": "Absolutely Nobody"
+    }
+  } ]
+}
