@@ -44,13 +44,18 @@ The DMN author must know CQL idioms and design tables with translation in mind.
 ## Project Structure
 
 - `mammo.dmn` - Decision table defining screening recommendation logic
-- `tests/` - JSON test cases for validating DMN decision rules
+- `tests/` - DMN test cases (JSON input/expected pairs)
+- `tests/cases/` - YAML test case definitions for HAPI testing
+- `tests/generated/` - Generated FHIR resources from YAML
 - `src/dmn-runner.js` - Custom DMN evaluator (parses XML, evaluates S-FEEL expressions)
-- `src/dmn-runner.test.js` - Vitest test runner
+- `src/dmn-runner.test.js` - Vitest test runner for DMN
 - `src/generate-library.js` - Generates FHIR Library resource from CQL
+- `src/test-generator.js` - Generates FHIR resources from YAML test cases
+- `src/test-deployer.js` - Deploys test resources to HAPI
+- `src/test-runner.js` - Runs $evaluate and compares to expected results
+- `src/test-teardown.js` - Deletes test resources from HAPI by tag
 - `input/cql/` - CQL source files
 - `input/resources/library/` - Generated FHIR Library resources
-- `input/tests/` - FHIR test bundles (Patient, Observation, etc.)
 
 ## Technology Stack
 
@@ -81,14 +86,34 @@ The DMN decision table "Breast Cancer Screening" evaluates:
 
 ```bash
 npm install              # Install dependencies
-npm test                 # Run all tests once
-npm run test:watch       # Watch mode for development
+npm test                 # Run DMN tests (Vitest)
+npm run test:watch       # Watch mode for DMN tests
 npm run generate:library # Generate FHIR Library from CQL
 ```
 
-## Testing
+## HAPI Test Lifecycle
 
-Test cases in `tests/` are JSON files with input/expected pairs:
+```bash
+npm run test:generate    # YAML → FHIR JSON (all cases)
+npm run test:deploy      # POST to HAPI (all cases)
+npm run test:evaluate    # Run $evaluate, compare results
+npm run test:teardown    # DELETE from HAPI by tag
+npm run test:cycle       # All four in sequence
+
+# Single case variants
+npm run test:generate:one <case-id>
+npm run test:deploy:one <case-id>
+npm run test:evaluate:one <case-id>
+npm run test:teardown:one <case-id>
+```
+
+**Environment variables:**
+- `HAPI_BASE_URL` (default: `http://localhost:8080/fhir`)
+- `LIBRARY_ID` (default: `BreastCancerScreening`)
+
+## DMN Testing
+
+Test cases in `tests/` are JSON files with input/expected pairs for validating DMN logic:
 
 ```json
 {
@@ -97,15 +122,46 @@ Test cases in `tests/` are JSON files with input/expected pairs:
 }
 ```
 
-**Test cases:**
-- `true.json` - positive case (female, 57, no prior)
-- `just-old-enough.json` - minimum age boundary (female, 40)
-- `just-young-enough.json` - maximum age boundary (female, 74)
-- `too-young.json` - below minimum (female, 39)
-- `too-old.json` - above maximum (female, 75)
-- `male.json` - gender exclusion case
+The test harness (`src/dmn-runner.js`) parses the DMN XML directly and evaluates the decision table using a custom S-FEEL expression parser.
 
-The test harness (`src/dmn-runner.js`) parses the DMN XML directly and evaluates the decision table using a custom FEEL expression parser.
+## YAML Test Cases (HAPI)
+
+Test cases in `tests/cases/` are YAML files that define QICore-compliant FHIR resources with dynamic dates:
+
+```yaml
+id: bcs-recommend-57yo-female
+description: "Female, 57, no mammogram - should recommend screening"
+expected:
+  RecommendMammogram: true
+  MammogramInLastTwoYears: false
+
+resources:
+  - resourceType: Patient
+    id: bcs-recommend-57yo-female
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test           # common tag for bulk teardown
+        - system: http://example.org/test-lifecycle
+          code: bcs-recommend-57yo-female  # specific tag
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
+```
+
+**Dynamic date functions:**
+- `$fn: yearsAgo` with `years: N`
+- `$fn: monthsAgo` with `months: N`
+- `$fn: daysAgo` with `days: N`
+- `$fn: today`
+
+**Lifecycle tagging:**
+- All test resources get tagged for cleanup
+- `bcs-test` tag enables bulk teardown of all BCS test data
+- Case-specific tags enable targeted teardown
 
 ## Clinical Context
 
