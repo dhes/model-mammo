@@ -6,12 +6,22 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "generate:library": "node src/generate-library.js input/cql/BreastCancerScreening.cql"
+    "generate:library": "node src/generate-library.js input/cql/BreastCancerScreening.cql",
+    "test:generate": "node src/test-generator.js --all",
+    "test:generate:one": "node src/test-generator.js",
+    "test:deploy": "node src/test-deployer.js --all",
+    "test:deploy:one": "node src/test-deployer.js",
+    "test:evaluate": "node src/test-runner.js --all",
+    "test:evaluate:one": "node src/test-runner.js",
+    "test:teardown": "node src/test-teardown.js --all",
+    "test:teardown:one": "node src/test-teardown.js",
+    "test:cycle": "npm run test:generate && npm run test:deploy && npm run test:evaluate && npm run test:teardown"
   },
   "devDependencies": {
     "vitest": "^2.1.0"
   },
   "dependencies": {
-    "fast-xml-parser": "^4.5.0"
+    "fast-xml-parser": "^4.5.0",
+    "yaml": "^2.3.4"
   }
 }

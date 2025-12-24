@@ -3,28 +3,43 @@
     "colName": "HAPI",
     "created": "2025-12-22T21:03:08.633Z",
     "sortNum": 10000,
-    "folders": [],
+    "folders": [
+        {
+            "_id": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "maintenance",
+            "containerId": "",
+            "created": "2025-12-24T18:15:16.187Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "61390ad0-29ce-4313-9fa8-baea11b07d55",
+            "name": "cases",
+            "containerId": "",
+            "created": "2025-12-24T18:17:33.239Z",
+            "sortNum": 20000
+        }
+    ],
     "requests": [
         {
             "_id": "af721aa3-db03-4156-b90c-b29c7db6a92d",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "",
             "name": "Patient",
-            "url": "Patient",
+            "url": "Patient/bcs-recommend-57yo-female",
             "method": "GET",
             "sortNum": 10000,
             "created": "2025-12-22T21:03:58.321Z",
-            "modified": "2025-12-22T21:23:02.211Z",
+            "modified": "2025-12-24T03:03:32.616Z",
             "headers": []
         },
         {
             "_id": "f93cb9ec-fb52-4319-b0d6-70cf2d5bf8f8",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "deploy main library",
             "url": "Library/BreastCancerScreening",
             "method": "PUT",
-            "sortNum": 30000,
+            "sortNum": 40000,
             "created": "2025-12-22T21:05:47.146Z",
             "modified": "2025-12-22T21:06:39.939Z",
             "headers": [],
@@ -38,11 +53,11 @@
         {
             "_id": "529ad007-4632-446d-86a2-35490ba407b9",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
-            "name": "inspect Library",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "inspect main Library",
             "url": "Library/BreastCancerScreening",
             "method": "GET",
-            "sortNum": 40000,
+            "sortNum": 10000,
             "created": "2025-12-22T21:07:13.901Z",
             "modified": "2025-12-22T21:33:50.394Z",
             "headers": []
@@ -52,15 +67,15 @@
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "",
             "name": "$evaluate infant",
-            "url": "Library/BreastCancerScreening/$evaluate?patient=Patient/test-patient-10months",
+            "url": "Library/BreastCancerScreening/$evaluate?subject=Patient/test-patient-10months",
             "method": "GET",
             "sortNum": 50000,
             "created": "2025-12-22T21:07:51.210Z",
-            "modified": "2025-12-22T21:08:50.740Z",
+            "modified": "2025-12-23T21:26:06.522Z",
             "headers": [],
             "params": [
                 {
-                    "name": "patient",
+                    "name": "subject",
                     "value": "Patient/test-patient-10months",
                     "isPath": false
                 }
@@ -69,11 +84,11 @@
         {
             "_id": "5470d8f7-b3cd-47f2-aacd-0232864f3c94",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect Status Library",
             "url": "Library",
             "method": "GET",
-            "sortNum": 60000,
+            "sortNum": 120000,
             "created": "2025-12-22T21:20:41.114Z",
             "modified": "2025-12-22T21:23:34.359Z",
             "headers": []
@@ -81,11 +96,11 @@
         {
             "_id": "f3ce00de-2c8e-4b02-85ba-8595bf7b9062",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect QICoreCommon",
             "url": "Library/QICoreCommon",
             "method": "GET",
-            "sortNum": 70000,
+            "sortNum": 130000,
             "created": "2025-12-22T21:21:22.238Z",
             "modified": "2025-12-22T21:21:45.474Z",
             "headers": []
@@ -93,11 +108,11 @@
         {
             "_id": "890ea3da-87c0-4529-8357-3c5afa6fa30f",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect FHIRHelpers",
             "url": "Library/FHIRHelpers",
             "method": "GET",
-            "sortNum": 80000,
+            "sortNum": 140000,
             "created": "2025-12-22T21:22:03.148Z",
             "modified": "2025-12-22T21:22:20.959Z",
             "headers": []
@@ -105,23 +120,30 @@
         {
             "_id": "664034d5-6622-4044-b0bf-39d5246f3813",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect Libraries",
-            "url": "Library",
+            "url": "Library?_count=500",
             "method": "GET",
-            "sortNum": 50000,
+            "sortNum": 110000,
             "created": "2025-12-22T21:33:59.519Z",
-            "modified": "2025-12-22T21:34:10.759Z",
-            "headers": []
+            "modified": "2025-12-24T18:16:37.081Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "_count",
+                    "value": "500",
+                    "isPath": false
+                }
+            ]
         },
         {
             "_id": "3f6a609e-3bab-40f6-9bc4-5244476fdafa",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "deploy Status",
             "url": "Library/Status",
             "method": "PUT",
-            "sortNum": 40000,
+            "sortNum": 70000,
             "created": "2025-12-22T21:35:40.859Z",
             "modified": "2025-12-22T21:37:15.366Z",
             "headers": [],
@@ -135,11 +157,11 @@
         {
             "_id": "cc80dd31-e8ac-4a5a-8c89-b1d3371dc040",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "deploy QICoreCommon",
             "url": "Library/QICoreCommon",
             "method": "PUT",
-            "sortNum": 40000,
+            "sortNum": 60000,
             "created": "2025-12-22T21:35:42.922Z",
             "modified": "2025-12-22T21:36:49.887Z",
             "headers": [],
@@ -153,11 +175,11 @@
         {
             "_id": "9701a73e-5fe0-403f-bdec-3323f0df52e0",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "deploy FHIRHelpers",
             "url": "Library/FHIRHelpers",
             "method": "PUT",
-            "sortNum": 40000,
+            "sortNum": 50000,
             "created": "2025-12-22T21:35:45.138Z",
             "modified": "2025-12-22T21:36:04.030Z",
             "headers": [],
@@ -171,11 +193,11 @@
         {
             "_id": "e2050871-10b4-46bd-b1f9-d995eccea7f4",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect Library FHIRHelpers",
             "url": "Library/FHIRHelpers",
             "method": "GET",
-            "sortNum": 50000,
+            "sortNum": 80000,
             "created": "2025-12-22T21:49:58.385Z",
             "modified": "2025-12-22T21:50:17.959Z",
             "headers": []
@@ -183,11 +205,11 @@
         {
             "_id": "6f65b830-02a8-48f7-b4c9-c2b32677657b",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect Library Status",
             "url": "Library/QICoreCommon",
             "method": "GET",
-            "sortNum": 60000,
+            "sortNum": 90000,
             "created": "2025-12-22T21:50:40.077Z",
             "modified": "2025-12-22T21:51:36.065Z",
             "headers": []
@@ -195,14 +217,207 @@
         {
             "_id": "9fefb693-ee45-40ac-8131-eaa266c2df80",
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
-            "containerId": "",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "name": "inspect Library QICoreCommon",
             "url": "Library/Status",
             "method": "GET",
-            "sortNum": 70000,
+            "sortNum": 100000,
             "created": "2025-12-22T21:51:19.774Z",
             "modified": "2025-12-22T21:51:19.774Z",
             "headers": []
+        },
+        {
+            "_id": "4f6e4642-2cdc-4a12-94a9-9b727646453d",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "delete main library",
+            "url": "Library/BreastCancerScreening",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2025-12-23T05:10:23.099Z",
+            "modified": "2025-12-23T05:10:44.349Z",
+            "headers": []
+        },
+        {
+            "_id": "4e26c8a6-7b41-45f2-8957-15c109ad3f84",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "expunge main library",
+            "url": "Library/BreastCancerScreening/$expunge",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-12-23T05:10:53.515Z",
+            "modified": "2025-12-23T05:14:38.067Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"resourceType\": \"Parameters\",\n  \"parameter\": [\n    {\n      \"name\": \"limit\",\n      \"valueInteger\": 1000\n    },\n    {\n      \"name\": \"expungeDeletedResources\",\n      \"valueBoolean\": true\n    },\n    {\n      \"name\": \"expungePreviousVersions\",\n      \"valueBoolean\": true\n    }\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "a2f4cacd-bfdb-4b23-a1ed-9234b259667b",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "valuesets",
+            "url": "ValueSet/Mammography",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2025-12-23T21:11:49.929Z",
+            "modified": "2025-12-23T21:12:59.525Z",
+            "headers": []
+        },
+        {
+            "_id": "e5c1125f-4c74-4d42-90bf-61c347c68a39",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "name": "deploy valueset Mammogram",
+            "url": "ValueSet/2.16.840.1.113883.3.464.1003.108.12.1018",
+            "method": "PUT",
+            "sortNum": 160000,
+            "created": "2025-12-23T21:17:30.024Z",
+            "modified": "2025-12-23T21:18:44.382Z",
+            "headers": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "../input/resources/vocabulary/valueset/external/2.16.840.1.113883.3.464.1003.108.12.1018.json"
+            }
+        },
+        {
+            "_id": "d90a4df2-f806-4fab-8c35-e31553b1ebf3",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "deploy Patient 5be43868-ffec-4de5-b99e-185513b74c82",
+            "url": "Patient/5be43868-ffec-4de5-b99e-185513b74c82",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2025-12-24T01:34:20.717Z",
+            "modified": "2025-12-24T01:34:59.903Z",
+            "headers": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "../tests/borrowed.json"
+            }
+        },
+        {
+            "_id": "a67d6a59-130e-4712-a41c-d4bcc3c7d048",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "$evaluate 5be43868-ffec-4de5-b99e-185513b74c82",
+            "url": "Library/BreastCancerScreening/$evaluate?subject=Patient/5be43868-ffec-4de5-b99e-185513b74c82",
+            "method": "GET",
+            "sortNum": 55000,
+            "created": "2025-12-24T01:35:12.163Z",
+            "modified": "2025-12-24T01:35:28.152Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "subject",
+                    "value": "Patient/5be43868-ffec-4de5-b99e-185513b74c82",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "84d188ab-fc95-4200-8ee0-a8dd5ee69e63",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "deploy Patient bcs-recommend-57yo-female",
+            "url": "Patient/bcs-recommend-57yo-female",
+            "method": "PUT",
+            "sortNum": 140000,
+            "created": "2025-12-24T03:01:48.546Z",
+            "modified": "2025-12-24T03:02:32.192Z",
+            "headers": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "../tests/generated/bcs-recommend-57yo-female/Patient/bcs-recommend-57yo-female.json"
+            }
+        },
+        {
+            "_id": "84c37807-8b71-4e44-8e89-73577af21f0e",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "$evaluate bcs-recommend-57yo-female",
+            "url": "Library/BreastCancerScreening/$evaluate?subject=Patient/bcs-recommend-57yo-female",
+            "method": "GET",
+            "sortNum": 57500,
+            "created": "2025-12-24T03:02:46.165Z",
+            "modified": "2025-12-24T03:06:08.966Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "subject",
+                    "value": "Patient/bcs-recommend-57yo-female",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "d56be45a-8c70-47eb-95da-9df0f0fd7495",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "delete Patient bcs-recommend-57yo-female",
+            "url": "Patient/bcs-recommend-57yo-female",
+            "method": "DELETE",
+            "sortNum": 150000,
+            "created": "2025-12-24T18:52:36.651Z",
+            "modified": "2025-12-24T18:53:21.073Z",
+            "headers": []
+        },
+        {
+            "_id": "58edfe3c-0d89-49bb-ad83-ab00b062c0c4",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "expunge Patient bcs-recommend-57yo-female",
+            "url": "Patient/bcs-recommend-57yo-female/$expunge",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2025-12-24T18:53:42.909Z",
+            "modified": "2025-12-24T18:56:23.073Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"resourceType\": \"Parameters\",\n  \"parameter\": [\n    {\n      \"name\": \"limit\",\n      \"valueInteger\": 1000\n    },\n    {\n      \"name\": \"expungeDeletedResources\",\n      \"valueBoolean\": true\n    },\n    {\n      \"name\": \"expungePreviousVersions\",\n      \"valueBoolean\": true\n    }\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "80159308-99f6-4e7d-bf6d-e51c7bbdff82",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "inspect Patient bcs-recommend-57yo-female",
+            "url": "Patient/bcs-recommend-57yo-female/_history",
+            "method": "GET",
+            "sortNum": 170000,
+            "created": "2025-12-24T18:54:27.189Z",
+            "modified": "2025-12-24T22:47:47.060Z",
+            "headers": []
+        },
+        {
+            "_id": "091f2542-ee4d-4605-b308-3280f72cbf02",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "",
+            "name": "get Patients by tag",
+            "url": "Patient?_tag=http://example.org/test-lifecycle|bcs-test",
+            "method": "GET",
+            "sortNum": 180000,
+            "created": "2025-12-24T19:11:23.551Z",
+            "modified": "2025-12-24T20:05:20.856Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "_tag",
+                    "value": "http://example.org/test-lifecycle|bcs-test",
+                    "isPath": false
+                }
+            ]
         }
     ],
     "settings": {

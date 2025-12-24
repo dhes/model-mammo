@@ -1,0 +1,57 @@
+# Test case: Female, 57 years old, no mammogram - should recommend screening
+# Source: adapted from CMS125 MADiE test case (borrowed.json)
+
+id: bcs-recommend-57yo-female
+description: "Female, 57, no mammogram - should recommend screening"
+tags:
+  - breast-cancer-screening
+  - positive-case
+  - no-mammogram
+
+expected:
+  RecommendMammogram: true
+  MammogramInLastTwoYears: false
+  AgeInYears: 57
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-recommend-57yo-female
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-recommend-57yo-female
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-recommend-57yo-female
+    name:
+      - family: TestPatient
+        given:
+          - Screening
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
