@@ -1,0 +1,57 @@
+# Test case: Male patient - should NOT recommend screening
+# Males are excluded from mammography screening regardless of age
+
+id: bcs-male-no-recommend
+description: "Male, 57, no mammogram - should NOT recommend (gender exclusion)"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - gender-exclusion
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: false
+  AgeInYears: 57
+  Gender: male
+
+resources:
+  - resourceType: Patient
+    id: bcs-male-no-recommend
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-male-no-recommend
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-male-no-recommend
+    name:
+      - family: TestPatient
+        given:
+          - Male
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 57

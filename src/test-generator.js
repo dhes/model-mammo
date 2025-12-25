@@ -21,20 +21,41 @@ const dateFunctions = {
   yearsAgo: (params) => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - params.years);
-    return date.toISOString().split('T')[0];
+    // offsetDays: negative = older, positive = more recent
+    // Default -1 for birthDate edge case (ensures birthday has passed)
+    const offsetDays = params.offsetDays ?? -1;
+    date.setDate(date.getDate() + offsetDays);
+    // Format in local time (not UTC) to match server timezone
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   },
   daysAgo: (params) => {
     const date = new Date();
     date.setDate(date.getDate() - params.days);
-    return date.toISOString().split('T')[0];
+    // Format in local time (not UTC) to match server timezone
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   },
   today: () => {
-    return new Date().toISOString().split('T')[0];
+    const date = new Date();
+    // Format in local time (not UTC) to match server timezone
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   },
   monthsAgo: (params) => {
     const date = new Date();
     date.setMonth(date.getMonth() - params.months);
-    return date.toISOString().split('T')[0];
+    // Format in local time (not UTC) to match server timezone
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
   }
 };
 

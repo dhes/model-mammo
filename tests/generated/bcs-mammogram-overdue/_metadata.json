@@ -1,0 +1,29 @@
+{
+  "id": "bcs-mammogram-overdue",
+  "description": "Female, 57, mammogram 2 years + 1 day ago - should recommend (just overdue)",
+  "tags": [
+    "breast-cancer-screening",
+    "positive-case",
+    "has-mammogram",
+    "boundary-test"
+  ],
+  "expected": {
+    "RecommendMammogram": true,
+    "MammogramInLastTwoYears": false,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-mammogram-overdue",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammogram-overdue/Patient/bcs-mammogram-overdue.json"
+    },
+    {
+      "type": "Observation",
+      "id": "bcs-mammogram-overdue-obs",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammogram-overdue/Observation/bcs-mammogram-overdue-obs.json"
+    }
+  ],
+  "generatedAt": "2025-12-25T20:40:49.670Z"
+}

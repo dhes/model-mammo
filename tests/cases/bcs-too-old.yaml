@@ -1,0 +1,57 @@
+# Test case: Female, 75 years old - should NOT recommend screening
+# Age 75 is above the maximum age (74) for mammography screening
+
+id: bcs-too-old
+description: "Female, 75, no mammogram - should NOT recommend (above age range)"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - age-exclusion
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: false
+  AgeInYears: 75
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-too-old
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-too-old
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2076-8"
+              display: Native Hawaiian or Other Pacific Islander
+          - url: text
+            valueString: Native Hawaiian or Other Pacific Islander
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-too-old
+    name:
+      - family: TestPatient
+        given:
+          - TooOld
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 75

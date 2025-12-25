@@ -1,0 +1,86 @@
+# Test case: Female, 57 years old, mammogram (2 years - 1 day) ago - should NOT recommend
+# Testing just inside the 2-year boundary: mammogram not quite due yet
+
+id: bcs-mammogram-almost-due
+description: "Female, 57, mammogram 2 years minus 1 day ago - should NOT recommend (almost due)"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - has-mammogram
+  - boundary-test
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: true
+  AgeInYears: 57
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-mammogram-almost-due
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-mammogram-almost-due
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2054-5"
+              display: Black or African American
+          - url: text
+            valueString: Black or African American
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-mammogram-almost-due
+    name:
+      - family: TestPatient
+        given:
+          - MammogramAlmostDue
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
+
+  - resourceType: Observation
+    id: bcs-mammogram-almost-due-obs
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-clinical-result
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-mammogram-almost-due
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: imaging
+            display: Imaging
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "24606-6"
+          display: MG Breast Screening
+    subject:
+      reference: Patient/bcs-mammogram-almost-due
+    effectiveDateTime:
+      $fn: yearsAgo
+      years: 2
+      offsetDays: 1

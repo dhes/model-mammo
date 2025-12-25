@@ -1,0 +1,28 @@
+{
+  "id": "bcs-recent-mammogram",
+  "description": "Female, 57, mammogram 6 months ago - should NOT recommend",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "has-mammogram"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": true,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-recent-mammogram",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-recent-mammogram/Patient/bcs-recent-mammogram.json"
+    },
+    {
+      "type": "Observation",
+      "id": "bcs-recent-mammogram-obs",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-recent-mammogram/Observation/bcs-recent-mammogram-obs.json"
+    }
+  ],
+  "generatedAt": "2025-12-25T20:40:49.675Z"
+}

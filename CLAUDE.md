@@ -43,19 +43,27 @@ The DMN author must know CQL idioms and design tables with translation in mind.
 
 ## Project Structure
 
-- `mammo.dmn` - Decision table defining screening recommendation logic
-- `tests/` - DMN test cases (JSON input/expected pairs)
-- `tests/cases/` - YAML test case definitions for HAPI testing
-- `tests/generated/` - Generated FHIR resources from YAML
-- `src/dmn-runner.js` - Custom DMN evaluator (parses XML, evaluates S-FEEL expressions)
-- `src/dmn-runner.test.js` - Vitest test runner for DMN
-- `src/generate-library.js` - Generates FHIR Library resource from CQL
-- `src/test-generator.js` - Generates FHIR resources from YAML test cases
-- `src/test-deployer.js` - Deploys test resources to HAPI
-- `src/test-runner.js` - Runs $evaluate and compares to expected results
-- `src/test-teardown.js` - Deletes test resources from HAPI by tag
-- `input/cql/` - CQL source files
-- `input/resources/library/` - Generated FHIR Library resources
+```
+├── mammo.dmn                   # Decision table (screening logic)
+├── mammo.bpmn                  # Process model (reference only)
+├── input/
+│   ├── cql/                    # CQL source files
+│   └── resources/library/      # Generated FHIR Library resources
+├── tests/
+│   ├── dmn/                    # DMN test cases (JSON input/expected)
+│   ├── cases/                  # YAML test definitions for HAPI
+│   └── generated/              # Generated FHIR resources from YAML
+├── reference/
+│   └── cms125/                 # Borrowed CMS test data (for reference)
+└── src/
+    ├── dmn-runner.js           # Custom DMN evaluator (S-FEEL)
+    ├── dmn-runner.test.js      # Vitest test runner for DMN
+    ├── generate-library.js     # Generates FHIR Library from CQL
+    ├── test-generator.js       # YAML → FHIR resources
+    ├── test-deployer.js        # POST resources to HAPI
+    ├── test-runner.js          # Run $evaluate, compare results
+    └── test-teardown.js        # DELETE resources by tag
+```
 
 ## Technology Stack
 
@@ -113,7 +121,7 @@ npm run test:teardown:one <case-id>
 
 ## DMN Testing
 
-Test cases in `tests/` are JSON files with input/expected pairs for validating DMN logic:
+Test cases in `tests/dmn/` are JSON files with input/expected pairs for validating DMN logic:
 
 ```json
 {
@@ -166,6 +174,35 @@ resources:
 ## Clinical Context
 
 Follows USPSTF/ACS guidelines for mammography screening. Age range 40-74 reflects evidence-based recommendations.
+
+## Implementation Decisions
+
+### "Biennial" Boundary Interpretation
+
+The USPSTF guideline states: *"The USPSTF recommends biennial screening mammography for women aged 40 to 74 years."*
+
+**The ambiguity:** Does "biennial" mean a mammogram from exactly 2 years ago still "covers" the patient, or is screening now due?
+
+| Interpretation | Exactly 2 years ago | CQL expression |
+|----------------|---------------------|----------------|
+| Coverage model | Not due (still covered) | `on or after (Today() - 2 years)` |
+| Interval model | Due (interval elapsed) | `after (Today() - 2 years)` |
+
+**Decision: Interval model** — a mammogram from exactly 2 years ago means screening is due.
+
+**Rationale:**
+
+1. **Clinical safety**: For cancer screening, err toward recommending. A recommendation one day "early" has no clinical harm; a delayed recommendation does.
+
+2. **Natural language alignment**: When a clinician says "come back in 2 years," both parties understand that when 2 years have elapsed, it's time. The interval model matches this shared mental model.
+
+3. **Least surprise**: "Has it been 2 years? Yes. Is screening due? Yes." The coverage model requires explaining why "2 years = not quite yet."
+
+4. **Guideline intent**: USPSTF promotes screening uptake. When ambiguous, interpret in favor of the guideline's purpose.
+
+5. **Defensibility**: If asked "why recommend at exactly 2 years?", the answer is obvious. If asked "why wait until 2 years + 1 day?", you're defending an implementation detail that serves no clinical purpose.
+
+This decision is documented in the test case `bcs-mammogram-just-due` which verifies that a mammogram from exactly 2 years ago triggers a recommendation.
 
 ## Target Stack
 

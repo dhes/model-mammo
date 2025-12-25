@@ -1,0 +1,86 @@
+# Test case: Female, 57 years old, mammogram exactly 2 years ago - should recommend
+# Testing the exact 2-year boundary: interval model means "2 years elapsed = due"
+
+id: bcs-mammogram-just-due
+description: "Female, 57, mammogram exactly 2 years ago - should recommend (just due)"
+tags:
+  - breast-cancer-screening
+  - positive-case
+  - has-mammogram
+  - boundary-test
+
+expected:
+  RecommendMammogram: true
+  MammogramInLastTwoYears: false
+  AgeInYears: 57
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-mammogram-just-due
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-mammogram-just-due
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-mammogram-just-due
+    name:
+      - family: TestPatient
+        given:
+          - MammogramJustDue
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
+
+  - resourceType: Observation
+    id: bcs-mammogram-just-due-obs
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-clinical-result
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-mammogram-just-due
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: imaging
+            display: Imaging
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "24606-6"
+          display: MG Breast Screening
+    subject:
+      reference: Patient/bcs-mammogram-just-due
+    effectiveDateTime:
+      $fn: yearsAgo
+      years: 2
+      offsetDays: 0

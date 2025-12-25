@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { loadDMN, evaluateDecision } from './dmn-runner.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const testsDir = resolve(__dirname, '../tests');
+const testsDir = resolve(__dirname, '../tests/dmn');
 
 describe('Breast Cancer Screening Decision Table', () => {
   beforeAll(async () => {

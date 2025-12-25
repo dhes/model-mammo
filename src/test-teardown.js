@@ -107,8 +107,8 @@ if (args[0] === '--all') {
   // Use common tag to delete all test resources at once
   console.log(`Tearing down ALL test resources with tag: ${COMMON_TAG_CODE}\n`);
 
-  // Resource types that might have test data
-  const resourceTypes = ['Patient', 'Observation', 'Procedure', 'Condition'];
+  // Resource types that might have test data (order matters: delete dependents before Patient)
+  const resourceTypes = ['Observation', 'Procedure', 'Condition', 'Patient'];
 
   for (const resourceType of resourceTypes) {
     const deleted = await deleteByTag(resourceType, COMMON_TAG_CODE);

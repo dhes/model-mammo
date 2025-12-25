@@ -1,0 +1,84 @@
+# Test case: Female, 57 years old, mammogram 6 months ago - should NOT recommend
+# Patient has had a mammogram within the last 2 years, so no new screening needed
+
+id: bcs-recent-mammogram
+description: "Female, 57, mammogram 6 months ago - should NOT recommend"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - has-mammogram
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: true
+  AgeInYears: 57
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-recent-mammogram
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-recent-mammogram
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-recent-mammogram
+    name:
+      - family: TestPatient
+        given:
+          - RecentMammogram
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
+
+  - resourceType: Observation
+    id: bcs-recent-mammogram-obs
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-clinical-result
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-recent-mammogram
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: imaging
+            display: Imaging
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "24606-6"
+          display: MG Breast Screening
+    subject:
+      reference: Patient/bcs-recent-mammogram
+    effectiveDateTime:
+      $fn: monthsAgo
+      months: 6

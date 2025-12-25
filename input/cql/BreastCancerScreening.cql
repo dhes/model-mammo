@@ -38,7 +38,7 @@ define DateOfMostRecentMammogram:
   MostRecentMammogram.effective.toInterval().low
 
 define MammogramInLastTwoYears:
-  Coalesce(DateOfMostRecentMammogram on or after (Today() - 2 years), false)
+  Coalesce(DateOfMostRecentMammogram after (Today() - 2 years), false)
 
 define RecommendMammogram:
   if AgeInYears in Interval[40, 74]

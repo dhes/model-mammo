@@ -1,0 +1,23 @@
+{
+  "id": "bcs-male-no-recommend",
+  "description": "Male, 57, no mammogram - should NOT recommend (gender exclusion)",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "gender-exclusion"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": false,
+    "AgeInYears": 57,
+    "Gender": "male"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-male-no-recommend",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-male-no-recommend/Patient/bcs-male-no-recommend.json"
+    }
+  ],
+  "generatedAt": "2025-12-25T20:40:49.662Z"
+}

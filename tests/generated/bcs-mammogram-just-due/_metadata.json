@@ -1,0 +1,29 @@
+{
+  "id": "bcs-mammogram-just-due",
+  "description": "Female, 57, mammogram exactly 2 years ago - should recommend (just due)",
+  "tags": [
+    "breast-cancer-screening",
+    "positive-case",
+    "has-mammogram",
+    "boundary-test"
+  ],
+  "expected": {
+    "RecommendMammogram": true,
+    "MammogramInLastTwoYears": false,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-mammogram-just-due",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammogram-just-due/Patient/bcs-mammogram-just-due.json"
+    },
+    {
+      "type": "Observation",
+      "id": "bcs-mammogram-just-due-obs",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammogram-just-due/Observation/bcs-mammogram-just-due-obs.json"
+    }
+  ],
+  "generatedAt": "2025-12-25T20:40:49.668Z"
+}
