@@ -15,7 +15,8 @@
     "test:evaluate:one": "node src/test-runner.js",
     "test:teardown": "node src/test-teardown.js --all",
     "test:teardown:one": "node src/test-teardown.js",
-    "test:cycle": "npm run test:generate && npm run test:deploy && npm run test:evaluate && npm run test:teardown"
+    "test:cycle": "npm run test:generate && npm run test:deploy && npm run test:evaluate && npm run test:teardown",
+    "emr": "cd mock-emr && npm run dev"
   },
   "devDependencies": {
     "vitest": "^2.1.0"
