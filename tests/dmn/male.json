@@ -3,7 +3,8 @@
     "Gender": "male",
     "AgeInYears": 57,
     "MammogramInLastTwoYears": false,
-    "HasBilateralMastectomy": false
+    "HasBilateralMastectomy": false,
+    "HasBreastCancerDiagnosis": false
   },
   "expected": {
     "RecommendMammogram": false

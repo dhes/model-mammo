@@ -1,0 +1,89 @@
+# Test case: Female, 57 years old, breast cancer diagnosis - should NOT recommend
+# Patient has active breast cancer and is under oncology care
+
+id: bcs-breast-cancer-diagnosis
+description: "Female, 57, breast cancer diagnosis - should NOT recommend (oncology care)"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - breast-cancer-exclusion
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: false
+  HasBilateralMastectomy: false
+  HasBreastCancerDiagnosis: true
+  AgeInYears: 57
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-breast-cancer-diagnosis
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-breast-cancer-diagnosis
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2054-5"
+              display: Black or African American
+          - url: text
+            valueString: Black or African American
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-breast-cancer-diagnosis
+    name:
+      - family: TestPatient
+        given:
+          - BreastCancerDx
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 57
+
+  - resourceType: Condition
+    id: bcs-breast-cancer-diagnosis-cond
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-breast-cancer-diagnosis
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: active
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+            display: Problem List Item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "254837009"
+          display: Malignant neoplasm of breast (disorder)
+    subject:
+      reference: Patient/bcs-breast-cancer-diagnosis
+    onsetDateTime:
+      $fn: yearsAgo
+      years: 1

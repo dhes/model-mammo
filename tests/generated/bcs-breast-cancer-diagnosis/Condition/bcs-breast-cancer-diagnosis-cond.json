@@ -1,6 +1,6 @@
 {
   "resourceType": "Condition",
-  "id": "bcs-bilateral-mastectomy-cond",
+  "id": "bcs-breast-cancer-diagnosis-cond",
   "meta": {
     "profile": [
       "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns"
@@ -12,7 +12,7 @@
       },
       {
         "system": "http://example.org/test-lifecycle",
-        "code": "bcs-bilateral-mastectomy"
+        "code": "bcs-breast-cancer-diagnosis"
       }
     ]
   },
@@ -39,13 +39,13 @@
     "coding": [
       {
         "system": "http://snomed.info/sct",
-        "code": "136071000119101",
-        "display": "History of bilateral prophylactic mastectomy (situation)"
+        "code": "254837009",
+        "display": "Malignant neoplasm of breast (disorder)"
       }
     ]
   },
   "subject": {
-    "reference": "Patient/bcs-bilateral-mastectomy"
+    "reference": "Patient/bcs-breast-cancer-diagnosis"
   },
-  "onsetDateTime": "2020-12-25"
+  "onsetDateTime": "2024-12-25"
 }

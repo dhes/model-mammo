@@ -1,6 +1,6 @@
 {
   "resourceType": "Patient",
-  "id": "bcs-too-young",
+  "id": "bcs-breast-cancer-diagnosis",
   "meta": {
     "profile": [
       "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient"
@@ -12,7 +12,7 @@
       },
       {
         "system": "http://example.org/test-lifecycle",
-        "code": "bcs-too-young"
+        "code": "bcs-breast-cancer-diagnosis"
       }
     ]
   },
@@ -24,13 +24,13 @@
           "url": "ombCategory",
           "valueCoding": {
             "system": "urn:oid:2.16.840.1.113883.6.238",
-            "code": "1002-5",
-            "display": "American Indian or Alaska Native"
+            "code": "2054-5",
+            "display": "Black or African American"
           }
         },
         {
           "url": "text",
-          "valueString": "American Indian or Alaska Native"
+          "valueString": "Black or African American"
         }
       ]
     },
@@ -55,17 +55,17 @@
   "identifier": [
     {
       "system": "http://hospital.smarthealthit.org",
-      "value": "bcs-too-young"
+      "value": "bcs-breast-cancer-diagnosis"
     }
   ],
   "name": [
     {
       "family": "TestPatient",
       "given": [
-        "TooYoung"
+        "BreastCancerDx"
       ]
     }
   ],
   "gender": "female",
-  "birthDate": "1986-12-25"
+  "birthDate": "1968-12-25"
 }

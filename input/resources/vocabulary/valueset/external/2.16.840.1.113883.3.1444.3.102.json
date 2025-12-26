@@ -1,0 +1,178 @@
+{
+  "resourceType": "ValueSet",
+  "id": "2.16.840.1.113883.3.1444.3.102",
+  "meta": {
+    "versionId": "11",
+    "lastUpdated": "2025-09-30T01:02:46.000-04:00",
+    "profile": [
+      "http://hl7.org/fhir/StructureDefinition/shareablevalueset",
+      "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/computable-valueset-cqfm",
+      "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/publishable-valueset-cqfm"
+    ]
+  },
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/valueset-author",
+      "valueContactDetail": {
+        "name": "American Society of Clinical Oncology Author"
+      }
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/resource-lastReviewDate",
+      "valueDate": "2025-09-30"
+    },
+    {
+      "url": "http://hl7.org/fhir/StructureDefinition/valueset-effectiveDate",
+      "valueDate": "2025-09-30"
+    }
+  ],
+  "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.1444.3.102",
+  "identifier": [
+    {
+      "system": "urn:ietf:rfc:3986",
+      "value": "urn:oid:2.16.840.1.113883.3.1444.3.102"
+    }
+  ],
+  "version": "20250930",
+  "name": "BreastCancer",
+  "title": "Breast Cancer",
+  "status": "active",
+  "date": "2025-09-30T01:02:46-04:00",
+  "publisher": "American Society of Clinical Oncology Steward",
+  "jurisdiction": [
+    {
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        }
+      ]
+    }
+  ],
+  "purpose": "(Clinical Focus: This value set contains concepts that represent a breast cancer diagnosis.),(Data Element Scope: This value set may use Quality Data Model (QDM) category related to Diagnosis.),(Inclusion Criteria: Includes only relevant concepts associated with breast cancer diagnoses.),(Exclusion Criteria: Excludes concepts related to cancer in male breasts.)",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "188157005",
+            "display": "Malignant neoplasm of overlapping sites of breast (disorder)"
+          },
+          {
+            "code": "254837009",
+            "display": "Malignant neoplasm of breast (disorder)"
+          },
+          {
+            "code": "254838004",
+            "display": "Carcinoma of breast (disorder)"
+          },
+          {
+            "code": "254839007",
+            "display": "Scirrhous carcinoma of breast (disorder)"
+          },
+          {
+            "code": "254840009",
+            "display": "Inflammatory carcinoma of breast (disorder)"
+          },
+          {
+            "code": "278054005",
+            "display": "Lobular carcinoma of breast (disorder)"
+          },
+          {
+            "code": "286893002",
+            "display": "Carcinoma of breast - upper, inner quadrant (disorder)"
+          },
+          {
+            "code": "286894008",
+            "display": "Carcinoma of breast - lower, inner quadrant (disorder)"
+          },
+          {
+            "code": "286895009",
+            "display": "Carcinoma of upper outer quadrant of breast (disorder)"
+          },
+          {
+            "code": "286896005",
+            "display": "Carcinoma breast - lower, outer quadrant (disorder)"
+          },
+          {
+            "code": "286897001",
+            "display": "Carcinoma of breast - axillary tail (disorder)"
+          },
+          {
+            "code": "372092003",
+            "display": "Primary malignant neoplasm of axillary tail of breast (disorder)"
+          },
+          {
+            "code": "372094002",
+            "display": "Malignant neoplasm of axillary tail of breast (disorder)"
+          },
+          {
+            "code": "372137005",
+            "display": "Primary malignant neoplasm of breast (disorder)"
+          },
+          {
+            "code": "373080008",
+            "display": "Malignant neoplasm of lower inner quadrant of breast (disorder)"
+          },
+          {
+            "code": "373081007",
+            "display": "Malignant neoplasm of lower outer quadrant of breast (disorder)"
+          },
+          {
+            "code": "373082000",
+            "display": "Malignant neoplasm of upper inner quadrant of breast (disorder)"
+          },
+          {
+            "code": "373083005",
+            "display": "Malignant neoplasm of upper outer quadrant of breast (disorder)"
+          },
+          {
+            "code": "373088001",
+            "display": "Primary malignant neoplasm of upper outer quadrant of breast (disorder)"
+          },
+          {
+            "code": "373089009",
+            "display": "Primary malignant neoplasm of upper inner quadrant of breast (disorder)"
+          },
+          {
+            "code": "373090000",
+            "display": "Primary malignant neoplasm of lower inner quadrant of breast (disorder)"
+          },
+          {
+            "code": "373091001",
+            "display": "Primary malignant neoplasm of lower outer quadrant of breast (disorder)"
+          },
+          {
+            "code": "408643008",
+            "display": "Infiltrating duct carcinoma of breast (disorder)"
+          },
+          {
+            "code": "444604002",
+            "display": "Carcinoma of breast with ductal and lobular features (disorder)"
+          },
+          {
+            "code": "444712000",
+            "display": "Mucinous carcinoma of breast (disorder)"
+          },
+          {
+            "code": "708921005",
+            "display": "Carcinoma of central portion of breast (disorder)"
+          },
+          {
+            "code": "713609000",
+            "display": "Invasive carcinoma of breast (disorder)"
+          },
+          {
+            "code": "722524005",
+            "display": "Primary invasive pleomorphic lobular carcinoma of breast (disorder)"
+          },
+          {
+            "code": "722832009",
+            "display": "Primary solid papillary carcinoma with invasion of breast (disorder)"
+          }
+        ]
+      }
+    ]
+  }
+}

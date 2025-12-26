@@ -1,0 +1,30 @@
+{
+  "id": "bcs-breast-cancer-diagnosis",
+  "description": "Female, 57, breast cancer diagnosis - should NOT recommend (oncology care)",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "breast-cancer-exclusion"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": false,
+    "HasBilateralMastectomy": false,
+    "HasBreastCancerDiagnosis": true,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-breast-cancer-diagnosis",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-breast-cancer-diagnosis/Patient/bcs-breast-cancer-diagnosis.json"
+    },
+    {
+      "type": "Condition",
+      "id": "bcs-breast-cancer-diagnosis-cond",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-breast-cancer-diagnosis/Condition/bcs-breast-cancer-diagnosis-cond.json"
+    }
+  ],
+  "generatedAt": "2025-12-26T15:41:53.811Z"
+}

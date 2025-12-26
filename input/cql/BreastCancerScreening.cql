@@ -10,6 +10,8 @@ include Status version '1.13.000'
 
 valueset "Mammography": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1018'
 valueset "History of bilateral mastectomy": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1068'
+valueset "Breast Cancer ICD-10": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1116.185'
+valueset "Breast Cancer SNOMED": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.1444.3.102'
 
 context Patient
 
@@ -48,11 +50,23 @@ define HasBilateralMastectomy:
       where C.isActive()
   )
 
+define HasBreastCancerDiagnosis:
+  exists (
+    [ConditionProblemsHealthConcerns: "Breast Cancer ICD-10"] C
+      where C.isActive()
+  )
+  or
+  exists (
+    [ConditionProblemsHealthConcerns: "Breast Cancer SNOMED"] C
+      where C.isActive()
+  )
+
 define RecommendMammogram:
   if AgeInYears in Interval[40, 74]
     and Gender = 'female'
     and MammogramInLastTwoYears = false
     and HasBilateralMastectomy = false
+    and HasBreastCancerDiagnosis = false
   then true
   else false
 

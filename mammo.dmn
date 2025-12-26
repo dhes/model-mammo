@@ -25,6 +25,11 @@
           <text>HasBilateralMastectomy</text>
         </inputExpression>
       </input>
+      <input id="InputClause_breastcancer" label="Has Breast Cancer Diagnosis">
+        <inputExpression id="LiteralExpression_breastcancer" typeRef="boolean">
+          <text>HasBreastCancerDiagnosis</text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Recommend Mammogram?" name="RecommendMammogram" typeRef="boolean" />
       <rule id="DecisionRule_0a3y6uy">
         <inputEntry id="UnaryTests_1frudkh">
@@ -37,6 +42,9 @@
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_mastectomy1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer1">
           <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_03wpyib">
@@ -56,6 +64,9 @@
         <inputEntry id="UnaryTests_mastectomy2">
           <text>-</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer2">
+          <text>-</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_14na8dn">
           <text>false</text>
         </outputEntry>
@@ -71,6 +82,9 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_mastectomy3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer3">
           <text>-</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1om1q9x">
@@ -90,6 +104,9 @@
         <inputEntry id="UnaryTests_mastectomy4">
           <text>-</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer4">
+          <text>-</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0a4eh2y">
           <text>false</text>
         </outputEntry>
@@ -107,7 +124,30 @@
         <inputEntry id="UnaryTests_mastectomy5">
           <text>true</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_mastectomy">
+        <inputEntry id="UnaryTests_breastcancer5">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_mastectomy_output">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_breastcancer">
+        <inputEntry id="UnaryTests_breastcancer_gender">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer_age">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer_mammo">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer_mastectomy">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_breastcancer6">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_breastcancer_output">
           <text>false</text>
         </outputEntry>
       </rule>
