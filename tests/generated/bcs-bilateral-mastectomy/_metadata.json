@@ -1,0 +1,29 @@
+{
+  "id": "bcs-bilateral-mastectomy",
+  "description": "Female, 57, bilateral mastectomy - should NOT recommend (no breast tissue)",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "mastectomy-exclusion"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": false,
+    "HasBilateralMastectomy": true,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-bilateral-mastectomy",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-bilateral-mastectomy/Patient/bcs-bilateral-mastectomy.json"
+    },
+    {
+      "type": "Condition",
+      "id": "bcs-bilateral-mastectomy-cond",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-bilateral-mastectomy/Condition/bcs-bilateral-mastectomy-cond.json"
+    }
+  ],
+  "generatedAt": "2025-12-26T01:08:37.444Z"
+}

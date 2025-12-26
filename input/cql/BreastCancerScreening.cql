@@ -9,6 +9,7 @@ include QICoreCommon version '4.0.000' called QC
 include Status version '1.13.000'
 
 valueset "Mammography": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1018'
+valueset "History of bilateral mastectomy": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1068'
 
 context Patient
 
@@ -40,10 +41,18 @@ define DateOfMostRecentMammogram:
 define MammogramInLastTwoYears:
   Coalesce(DateOfMostRecentMammogram after (Today() - 2 years), false)
 
+// Check for history of bilateral mastectomy (no breast tissue to screen)
+define HasBilateralMastectomy:
+  exists (
+    [ConditionProblemsHealthConcerns: "History of bilateral mastectomy"] C
+      where C.isActive()
+  )
+
 define RecommendMammogram:
   if AgeInYears in Interval[40, 74]
     and Gender = 'female'
     and MammogramInLastTwoYears = false
+    and HasBilateralMastectomy = false
   then true
   else false
 

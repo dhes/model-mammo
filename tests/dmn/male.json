@@ -2,7 +2,8 @@
   "input": {
     "Gender": "male",
     "AgeInYears": 57,
-    "MammogramInLastTwoYears": false
+    "MammogramInLastTwoYears": false,
+    "HasBilateralMastectomy": false
   },
   "expected": {
     "RecommendMammogram": false

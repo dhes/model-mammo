@@ -20,6 +20,11 @@
           <text>MammogramInLastTwoYears</text>
         </inputExpression>
       </input>
+      <input id="InputClause_mastectomy" label="Has Bilateral Mastectomy">
+        <inputExpression id="LiteralExpression_mastectomy" typeRef="boolean">
+          <text>HasBilateralMastectomy</text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Recommend Mammogram?" name="RecommendMammogram" typeRef="boolean" />
       <rule id="DecisionRule_0a3y6uy">
         <inputEntry id="UnaryTests_1frudkh">
@@ -29,6 +34,9 @@
           <text>[40..74]</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1gurfgx">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy1">
           <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_03wpyib">
@@ -45,6 +53,9 @@
         <inputEntry id="UnaryTests_01iwvtc">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy2">
+          <text>-</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_14na8dn">
           <text>false</text>
         </outputEntry>
@@ -58,6 +69,9 @@
         </inputEntry>
         <inputEntry id="UnaryTests_1beugta">
           <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy3">
+          <text>-</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1om1q9x">
           <text>false</text>
@@ -73,7 +87,27 @@
         <inputEntry id="UnaryTests_1cdq0cb">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy4">
+          <text>-</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0a4eh2y">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_mastectomy">
+        <inputEntry id="UnaryTests_mastectomy_gender">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy_age">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy_mammo">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_mastectomy5">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_mastectomy">
           <text>false</text>
         </outputEntry>
       </rule>

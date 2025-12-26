@@ -1,0 +1,71 @@
+{
+  "resourceType": "Patient",
+  "id": "bcs-bilateral-mastectomy",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient"
+    ],
+    "tag": [
+      {
+        "system": "http://example.org/test-lifecycle",
+        "code": "bcs-test"
+      },
+      {
+        "system": "http://example.org/test-lifecycle",
+        "code": "bcs-bilateral-mastectomy"
+      }
+    ]
+  },
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+      "extension": [
+        {
+          "url": "ombCategory",
+          "valueCoding": {
+            "system": "urn:oid:2.16.840.1.113883.6.238",
+            "code": "2106-3",
+            "display": "White"
+          }
+        },
+        {
+          "url": "text",
+          "valueString": "White"
+        }
+      ]
+    },
+    {
+      "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+      "extension": [
+        {
+          "url": "ombCategory",
+          "valueCoding": {
+            "system": "urn:oid:2.16.840.1.113883.6.238",
+            "code": "2186-5",
+            "display": "Not Hispanic or Latino"
+          }
+        },
+        {
+          "url": "text",
+          "valueString": "Not Hispanic or Latino"
+        }
+      ]
+    }
+  ],
+  "identifier": [
+    {
+      "system": "http://hospital.smarthealthit.org",
+      "value": "bcs-bilateral-mastectomy"
+    }
+  ],
+  "name": [
+    {
+      "family": "TestPatient",
+      "given": [
+        "BilateralMastectomy"
+      ]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1968-12-24"
+}
