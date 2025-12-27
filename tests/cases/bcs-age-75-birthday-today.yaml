@@ -1,0 +1,58 @@
+# Test case: Female, exactly 75 years old (birthday today) - should NOT recommend screening
+# Tests the upper boundary: first day of ineligibility (too old)
+
+id: bcs-age-75-birthday-today
+description: "Female, 75 (birthday today), no mammogram - should NOT recommend (first day too old)"
+tags:
+  - breast-cancer-screening
+  - negative-case
+  - age-boundary
+
+expected:
+  RecommendMammogram: false
+  MammogramInLastTwoYears: false
+  AgeInYears: 75
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-age-75-birthday-today
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-age-75-birthday-today
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2076-8"
+              display: Native Hawaiian or Other Pacific Islander
+          - url: text
+            valueString: Native Hawaiian or Other Pacific Islander
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-age-75-birthday-today
+    name:
+      - family: TestPatient
+        given:
+          - Age75BirthdayToday
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 75
+      offsetDays: 0

@@ -1,0 +1,58 @@
+# Test case: Female, exactly 40 years old (birthday today) - should recommend screening
+# Tests the lower boundary: first day of eligibility
+
+id: bcs-age-40-birthday-today
+description: "Female, 40 (birthday today), no mammogram - should recommend (first day eligible)"
+tags:
+  - breast-cancer-screening
+  - positive-case
+  - age-boundary
+
+expected:
+  RecommendMammogram: true
+  MammogramInLastTwoYears: false
+  AgeInYears: 40
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: bcs-age-40-birthday-today
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: bcs-test
+        - system: http://example.org/test-lifecycle
+          code: bcs-age-40-birthday-today
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: bcs-age-40-birthday-today
+    name:
+      - family: TestPatient
+        given:
+          - Age40BirthdayToday
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 40
+      offsetDays: 0

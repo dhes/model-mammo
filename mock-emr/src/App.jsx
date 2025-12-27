@@ -75,7 +75,10 @@ function App() {
 
   function getPatientAge(patient) {
     if (!patient?.birthDate) return null
-    const birth = new Date(patient.birthDate)
+    // Parse as local date to avoid UTC timezone shift
+    // "1950-12-27" should be Dec 27 local, not UTC (which shifts to Dec 26 in Hawaii)
+    const [year, month, day] = patient.birthDate.split('-').map(Number)
+    const birth = new Date(year, month - 1, day) // month is 0-indexed
     const today = new Date()
     let age = today.getFullYear() - birth.getFullYear()
     const monthDiff = today.getMonth() - birth.getMonth()

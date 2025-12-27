@@ -1,0 +1,29 @@
+{
+  "id": "bcs-mammo-2y-minus-1d",
+  "description": "Female, 57, mammogram 2y minus 1d ago - should NOT recommend (due tomorrow)",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "has-mammogram",
+    "boundary-test"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": true,
+    "AgeInYears": 57,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-mammo-2y-minus-1d",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammo-2y-minus-1d/Patient/bcs-mammo-2y-minus-1d.json"
+    },
+    {
+      "type": "Observation",
+      "id": "bcs-mammo-2y-minus-1d-obs",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-mammo-2y-minus-1d/Observation/bcs-mammo-2y-minus-1d-obs.json"
+    }
+  ],
+  "generatedAt": "2025-12-27T00:29:37.857Z"
+}

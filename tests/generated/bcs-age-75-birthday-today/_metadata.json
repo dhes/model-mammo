@@ -1,0 +1,23 @@
+{
+  "id": "bcs-age-75-birthday-today",
+  "description": "Female, 75 (birthday today), no mammogram - should NOT recommend (first day too old)",
+  "tags": [
+    "breast-cancer-screening",
+    "negative-case",
+    "age-boundary"
+  ],
+  "expected": {
+    "RecommendMammogram": false,
+    "MammogramInLastTwoYears": false,
+    "AgeInYears": 75,
+    "Gender": "female"
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "bcs-age-75-birthday-today",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/bcs-age-75-birthday-today/Patient/bcs-age-75-birthday-today.json"
+    }
+  ],
+  "generatedAt": "2025-12-27T00:29:37.847Z"
+}
