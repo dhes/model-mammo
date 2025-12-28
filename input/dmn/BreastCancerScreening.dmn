@@ -32,6 +32,7 @@
       </input>
       <output id="Output_1" label="Recommend Mammogram?" name="RecommendMammogram" typeRef="boolean" />
       <rule id="DecisionRule_0a3y6uy">
+        <description>The USPSTF recommends biennial screening mammography for women aged 40 to 74 years.</description>
         <inputEntry id="UnaryTests_1frudkh">
           <text>"female"</text>
         </inputEntry>

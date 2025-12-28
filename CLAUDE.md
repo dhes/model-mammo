@@ -44,10 +44,9 @@ The DMN author must know CQL idioms and design tables with translation in mind.
 ## Project Structure
 
 ```
-├── mammo.dmn                   # Decision table (screening logic)
-├── mammo.bpmn                  # Process model (reference only)
 ├── input/
-│   ├── cql/                    # CQL source files
+│   ├── dmn/                    # DMN decision tables (L2)
+│   ├── cql/                    # CQL source files (L3)
 │   └── resources/library/      # Generated FHIR Library resources
 ├── tests/
 │   ├── dmn/                    # DMN test cases (JSON input/expected)
@@ -202,13 +201,84 @@ The USPSTF guideline states: *"The USPSTF recommends biennial screening mammogra
 
 5. **Defensibility**: If asked "why recommend at exactly 2 years?", the answer is obvious. If asked "why wait until 2 years + 1 day?", you're defending an implementation detail that serves no clinical purpose.
 
-This decision is documented in the test case `bcs-mammogram-just-due` which verifies that a mammogram from exactly 2 years ago triggers a recommendation.
+This decision is documented in the test case `bcs-mammo-2y-exactly` which verifies that a mammogram from exactly 2 years ago triggers a recommendation.
+
+### Screening Frequency: Guideline vs eCQM
+
+**The issue:** USPSTF guidelines often specify *what* to do without specifying *how often*. eCQMs operationalize guidelines into measurable metrics, sometimes adding frequency requirements not in the original evidence.
+
+**Example: Tobacco Use Screening (USPSTF Grade B)**
+
+The USPSTF states: *"The USPSTF recommends that clinicians ask all adults about tobacco use..."*
+
+No frequency specified. However, CMS138 (Preventive Care and Screening: Tobacco Use) requires screening "during the Measurement Period" — effectively annual:
+
+```cql
+where TobaccoUseScreening.effective.toInterval() during day of "Measurement Period"
+```
+
+This creates a gap:
+
+| Source | Frequency | Basis |
+|--------|-----------|-------|
+| USPSTF guideline | Unspecified | Clinical evidence |
+| CMS138 eCQM | Annual | Measurement practicality |
+| Clinical practice | Varies | Local workflow |
+
+**Decision: Configurable frequency parameter**
+
+Rather than bake eCQM assumptions into the DMN model, we:
+
+1. **L2 (DMN)**: Model pure eligibility criteria (e.g., `AgeInYears >= 18`)
+2. **L3 (CQL)**: Add a configurable recency check (e.g., `ScreeningInInterval`)
+3. **Deployment**: Configure interval per use case:
+   - eCQM reporting: 1 year (Measurement Period)
+   - Real-time CDS: configurable (6 months, 1 year, every encounter)
+
+**Rationale:**
+
+1. **Fidelity to evidence**: The DMN stays true to what USPSTF actually recommends
+2. **Transparency**: eCQM frequency requirements are explicit, not invisibly embedded
+3. **Flexibility**: Same model supports both quality reporting and clinical CDS
+4. **Auditability**: When asked "why annual?", we can point to CMS138, not claim it's evidence-based
+
+This pattern applies to any guideline where eCQM adds frequency constraints beyond the evidence base.
+
+### Tobacco Screening: Pediatric Age Boundary
+
+**The issue:** The USPSTF adult tobacco recommendation specifies 18+ years. But when should clinicians *start* asking about tobacco use?
+
+**Two separate USPSTF recommendations exist:**
+
+| Recommendation | Population | Intent | Grade |
+|----------------|------------|--------|-------|
+| Tobacco Use in Adults | 18+ years | Screen for current use → cessation interventions | B |
+| Tobacco Use Prevention in Children/Adolescents | School-age | Prevent initiation → education/counseling | B |
+
+The pediatric recommendation focuses on *prevention* (before they start), not *screening* (identify current users). Neither specifies a lower age bound for asking about tobacco use.
+
+**Clinical reality:**
+- ~90% of adult daily smokers started before age 18
+- Significant tobacco/e-cigarette use exists in middle school (11-14) and high school (14-18)
+- Pediatricians routinely ask about tobacco at well-child visits
+- Children may experiment earlier than expected (cf. 12-year-olds puffing around a campfire in "Stand by Me")
+
+**Decision: Model adults (18+) first, document adolescent extension**
+
+The current `TobaccoScreening.dmn` implements the adult recommendation (18+). This keeps L2 faithful to a single, citable USPSTF recommendation.
+
+Adolescent tobacco screening (e.g., ages 12-17) is clinically appropriate but:
+1. Falls under the separate USPSTF pediatric prevention recommendation
+2. Has different intent (prevent initiation vs. identify current users for cessation)
+3. Lacks an evidence-based lower age threshold
+
+**Future extension:** A second rule could be added for adolescents with a distinct annotation citing the pediatric guideline. The [12..17] range represents "ages where persons may have experimented with tobacco" — though the true lower bound is fuzzy and varies by population.
 
 ## Target Stack
 
 ```
 ┌─────────────────────────────┐
-│  mammo.dmn (decision table) │  ← SMEs validate, tests verify
+│  input/dmn/*.dmn            │  ← SMEs validate, tests verify
 └─────────────────────────────┘
               ↓ translate
 ┌─────────────────────────────┐
@@ -226,9 +296,9 @@ This decision is documented in the test case `bcs-mammogram-just-due` which veri
 
 ## Working with This Project
 
-1. Edit decision table in Camunda Modeler (`mammo.dmn`)
-2. Run `npm test` to validate logic
-3. Translate to CQL when decision logic is stable
+1. Edit decision tables in Camunda Modeler (`input/dmn/*.dmn`)
+2. Run `npm test` to validate DMN logic
+3. Translate to CQL when decision logic is stable (`input/cql/`)
 4. Integrate with FHIR server and web app
 
 ## CQL Deployment Approach
@@ -254,5 +324,6 @@ This eliminates the need for Java tooling and ELM compilation in the development
 
 ## Notes
 
-- `mammo.bpmn` exists but is not actively used—BPMN adds unnecessary complexity for stateless decision evaluation
+- `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation
 - The custom DMN evaluator (`src/dmn-runner.js`) is scaffolding for the POC; production execution will use CQL
+- DMN files live in `input/dmn/` to parallel `input/cql/` organization

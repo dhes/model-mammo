@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_12aevoh" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="Decision_0cdkyyi" name="Tobacco Screening">
+    <decisionTable id="DecisionTable_1n74cs6">
+      <input id="Input_1" label="Age In Years">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Ask About Tobacco Use" name="AskAboutTobaccoUse" typeRef="boolean" />
+      <rule id="DecisionRule_0cd6lvl">
+        <description>The USPSTF recommends that clinicians ask all adults (18 years or older) about tobacco use...</description>
+        <inputEntry id="UnaryTests_0ozzjse">
+          <text>&gt;=18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0cj4h3h">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04ljhvk">
+        <description>Below adult age threshold</description>
+        <inputEntry id="UnaryTests_1fk70g9">
+          <text>&lt;18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rtzxco">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0cdkyyi">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
