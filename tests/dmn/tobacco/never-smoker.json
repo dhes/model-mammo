@@ -1,0 +1,14 @@
+{
+  "description": "Adult never smoker - no intervention needed",
+  "input": {
+    "AgeInYears": 40,
+    "TobaccoUseStatus": "never",
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false
+  }
+}

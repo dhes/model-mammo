@@ -1,0 +1,14 @@
+{
+  "description": "Adult current smoker, not pregnant - full cessation intervention",
+  "input": {
+    "AgeInYears": 35,
+    "TobaccoUseStatus": "current",
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": true,
+    "OfferPharmacotherapy": true,
+    "OfferBehavioralTherapy": true
+  }
+}

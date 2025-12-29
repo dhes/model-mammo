@@ -1,0 +1,14 @@
+{
+  "description": "Exactly 18 years old - adult guideline applies",
+  "input": {
+    "AgeInYears": 18,
+    "TobaccoUseStatus": "current",
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": true,
+    "OfferPharmacotherapy": true,
+    "OfferBehavioralTherapy": true
+  }
+}

@@ -4,9 +4,10 @@ import { fileURLToPath } from 'url';
 import { XMLParser } from 'fast-xml-parser';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const dmnPath = resolve(__dirname, '../mammo.dmn');
+const defaultDmnPath = resolve(__dirname, '../input/dmn/BreastCancerScreening.dmn');
 
-let parsedDecision = null;
+// Cache parsed decisions by file path
+const parsedDecisions = new Map();
 
 /**
  * Ensure text is a string (XML parser may return objects for mixed content)
@@ -19,6 +20,34 @@ function getText(value) {
 }
 
 /**
+ * Parse a single FEEL value (used for disjunctions)
+ */
+function parseSingleValue(text) {
+  text = text.trim();
+
+  // String literal: "value"
+  if (text.startsWith('"') && text.endsWith('"')) {
+    return { type: 'string', value: text.slice(1, -1) };
+  }
+
+  // null literal
+  if (text === 'null') {
+    return { type: 'null', value: null };
+  }
+
+  // Boolean literal
+  if (text === 'true') return { type: 'boolean', value: true };
+  if (text === 'false') return { type: 'boolean', value: false };
+
+  // Number literal
+  if (/^-?\d+$/.test(text)) {
+    return { type: 'number', value: parseInt(text, 10) };
+  }
+
+  return null;
+}
+
+/**
  * Parse a FEEL unary test expression
  */
 function parseUnaryTest(textValue, inputType) {
@@ -28,6 +57,23 @@ function parseUnaryTest(textValue, inputType) {
   }
 
   text = text.trim();
+
+  // null literal - matches null/undefined input
+  if (text === 'null') {
+    return (input) => input === null || input === undefined;
+  }
+
+  // Disjunction: "value1", "value2" (comma-separated values)
+  if (text.includes(',')) {
+    const parts = text.split(',').map(p => p.trim());
+    const values = parts.map(p => parseSingleValue(p)).filter(v => v !== null);
+    if (values.length === parts.length) {
+      return (input) => values.some(v => {
+        if (v.type === 'null') return input === null || input === undefined;
+        return input === v.value;
+      });
+    }
+  }
 
   // String literal: "value"
   if (text.startsWith('"') && text.endsWith('"')) {
@@ -88,10 +134,14 @@ function parseOutputExpression(textValue) {
 }
 
 /**
- * Load and parse the DMN file
+ * Load and parse a DMN file
+ * @param {string} dmnPath - Path to DMN file (defaults to mammo.dmn)
  */
-export function loadDMN() {
-  if (parsedDecision) return parsedDecision;
+export function loadDMN(dmnPath = defaultDmnPath) {
+  // Check cache
+  if (parsedDecisions.has(dmnPath)) {
+    return parsedDecisions.get(dmnPath);
+  }
 
   const dmnXml = readFileSync(dmnPath, 'utf-8');
   const parser = new XMLParser({
@@ -112,17 +162,20 @@ export function loadDMN() {
   const inputDefs = inputs.map(inp => ({
     id: inp['@_id'],
     label: inp['@_label'],
-    name: inp.inputExpression.text,
+    name: getText(inp.inputExpression.text),
     type: inp.inputExpression['@_typeRef'],
   }));
 
-  // Parse output
-  const output = decisionTable.output;
-  const outputDef = {
-    id: output['@_id'],
-    name: output['@_name'],
-    type: output['@_typeRef'],
-  };
+  // Parse outputs (handle single or multiple)
+  const outputs = Array.isArray(decisionTable.output)
+    ? decisionTable.output
+    : [decisionTable.output];
+
+  const outputDefs = outputs.map(out => ({
+    id: out['@_id'],
+    name: out['@_name'],
+    type: out['@_typeRef'],
+  }));
 
   // Parse rules
   const rules = Array.isArray(decisionTable.rule)
@@ -139,28 +192,40 @@ export function loadDMN() {
       test: parseUnaryTest(entry.text, inputDefs[idx].type),
     }));
 
-    const outputEntry = rule.outputEntry;
-    const outputValue = parseOutputExpression(outputEntry.text);
+    // Handle multiple outputs
+    const outputEntries = Array.isArray(rule.outputEntry)
+      ? rule.outputEntry
+      : [rule.outputEntry];
 
-    return { conditions, outputValue };
+    const outputValues = outputEntries.map((entry, idx) => ({
+      name: outputDefs[idx].name,
+      value: parseOutputExpression(entry.text),
+    }));
+
+    return { conditions, outputValues };
   });
 
-  parsedDecision = {
+  const parsedDecision = {
     inputs: inputDefs,
-    output: outputDef,
+    outputs: outputDefs,
     rules: ruleDefs,
   };
+
+  // Cache it
+  parsedDecisions.set(dmnPath, parsedDecision);
 
   return parsedDecision;
 }
 
 /**
  * Evaluate the decision table with given inputs
+ * @param {Object} inputs - Input values keyed by input name
+ * @param {string} dmnPath - Path to DMN file (defaults to mammo.dmn)
  */
-export function evaluateDecision(inputs) {
-  const decision = loadDMN();
+export function evaluateDecision(inputs, dmnPath = defaultDmnPath) {
+  const decision = loadDMN(dmnPath);
 
-  // First match hit policy (default for this decision table)
+  // First match hit policy (Unique also uses first match)
   for (const rule of decision.rules) {
     let allMatch = true;
     for (const condition of rule.conditions) {
@@ -171,10 +236,19 @@ export function evaluateDecision(inputs) {
       }
     }
     if (allMatch) {
-      return { [decision.output.name]: rule.outputValue };
+      // Build result from all outputs
+      const result = {};
+      for (const output of rule.outputValues) {
+        result[output.name] = output.value;
+      }
+      return result;
     }
   }
 
-  // No rule matched
-  return { [decision.output.name]: null };
+  // No rule matched - return null for all outputs
+  const result = {};
+  for (const output of decision.outputs) {
+    result[output.name] = null;
+  }
+  return result;
 }

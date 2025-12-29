@@ -1,0 +1,14 @@
+{
+  "description": "Adult current smoker, pregnant - behavioral only, no pharmacotherapy",
+  "input": {
+    "AgeInYears": 28,
+    "TobaccoUseStatus": "current",
+    "IsPregnant": true
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": true,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": true
+  }
+}

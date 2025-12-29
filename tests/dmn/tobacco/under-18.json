@@ -1,0 +1,14 @@
+{
+  "description": "Under 18 - adult tobacco guideline does not apply",
+  "input": {
+    "AgeInYears": 16,
+    "TobaccoUseStatus": "current",
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false
+  }
+}

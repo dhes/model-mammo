@@ -1,0 +1,14 @@
+{
+  "description": "Adult with no tobacco status recorded should be screened",
+  "input": {
+    "AgeInYears": 45,
+    "TobaccoUseStatus": null,
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": true,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Adult former smoker - no active intervention needed",
+  "input": {
+    "AgeInYears": 52,
+    "TobaccoUseStatus": "former",
+    "IsPregnant": false
+  },
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false
+  }
+}
