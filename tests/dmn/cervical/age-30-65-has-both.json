@@ -1,0 +1,12 @@
+{
+  "input": {
+    "AgeInYears": 45,
+    "Gender": "female",
+    "HasCervicalCytologyInLastThreeYears": true,
+    "HasHrHPVInLastFiveYears": true
+  },
+  "expected": [
+    { "CervicalCytologyDue": false, "hrHPVDue": false },
+    { "CervicalCytologyDue": false, "hrHPVDue": false }
+  ]
+}

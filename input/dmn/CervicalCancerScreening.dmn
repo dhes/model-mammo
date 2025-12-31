@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0r7lnm7" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="Decision_1tr3ohj" name="Cervical Cancer Screening">
+    <decisionTable id="DecisionTable_0rek5wg" hitPolicy="COLLECT">
+      <input id="Input_1" label="Age In Years">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1sdu1zo" label="Gender">
+        <inputExpression id="LiteralExpression_1vml0au" typeRef="string">
+          <text>Gender</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1onv8ww">
+          <text>"male","female"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_02hxglh" label="Has Cervical Cytology In Last Three Years">
+        <inputExpression id="LiteralExpression_145spel" typeRef="boolean">
+          <text>HasCervicalCytologyInLastThreeYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_18o8ocf" label="Has hrHPV In Last Five Years">
+        <inputExpression id="LiteralExpression_1bo3sz5" typeRef="boolean">
+          <text>HasHrHPVInLastFiveYears</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Cervical Cytology Due" name="CervicalCytologyDue" typeRef="boolean" />
+      <output id="OutputClause_0jiyynr" label="hrHPV Due" name="hrHPVDue" typeRef="boolean" />
+      <rule id="DecisionRule_0f4sc3c">
+        <inputEntry id="UnaryTests_1mpw0w3">
+          <text>[21..29]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1n50rfd">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03fopls">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nze03j">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0srbvuh">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cn56yw">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13vs2cy">
+        <description></description>
+        <inputEntry id="UnaryTests_0r5v5q3">
+          <text>[21..29]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ecqyva">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06wi1hy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l3g9jz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0it64np">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0p0sfbt">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dc37ri">
+        <inputEntry id="UnaryTests_0qzi09q">
+          <text>[30..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17vbkxh">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1aoduku">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g0fbwo">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04o6wwr">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00ddf3x">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14awd91">
+        <inputEntry id="UnaryTests_0z81m1c">
+          <text>[30..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1t8z0y0">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0htq3y4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11o3x5g">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1fy5390">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xfs9od">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1emfdg7">
+        <inputEntry id="UnaryTests_0khilal">
+          <text>[30..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pceyxz">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u3jek7">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_083pgkg">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1lcupbv">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bu8e99">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1b2o303">
+        <inputEntry id="UnaryTests_0lbcg9e">
+          <text>[30..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h7f8ng">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cyau35">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_145xbqt">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ykt0mq">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0rwnhfy">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1fpdvvw">
+        <inputEntry id="UnaryTests_1l5ylgn">
+          <text>[30..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iljaz0">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00vzz2f">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q60pj7">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11wsklx">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qo0boo">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0f1cbzv">
+        <inputEntry id="UnaryTests_13fbzz4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ex04aa">
+          <text>"male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nh7l94">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09llda4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0eeth5c">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v0cli8">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1tr3ohj">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

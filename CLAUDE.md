@@ -375,6 +375,69 @@ This third model is what should drive point-of-care decision support. It's neith
 
 **Key principle:** eCQMs measure *whether* you intervened. CDS guides *how* to intervene appropriately.
 
+### COLLECT Hit Policy for OR Semantics
+
+**The problem:** Some guidelines offer multiple acceptable options. For example, USPSTF cervical cancer screening for ages 30-65:
+
+> "...screening every 3 years with cervical cytology alone, every 5 years with high-risk human papillomavirus (hrHPV) testing alone, or every 5 years with hrHPV testing in combination with cytology (cotesting)."
+
+This is an OR relationship: cytology OR hrHPV OR both. How do we represent this in DMN?
+
+**Naive approach (problematic):**
+
+| Cytology (3y) | hrHPV (5y) | Cytology Due | hrHPV Due |
+|---------------|------------|--------------|-----------|
+| false | false | true | true |
+
+When both outputs are `true`, SMEs might interpret this as "both are required" rather than "either satisfies."
+
+**Solution: COLLECT hit policy with explicit options**
+
+Instead of one row with `true/true`, create three rows — one for each valid option:
+
+| Cytology (3y) | hrHPV (5y) | Cytology Due | hrHPV Due |
+|---------------|------------|--------------|-----------|
+| false | false | true | false |
+| false | false | false | true |
+| false | false | true | true |
+
+With `hitPolicy="COLLECT"`, all three matching rows are returned as an array:
+
+```json
+[
+  { "CervicalCytologyDue": true,  "hrHPVDue": false },
+  { "CervicalCytologyDue": false, "hrHPVDue": true  },
+  { "CervicalCytologyDue": true,  "hrHPVDue": true  }
+]
+```
+
+This explicitly enumerates: "you can do cytology alone, hrHPV alone, or both (cotesting)."
+
+**Hit policy summary:**
+
+| Policy | Behavior | Use case |
+|--------|----------|----------|
+| UNIQUE | Exactly one rule matches | Simple boolean decisions |
+| FIRST | First matching rule wins | Priority-ordered fallbacks |
+| ANY | Multiple matches OK if outputs identical | Symmetric "either covers you" logic |
+| COLLECT | Return all matching results as array | OR semantics with explicit options |
+
+**When to use COLLECT:**
+
+1. Guideline offers multiple acceptable interventions/tests
+2. You want SMEs to see the explicit list of options
+3. Downstream systems can handle array outputs
+
+**Trade-offs:**
+
+- Output type changes from single object to array
+- CQL translation must handle array semantics
+- More rows in the decision table
+
+**Example: CervicalCancerScreening.dmn**
+
+The cervical cancer screening table uses COLLECT to return all valid screening options for ages 30-65. For ages 21-29 (cytology only), a single result is returned. The array output makes the OR semantics unambiguous.
+
 ### BPMN for Process-Oriented Guidelines
 
 Some guidelines involve workflow beyond simple decision logic:
@@ -402,10 +465,15 @@ This can be modeled as:
 
 Both are valid L2 representations. The process model makes the workflow explicit for SME review; the single table is simpler for CQL translation.
 
-**Current tobacco artifacts:**
-- `TobaccoScreening.dmn` — single-table approach (adult screening + intervention)
-- `TobaccoInterventionsAdult.dmn` — combined DMN with Status and Interventions decisions
-- `TobaccoGuidelineFlow.bpmn` — process model showing eligibility → recording → intervention flow
+**Current artifacts:**
+
+*Tobacco Cessation:*
+- `TobaccoCessationAdultSingleDecisionTable.dmn` — single-table approach (adult screening + intervention)
+- `TobaccoCessationAdult.dmn` — combined DMN with Status and Interventions decisions
+- `TobaccoCessationAdult.bpmn` — process model showing eligibility → recording → intervention flow
+
+*Cervical Cancer Screening:*
+- `CervicalCancerScreening.dmn` — uses COLLECT hit policy for OR semantics (ages 30-65 get three screening options)
 
 ## Target Stack
 

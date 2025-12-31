@@ -1,0 +1,14 @@
+{
+  "description": "Ages 30-65 with no recent screening - three options offered",
+  "input": {
+    "AgeInYears": 45,
+    "Gender": "female",
+    "HasCervicalCytologyInLastThreeYears": false,
+    "HasHrHPVInLastFiveYears": false
+  },
+  "expected": [
+    { "CervicalCytologyDue": true, "hrHPVDue": false },
+    { "CervicalCytologyDue": false, "hrHPVDue": true },
+    { "CervicalCytologyDue": true, "hrHPVDue": true }
+  ]
+}

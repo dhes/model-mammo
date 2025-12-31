@@ -205,10 +205,14 @@ export function loadDMN(dmnPath = defaultDmnPath) {
     return { conditions, outputValues };
   });
 
+  // Parse hit policy (default to UNIQUE if not specified)
+  const hitPolicy = decisionTable['@_hitPolicy'] || 'UNIQUE';
+
   const parsedDecision = {
     inputs: inputDefs,
     outputs: outputDefs,
     rules: ruleDefs,
+    hitPolicy,
   };
 
   // Cache it
@@ -225,7 +229,8 @@ export function loadDMN(dmnPath = defaultDmnPath) {
 export function evaluateDecision(inputs, dmnPath = defaultDmnPath) {
   const decision = loadDMN(dmnPath);
 
-  // First match hit policy (Unique also uses first match)
+  // Collect all matching rules
+  const matchingResults = [];
   for (const rule of decision.rules) {
     let allMatch = true;
     for (const condition of rule.conditions) {
@@ -241,8 +246,19 @@ export function evaluateDecision(inputs, dmnPath = defaultDmnPath) {
       for (const output of rule.outputValues) {
         result[output.name] = output.value;
       }
-      return result;
+      matchingResults.push(result);
     }
+  }
+
+  // Handle based on hit policy
+  if (decision.hitPolicy === 'COLLECT') {
+    // Return array of all matching results
+    return matchingResults.length > 0 ? matchingResults : [];
+  }
+
+  // UNIQUE, FIRST, ANY - return first match (or null result if none)
+  if (matchingResults.length > 0) {
+    return matchingResults[0];
   }
 
   // No rule matched - return null for all outputs
