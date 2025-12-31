@@ -12,9 +12,9 @@
     <bpmn:sequenceFlow id="Flow_1efhkje" sourceRef="StartEvent_1" targetRef="Activity_1cyvpwb" />
     <bpmn:sequenceFlow id="Flow_1i7ojzf" sourceRef="Activity_14krjb9" targetRef="Activity_1cyvpwb" />
     <bpmn:sequenceFlow id="Flow_1l1xlpw" sourceRef="Activity_1cyvpwb" targetRef="Gateway_07wl1e5" />
-    <bpmn:businessRuleTask id="Activity_1cyvpwb" name="Is Eligible and Tobacco Status Recorded?">
+    <bpmn:businessRuleTask id="Activity_1cyvpwb" name="Status">
       <bpmn:extensionElements>
-        <zeebe:calledDecision decisionId="Decision_1q0src9" resultVariable="eligibilityResult" />
+        <zeebe:calledDecision decisionId="Decision_1a4jqnh" resultVariable="eligibilityResult" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1efhkje</bpmn:incoming>
       <bpmn:incoming>Flow_1i7ojzf</bpmn:incoming>

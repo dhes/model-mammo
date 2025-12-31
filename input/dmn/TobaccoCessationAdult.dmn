@@ -69,21 +69,61 @@
           <text>false</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_04ljhvk">
-        <description></description>
-        <inputEntry id="UnaryTests_0xc34qy">
-          <text></text>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_1a4jqnh" name="Status">
+    <decisionTable id="DecisionTable_0xq6cau">
+      <input id="InputClause_0r18gkh" label="Age In Years">
+        <inputExpression id="LiteralExpression_1e2qwtt" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_02fnb4a" label="Tobacco Status Is Recorded">
+        <inputExpression id="LiteralExpression_0g3bbh6" typeRef="boolean">
+          <text>TobaccoStatusIsRecorded</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1yqeqiw" label="Is Eligible" name="IsEligible" typeRef="boolean" />
+      <output id="OutputClause_04cj8rn" label="Needs Recording" name="NeedsRecording" typeRef="boolean" />
+      <rule id="DecisionRule_00boju5">
+        <inputEntry id="UnaryTests_0jhg74e">
+          <text>&gt;=18</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_161icul">
-          <text></text>
+        <inputEntry id="UnaryTests_151qjfc">
+          <text>true</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0uq5jtg">
+        <outputEntry id="LiteralExpression_182qr3f">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19bh0s2">
           <text>false</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0trhlj8">
+      </rule>
+      <rule id="DecisionRule_1kdxqqz">
+        <inputEntry id="UnaryTests_02wjvrk">
+          <text>&gt;=18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18xd2vz">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17zdkb4">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gfbkm3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1fyj7v5">
+        <inputEntry id="UnaryTests_1xaxxby">
+          <text>&lt;18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19hpw77">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1iszo38">
           <text>false</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1nlcox4">
+        <outputEntry id="LiteralExpression_1sgh1qa">
           <text>false</text>
         </outputEntry>
       </rule>
@@ -92,7 +132,10 @@
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
       <dmndi:DMNShape dmnElementRef="Decision_0cdkyyi">
-        <dc:Bounds height="80" width="180" x="360" y="80" />
+        <dc:Bounds height="80" width="180" x="200" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1g73vnp" dmnElementRef="Decision_1a4jqnh">
+        <dc:Bounds height="80" width="180" x="200" y="60" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

@@ -274,6 +274,139 @@ Adolescent tobacco screening (e.g., ages 12-17) is clinically appropriate but:
 
 **Future extension:** A second rule could be added for adolescents with a distinct annotation citing the pediatric guideline. The [12..17] range represents "ages where persons may have experimented with tobacco" — though the true lower bound is fuzzy and varies by population.
 
+### Dual-Model Approach: USPSTF-Faithful vs eCQM-Faithful
+
+**The problem:** USPSTF guidelines and CMS eCQMs don't always align. eCQMs operationalize guidelines for measurement, which requires resolving ambiguities and adding constraints not present in the original evidence.
+
+**Example: Tobacco Screening Population**
+
+| Source | Population Definition | Age Threshold |
+|--------|----------------------|---------------|
+| USPSTF Adults | "all adults" | 18+ |
+| USPSTF Children/Adolescents | "school-aged children and adolescents" | Undefined |
+| CMS138 eCQM | Combined measure | 12+ |
+
+CMS138's `AgeInYearsAt(...) >= 12` effectively:
+1. Resolves the ambiguous "school-aged" term
+2. Merges the adult and adolescent guidelines into one measure
+3. Defines adolescents as ages [12, 18)
+
+**The adolescent guideline complexity:**
+
+| Population | Recommendation | Grade |
+|------------|---------------|-------|
+| Adolescents who don't use tobacco | Prevent initiation (education/counseling) | B |
+| Adolescents who DO use tobacco | Cessation interventions | I (insufficient evidence) |
+
+The Grade I for adolescent cessation is significant — USPSTF found insufficient evidence to recommend cessation interventions for youth tobacco users. CMS138 sidesteps this by measuring "any intervention" without distinguishing prevention from cessation.
+
+**Unresolved questions in USPSTF guidelines:**
+- What age range is "school-aged"?
+- How to handle pregnant adolescents? (Adult pregnancy rules? Adolescent rules?)
+- Should adolescents be screened for tobacco use? (The guideline addresses prevention/cessation but not screening)
+- How to model Grade I ("insufficient evidence") in a decision table?
+
+**Decision: Dual-model approach**
+
+Create two parallel L2 models:
+
+| Model | Authoritative Source | Purpose |
+|-------|---------------------|---------|
+| USPSTF-faithful | Guidelines as written | SME validation, gap analysis |
+| eCQM-faithful | CMS138 implementation | L3/L4 FHIR/CQL artifacts |
+
+**Rationale:**
+
+1. **Traceability**: Each model cites its authoritative source explicitly
+2. **SME review**: USPSTF experts validate guideline fidelity; CMS experts validate eCQM alignment
+3. **Gap visibility**: Differences between models surface implementation assumptions (e.g., "Why age 12?")
+4. **Regulatory clarity**: Organizations know which model to use for quality reporting vs. clinical CDS
+5. **Evolution tracking**: When USPSTF updates guidelines, compare against existing eCQM model
+
+**Workflow:**
+
+```
+USPSTF Guideline (L1)
+        │
+        ├──→ USPSTF-faithful DMN (L2) ──→ SME review, gap analysis
+        │
+        └──→ eCQM-faithful DMN (L2) ──→ CQL (L3) ──→ FHIR CDS (L4)
+                      │
+                      └── informed by CMS138 implementation choices
+```
+
+The USPSTF-faithful model asks: "What does the guideline actually say?"
+The eCQM-faithful model asks: "What did CMS decide it means for measurement?"
+
+When these diverge, the divergence is visible and discussable — not buried in CQL.
+
+**Example divergence: Pregnancy and Pharmacotherapy**
+
+USPSTF explicitly distinguishes pregnant from non-pregnant adults:
+- Non-pregnant smokers → behavioral interventions + pharmacotherapy
+- Pregnant smokers → behavioral interventions only (pharmacotherapy is Grade I — insufficient evidence)
+
+CMS138 omits pregnancy entirely:
+```cql
+define "Numerator 2":
+  exists "Tobacco Cessation Counseling Given"
+    or exists "Tobacco Cessation Pharmacotherapy Ordered"
+    or exists "Active Pharmacotherapy for Tobacco Cessation"
+```
+
+The `or` logic means counseling alone satisfies the measure. This is permissive by design — the measure can't penalize the clinically correct choice of withholding pharmacotherapy from pregnant patients. But it also doesn't *guide* that choice.
+
+A practitioner using CMS138 as clinical guidance (rather than just a reporting metric) might miss USPSTF's nuanced position on pregnancy.
+
+**Three-model framework for real-time CDS:**
+
+| Model | Source | Age | Pregnancy | Purpose |
+|-------|--------|-----|-----------|---------|
+| USPSTF-faithful | Guidelines as written | 18+ | Yes | SME validation |
+| eCQM-faithful | CMS138 | 12+ | No | Quality reporting alignment |
+| **CDS-optimized** | Best of both | 12+ | Yes | Real-time clinical reasoning |
+
+The CDS-optimized model combines:
+- CMS138's practical age threshold (12+) — operationally clear
+- USPSTF's pregnancy distinction — clinically necessary
+- Any other clinical nuances lost in eCQM translation
+
+This third model is what should drive point-of-care decision support. It's neither purely USPSTF nor purely CMS138, but a thoughtful synthesis that serves the clinician.
+
+**Key principle:** eCQMs measure *whether* you intervened. CDS guides *how* to intervene appropriately.
+
+### BPMN for Process-Oriented Guidelines
+
+Some guidelines involve workflow beyond simple decision logic:
+- User input required (e.g., recording tobacco status)
+- Conditional loops (e.g., re-evaluate after status recorded)
+- Multiple decision points in sequence
+
+**Two L2 representation options:**
+
+| Approach | Artifacts | Best for |
+|----------|-----------|----------|
+| Single decision table | One DMN file | Stateless evaluation, simple logic |
+| Process + decisions | BPMN + DMN files | Workflow with user interaction, loops |
+
+**Example: Tobacco Screening**
+
+The tobacco screening guideline requires:
+1. Check if tobacco status is recorded
+2. If not, prompt user to record it
+3. Once recorded, determine interventions
+
+This can be modeled as:
+- **Single table**: All logic in one DMN, caller handles the "record status" loop
+- **Process + decisions**: BPMN orchestrates flow, DMN handles decisions at each node
+
+Both are valid L2 representations. The process model makes the workflow explicit for SME review; the single table is simpler for CQL translation.
+
+**Current tobacco artifacts:**
+- `TobaccoScreening.dmn` — single-table approach (adult screening + intervention)
+- `TobaccoInterventionsAdult.dmn` — combined DMN with Status and Interventions decisions
+- `TobaccoGuidelineFlow.bpmn` — process model showing eligibility → recording → intervention flow
+
 ## Target Stack
 
 ```
