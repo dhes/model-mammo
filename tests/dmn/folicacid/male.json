@@ -1,0 +1,12 @@
+{
+  "description": "Male - no recommendation regardless of age",
+  "input": {
+    "Gender": "male",
+    "AgeInYears": 30,
+    "HighRiskForNTD": false
+  },
+  "expected": {
+    "TakeDailyFolate400Mcg": false,
+    "TakeDailyFolate4Mg": false
+  }
+}

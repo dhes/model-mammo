@@ -552,6 +552,81 @@ Both are valid L2 representations. The process model makes the workflow explicit
 *Colorectal Cancer Screening:*
 - `ColorectalCancerScreening.dmn` — uses COLLECT hit policy for 7 screening strategies; age 46-75 per CMS130; sDNA-FIT 2-year interval per CMS130
 
+*Folic Acid Supplementation:*
+- `FolicAcidSupplementation.dmn` — risk-stratified dosing (400mcg vs 4mg); age 15-45 per ACOG
+
+### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
+
+**The USPSTF language:**
+
+> "The USPSTF recommends that all persons planning to or who could become pregnant take a daily supplement containing 0.4 to 0.8 mg (400 to 800 mcg) of folic acid."
+
+**The operationalization challenge:** "Could become pregnant" is clinically fuzzy — it's not just biological capability but involves patient intent, circumstances, and clinical judgment.
+
+**ACOG's concrete approach:**
+
+> "All women of reproductive age (15–45 years) should take folic acid supplementation."
+
+This transforms a fuzzy eligibility criterion into an age-based rule.
+
+**Decision: Age 15-45 per ACOG**
+
+| Source | Population | Basis |
+|--------|------------|-------|
+| USPSTF | "Could become pregnant" | Intent + capability (fuzzy) |
+| ACOG | Women 15-45 years | Age-based proxy (concrete) |
+
+**Rationale:**
+
+1. **Operationally clear**: Age is available in EHR; pregnancy intent often isn't
+2. **Conservative**: Captures essentially all who *could* become pregnant
+3. **Citable authority**: ACOG is authoritative for reproductive health
+4. **NTD prevention timing**: Folic acid must be present *before* conception — waiting for stated intent is too late
+
+### Folic Acid: Dose Range and Risk Stratification
+
+**USPSTF dose range:** 0.4 to 0.8 mg (400-800 mcg) — unhelpfully broad for implementation.
+
+**ACOG clarification:**
+
+> "For average-risk women, supplementation with 400 micrograms per day is adequate."
+
+**High-risk population (4mg dose):**
+
+USPSTF and ACOG identify high-risk groups needing higher doses:
+
+| Risk Factor | Source |
+|-------------|--------|
+| Prior pregnancy with NTD | USPSTF, ACOG |
+| Personal/family history of NTD | USPSTF |
+| Partner with NTD or NTD-affected child | ACOG |
+| Anticonvulsant medications | ACOG |
+| MTHFR mutations | ACOG |
+| Bariatric surgery | ACOG |
+
+**Decision: Abstract to `HighRiskForNTD` boolean**
+
+Rather than enumerate specific risk factors in the DMN (which would require extensive clinical data), we use an abstracted flag:
+
+```
+HighRiskForNTD = true  →  TakeDailyFolate4Mg
+HighRiskForNTD = false →  TakeDailyFolate400Mcg
+```
+
+This creates a "clinical judgment basket" — the specific criteria feeding into `HighRiskForNTD` are determined at the CQL/implementation layer based on available data:
+
+- If EHR has structured prior-NTD data: use it
+- If medication list includes anticonvulsants: flag as high-risk
+- If genetic data shows MTHFR: flag as high-risk
+- Otherwise: default to average-risk
+
+**Why this pattern:**
+
+1. **DMN stays simple**: Two clean outputs, one risk input
+2. **Risk assessment flexibility**: Different implementations can expand/contract the high-risk criteria based on available data
+3. **SME clarity**: The table clearly shows the two pathways (400mcg vs 4mg) without drowning in criteria details
+4. **Matches USPSTF structure**: USPSTF distinguishes "average risk" vs "increased risk" — the DMN mirrors this
+
 ## Target Stack
 
 ```

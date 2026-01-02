@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1b4wsa0" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Colorectal Cancer: Screening
+
+Recommendation Summary
+
+Population: Adults aged 50 to 75 years
+Recommendation: The USPSTF recommends screening for colorectal cancer in all adults aged 50 to 75 years. 
+See the "Practice Considerations" section and Table 1 for details about screening strategies.
+Grade: A
+
+Population: Adults aged 45 to 49 years
+Recommendation: TThe USPSTF recommends screening for colorectal cancer in adults aged 45 to 49 years. See the "Practice Considerations" section and Table 1 for details about screening strategies.
+Grade: B
+
+Recommended screening strategies include:
+
+    High-sensitivity guaiac fecal occult blood test (HSgFOBT) or fecal immunochemical test (FIT) every year
+
+    Stool DNA-FIT every 1 to 3 years
+
+    Computed tomography colonography every 5 years
+
+    Flexible sigmoidoscopy every 5 years
+
+    Flexible sigmoidoscopy every 10 years + annual FIT
+
+    Colonoscopy screening every 10 years</description>
   <decision id="Decision_1ktxgvd" name="Colorectal Cancer Screening">
     <decisionTable id="DecisionTable_08mysza" hitPolicy="COLLECT">
       <input id="Input_1" label="Age In Years" biodi:width="150">
@@ -50,6 +76,7 @@
       <output id="OutputClause_0gzbl4d" label="Flexible Sigmoidoscopy Plus FIT" name="FlexibleSigmoidoscopyPlusFIT" typeRef="boolean" />
       <output id="OutputClause_16qabhi" label="Colonoscopy" name="Colonoscopy" typeRef="boolean" biodi:width="150" />
       <rule id="DecisionRule_0w7hhdz">
+        <description>Screening strategy: High-sensitivity guaiac fecal occult blood test (HSgFOBT) every year</description>
         <inputEntry id="UnaryTests_1vih5t9">
           <text>[46..75]</text>
         </inputEntry>
@@ -97,6 +124,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0tfp1db">
+        <description>Screening strategy: Fecal immunochemical test (FIT) every year</description>
         <inputEntry id="UnaryTests_17awghs">
           <text>[46..75]</text>
         </inputEntry>
@@ -144,6 +172,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1tf27gl">
+        <description>Screening strategy: Stool DNA-FIT every 1 to 3 years</description>
         <inputEntry id="UnaryTests_0g7rilq">
           <text>[46..75]</text>
         </inputEntry>
@@ -191,6 +220,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0y3ht66">
+        <description>Screening strategy: Computed tomography colonography every 5 years</description>
         <inputEntry id="UnaryTests_1528wvm">
           <text>[46..75]</text>
         </inputEntry>
@@ -238,6 +268,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1t3ae1i">
+        <description>Screening strategy: Flexible sigmoidoscopy every 5 years</description>
         <inputEntry id="UnaryTests_1yi0ys4">
           <text>[46..75]</text>
         </inputEntry>
@@ -285,6 +316,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0geo3e1">
+        <description>Screening strategy: Flexible sigmoidoscopy every 10 years + annual FIT</description>
         <inputEntry id="UnaryTests_1bp4thn">
           <text>[46..75]</text>
         </inputEntry>
@@ -332,6 +364,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_00b79wi">
+        <description>Screening strategy: Colonoscopy screening every 10 years</description>
         <inputEntry id="UnaryTests_0lgl0ph">
           <text>[46..75]</text>
         </inputEntry>
@@ -379,6 +412,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1v3hz04">
+        <description>Screening strategy: High-sensitivity guaiac fecal occult blood test (HSgFOBT) every year</description>
         <inputEntry id="UnaryTests_0w3ggbs">
           <text>[46..75]</text>
         </inputEntry>
@@ -426,6 +460,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0408tmt">
+        <description>Screening strategy: Fecal immunochemical test (FIT) every year</description>
         <inputEntry id="UnaryTests_1tts2ny">
           <text>[46..75]</text>
         </inputEntry>
@@ -473,6 +508,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_131yvr0">
+        <description>Screening strategy: Stool DNA-FIT every 1 to 3 years</description>
         <inputEntry id="UnaryTests_1c4xnf0">
           <text>[46..75]</text>
         </inputEntry>
@@ -520,6 +556,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_136dkx6">
+        <description>Screening strategy: Computed tomography colonography every 5 years</description>
         <inputEntry id="UnaryTests_0a7susj">
           <text>[46..75]</text>
         </inputEntry>
@@ -567,6 +604,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0wzlwuy">
+        <description>Screening strategy: Flexible sigmoidoscopy every 5 years</description>
         <inputEntry id="UnaryTests_14dhg7k">
           <text>[46..75]</text>
         </inputEntry>
@@ -614,6 +652,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1bgb8sv">
+        <description>Screening strategy: Flexible sigmoidoscopy every 10 years + annual FIT</description>
         <inputEntry id="UnaryTests_18vh03t">
           <text>[46..75]</text>
         </inputEntry>
@@ -661,6 +700,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_19kb730">
+        <description>Screening strategy: Colonoscopy screening every 10 years</description>
         <inputEntry id="UnaryTests_0e6c8mp">
           <text>[46..75]</text>
         </inputEntry>

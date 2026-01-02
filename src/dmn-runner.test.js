@@ -17,6 +17,8 @@ const dmnFiles = {
   cervical: resolve(__dirname, '../input/dmn/CervicalCancerScreening.dmn'),
   // tests/dmn/colorectal/*.json use ColorectalCancerScreening.dmn
   colorectal: resolve(__dirname, '../input/dmn/ColorectalCancerScreening.dmn'),
+  // tests/dmn/folicacid/*.json use FolicAcidSupplementation.dmn
+  folicacid: resolve(__dirname, '../input/dmn/FolicAcidSupplementation.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -121,6 +123,35 @@ describe('Colorectal Cancer Screening Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.colorectal);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('Folic Acid Supplementation Decision Table', () => {
+  const folicacidTestsDir = resolve(testsDir, 'folicacid');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.folicacid);
+  });
+
+  // Skip if folicacid tests directory doesn't exist
+  if (!existsSync(folicacidTestsDir)) {
+    it.skip('No folic acid tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(folicacidTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(folicacidTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.folicacid);
 
       expect(result).toEqual(testData.expected);
     });

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1lizw96" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Folic Acid Supplementation to Prevent Neural Tube Defects: Preventive Medication
+
+Recommendation Summary
+
+Population: Persons who plan to or could become pregnant
+Recommendation: The USPSTF recommends that all persons planning to or who could become pregnant take a daily supplement containing 0.4 to 0.8 mg (400 to 800 mcg) of folic acid.
+Grade: A
+
+Operational Changes
+
+At https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2019/01/prepregnancy-counseling, ACOG says: "All women of reproductive age (15–45 years) should take folic acid supplementation. For average-risk women, supplementation with 400 micrograms per day is adequate."</description>
+  <decision id="Decision_0e88mr3" name="Folic Acid Supplementation to Prevent Neural Tube Defects">
+    <decisionTable id="DecisionTable_1x4k15u">
+      <input id="Input_1" label="Gender" biodi:width="150">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>Gender</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_091if7s">
+          <text>"male","female"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1uvogij" label="Age In Years" biodi:width="150">
+        <inputExpression id="LiteralExpression_09mat1l" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0i4r6qh" label="High Risk For NTD" biodi:width="192">
+        <inputExpression id="LiteralExpression_1npszpu" typeRef="boolean">
+          <text>HighRiskForNTD</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Take Daily Folate 400 mcg" name="TakeDailyFolate400Mcg" typeRef="boolean" biodi:width="150" />
+      <output id="OutputClause_1gmjdin" label="Take Daily Folate 4 mg" name="TakeDailyFolate4Mg" typeRef="boolean" biodi:width="150" />
+      <rule id="DecisionRule_15y93wo">
+        <description>All women of reproductive age (15–45 years) should take folic acid supplementation. For average-risk women, supplementation with 400 micrograms per day is adequate.</description>
+        <inputEntry id="UnaryTests_1nyxi66">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e33txj">
+          <text>[15..45]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0l4cnme">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o84lga">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lz4qqi">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11pypv0">
+        <description>All women of reproductive age (15–45 years) should take folic acid supplementation. Women at increased risk of NTDs, including women with a prior pregnancy with an NTD or women with seizure disorders, should be counseled to take 4 mg of folic acid daily. </description>
+        <inputEntry id="UnaryTests_02m2aty">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ihajhn">
+          <text>[15..45]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r03rji">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08k0854">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mq39ut">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vxxk3a">
+        <inputEntry id="UnaryTests_0v9o0de">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gp0a11">
+          <text>&lt;15</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cvhdto">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0u0px9y">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1f6znww">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0iivuno">
+        <inputEntry id="UnaryTests_1loxuo0">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u3tlh2">
+          <text>&gt;45</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1f2ihcz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06f3n1o">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n46qqk">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nh9tbh">
+        <inputEntry id="UnaryTests_1dg7ntf">
+          <text>"male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j6s0zv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wldpg1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rtpvep">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13mfhlv">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0e88mr3">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

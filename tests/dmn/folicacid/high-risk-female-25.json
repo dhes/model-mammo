@@ -1,0 +1,12 @@
+{
+  "description": "Female, age 25, high risk for NTD - recommend 4mg folic acid",
+  "input": {
+    "Gender": "female",
+    "AgeInYears": 25,
+    "HighRiskForNTD": true
+  },
+  "expected": {
+    "TakeDailyFolate400Mcg": false,
+    "TakeDailyFolate4Mg": true
+  }
+}

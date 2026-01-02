@@ -182,10 +182,10 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0eeth5c">
-          <text></text>
+          <text>false</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0v0cli8">
-          <text></text>
+          <text>false</text>
         </outputEntry>
       </rule>
     </decisionTable>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_188vkdq" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Specific Recommendations
+
+The USPSTF recommends screening for hepatitis B virus (HBV) infection in pregnant women at their first prenatal visit
+
+Frequency of Service
+
+A test for HBsAg should be ordered at the first prenatal visit. Women with unknown HBsAg status or with new or continuing risk factors for HBV infection (eg, injection drug use or a sexually transmitted infection) should be screened at the time of admission to a hospital or other delivery setting.
+
+Risk Factor Information
+
+In the United States, new cases of HBV among adults are largely transmitted through injection drug use or sexual intercourse, but most prevalent cases of HBV infection are chronic infections from exposure occurring in infancy or childhood. Another major risk factor for HBV infection is country of origin. In the United States, adults with HBV born in high-prevalence countries were commonly infected during childhood. In children, the primary source of infection is perinatal transmission at birth.
+
+https://www.uspreventiveservicestaskforce.org/webview/#!/recommendation/503
+https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hepatitis-b-virus-infection-in-pregnant-women-screening
+Cited 2026-01-02</description>
+  <decision id="Decision_0xhhuoz" name="Hepatitis B Virus Infection in Pregnant Women">
+    <decisionTable id="DecisionTable_0sff8ob">
+      <input id="Input_1" label="Is Pregnant">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>IsPregnant</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0zsbo9k" label="HBsAg Tested This Pregnancy">
+        <inputExpression id="LiteralExpression_17zey6f" typeRef="boolean">
+          <text>HBsAgTestedThisPregnancy</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0958fen" label="Perform HBsAg Test" name="PerformHBsAgTest" typeRef="boolean" />
+      <rule id="DecisionRule_17ohlqe">
+        <description>Typically performed at the first pre-natal visit</description>
+        <inputEntry id="UnaryTests_1vqo1ca">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jbubb9">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_164tgmb">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jl9m04">
+        <inputEntry id="UnaryTests_0chy3hi">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z3t3oy">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hcxywf">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0yymyxt">
+        <inputEntry id="UnaryTests_0eanzz4">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xctp6u">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00rskez">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0xhhuoz">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
