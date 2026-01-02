@@ -1,0 +1,16 @@
+{
+  "description": "Age 40 - too young for screening",
+  "input": {
+    "AgeInYears": 40,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": false,
+    "DNAFITTestPerformed2Yr": false,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": false,
+    "ColonoscopyPerformed10Yr": false
+  },
+  "expected": [
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false }
+  ]
+}

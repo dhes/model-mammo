@@ -1,0 +1,17 @@
+{
+  "description": "Age 58, flex sig within 10 years + FIT within 1 year (combo strategy) - screened",
+  "input": {
+    "AgeInYears": 58,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": true,
+    "DNAFITTestPerformed2Yr": false,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": true,
+    "ColonoscopyPerformed10Yr": false
+  },
+  "expected": [
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false }
+  ]
+}

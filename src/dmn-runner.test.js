@@ -15,6 +15,8 @@ const dmnFiles = {
   tobacco: resolve(__dirname, '../input/dmn/TobaccoCessationAdultSingleDecisionTable.dmn'),
   // tests/dmn/cervical/*.json use CervicalCancerScreening.dmn
   cervical: resolve(__dirname, '../input/dmn/CervicalCancerScreening.dmn'),
+  // tests/dmn/colorectal/*.json use ColorectalCancerScreening.dmn
+  colorectal: resolve(__dirname, '../input/dmn/ColorectalCancerScreening.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -90,6 +92,35 @@ describe('Cervical Cancer Screening Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.cervical);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('Colorectal Cancer Screening Decision Table', () => {
+  const colorectalTestsDir = resolve(testsDir, 'colorectal');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.colorectal);
+  });
+
+  // Skip if colorectal tests directory doesn't exist
+  if (!existsSync(colorectalTestsDir)) {
+    it.skip('No colorectal tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(colorectalTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(colorectalTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.colorectal);
 
       expect(result).toEqual(testData.expected);
     });

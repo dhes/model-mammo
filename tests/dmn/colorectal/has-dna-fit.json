@@ -1,0 +1,16 @@
+{
+  "description": "Age 52, sDNA-FIT within 2 years - screened, no options offered",
+  "input": {
+    "AgeInYears": 52,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": false,
+    "DNAFITTestPerformed2Yr": true,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": false,
+    "ColonoscopyPerformed10Yr": false
+  },
+  "expected": [
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Age 55, colonoscopy within 10 years - screened, no options offered",
+  "input": {
+    "AgeInYears": 55,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": false,
+    "DNAFITTestPerformed2Yr": false,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": false,
+    "ColonoscopyPerformed10Yr": true
+  },
+  "expected": [
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false }
+  ]
+}

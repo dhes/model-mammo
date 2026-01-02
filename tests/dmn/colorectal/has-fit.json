@@ -1,0 +1,16 @@
+{
+  "description": "Age 60, FIT within 1 year - screened, no options offered",
+  "input": {
+    "AgeInYears": 60,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": true,
+    "DNAFITTestPerformed2Yr": false,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": false,
+    "ColonoscopyPerformed10Yr": false
+  },
+  "expected": [
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false }
+  ]
+}

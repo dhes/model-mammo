@@ -1,0 +1,22 @@
+{
+  "description": "Age 50, no recent tests - all 7 screening options offered",
+  "input": {
+    "AgeInYears": 50,
+    "HSgFOBTPerformed1Yr": false,
+    "FITPerformed1Yr": false,
+    "DNAFITTestPerformed2Yr": false,
+    "CTColonographyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed5Yr": false,
+    "FlexibleSigmoidoscopyPerformed10Yr": false,
+    "ColonoscopyPerformed10Yr": false
+  },
+  "expected": [
+    { "HSgFOBT": true, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": true, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": true, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": true, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": true, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": true, "Colonoscopy": false },
+    { "HSgFOBT": false, "FIT": false, "DNA-FIT": false, "CTColonography": false, "FlexibleSigmoidoscopy": false, "FlexibleSigmoidoscopyPlusFIT": false, "Colonoscopy": true }
+  ]
+}

@@ -438,6 +438,80 @@ This explicitly enumerates: "you can do cytology alone, hrHPV alone, or both (co
 
 The cervical cancer screening table uses COLLECT to return all valid screening options for ages 30-65. For ages 21-29 (cytology only), a single result is returned. The array output makes the OR semantics unambiguous.
 
+### Colorectal Cancer Screening: sDNA-FIT Interval and Age Range
+
+**The sDNA-FIT interval ambiguity:**
+
+USPSTF states: "Stool DNA-FIT every 1 to 3 years" — operationally awkward.
+
+| Source | Interval | Basis |
+|--------|----------|-------|
+| USPSTF modeling (Knudsen et al.) | 1-2 years | Efficient benefit-burden balance |
+| CDC/ACS/ACG narrative | 3 years | Operational/payer convention |
+| **CMS130 eCQM** | **2 years** | Actual implementation |
+
+```cql
+Interval[start of "Measurement Period" - 2 years, end of "Measurement Period"]
+```
+
+**Decision: 2 years** — CMS130 already resolved the ambiguity. The eCQM sided with USPSTF modeling evidence, not the CDC/ACS/ACG narrative consensus.
+
+**The age range question:**
+
+| Source | Age Range | Basis |
+|--------|-----------|-------|
+| USPSTF Grade A | 50-75 | Strong evidence |
+| USPSTF Grade B | 45-49 | Individual decision |
+| ACS/ACG | 45+ | Consensus recommendation |
+| **CMS130 eCQM** | **46-75** | Operational implementation |
+
+```cql
+AgeInYearsAt(date from end of "Measurement Period") in Interval[46, 75]
+```
+
+**Decision: 46-75** — CMS130 synthesized Grade A + Grade B into a single measure, effectively implementing the ACS/ACG position with a measurement-period boundary adjustment.
+
+**Lesson: Always check MADiE.** The eCQM implementation resolves ambiguities that narrative guidelines leave open.
+
+### Colorectal Cancer Screening: Seven Strategies and the Combo Option
+
+USPSTF lists 7 screening strategies:
+
+| Strategy | Interval | DMN Output Column |
+|----------|----------|-------------------|
+| HSgFOBT | Every year | HSgFOBT |
+| FIT | Every year | FIT |
+| sDNA-FIT | Every 2 years | DNA-FIT |
+| CT colonography | Every 5 years | CTColonography |
+| Flexible sigmoidoscopy | Every 5 years | FlexibleSigmoidoscopy |
+| Flex sig + annual FIT | Flex sig 10yr, FIT 1yr | FlexibleSigmoidoscopyPlusFIT |
+| Colonoscopy | Every 10 years | Colonoscopy |
+
+**The combo strategy complexity:**
+
+"Flexible sigmoidoscopy every 10 years + annual FIT" is a *regimen commitment*, not a single test:
+- Get flex sig every 10 years (extended from 5 years)
+- AND get FIT every year (during the 10 years between flex sigs)
+
+**Modeling decision:** Include both:
+- **Input side**: Rule checking `FITPerformed1Yr=true AND FlexibleSigmoidoscopyPerformed10Yr=true` (coverage check)
+- **Output side**: Separate `FlexibleSigmoidoscopyPlusFIT` column (explicit strategy enumeration)
+
+This redundancy serves SME clarity — the 7 outputs map 1:1 to USPSTF's 7 strategies.
+
+**Coverage union principle:**
+
+The tests form a coverage union, not exclusive tracks. If ANY test is current within its interval, screening is satisfied. Patients can mix strategies (e.g., colonoscopy 8 years ago, then switch to annual FIT). The eCQM Numerator confirms this with pure OR logic:
+
+```cql
+define "Numerator":
+  exists "Fecal Occult Blood Test Performed"
+    or exists "Stool DNA with FIT Test Performed"
+    or exists "Flexible Sigmoidoscopy Performed"
+    or exists "CT Colonography Performed"
+    or exists "Colonoscopy Performed"
+```
+
 ### BPMN for Process-Oriented Guidelines
 
 Some guidelines involve workflow beyond simple decision logic:
@@ -474,6 +548,9 @@ Both are valid L2 representations. The process model makes the workflow explicit
 
 *Cervical Cancer Screening:*
 - `CervicalCancerScreening.dmn` — uses COLLECT hit policy for OR semantics (ages 30-65 get three screening options)
+
+*Colorectal Cancer Screening:*
+- `ColorectalCancerScreening.dmn` — uses COLLECT hit policy for 7 screening strategies; age 46-75 per CMS130; sDNA-FIT 2-year interval per CMS130
 
 ## Target Stack
 
