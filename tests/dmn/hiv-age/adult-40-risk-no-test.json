@@ -1,0 +1,11 @@
+{
+  "description": "Age 40, has risk factors, no prior test - recommend testing",
+  "input": {
+    "AgeInYears": 40,
+    "HasHIVRiskFactors": true,
+    "HasHIVTest": false
+  },
+  "expected": {
+    "RecommendHIVTesting": true
+  }
+}

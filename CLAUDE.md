@@ -555,6 +555,10 @@ Both are valid L2 representations. The process model makes the workflow explicit
 *Folic Acid Supplementation:*
 - `FolicAcidSupplementation.dmn` — risk-stratified dosing (400mcg vs 4mg); age 15-45 per ACOG
 
+*HIV Screening:*
+- `HIVScreeningAge.dmn` — age-based model: universal 15-65, risk-based outside that range
+- `HIVScreeningPregnancy.dmn` — pregnancy-specific model with third-trimester repeat flag
+
 ### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
 
 **The USPSTF language:**
@@ -626,6 +630,96 @@ This creates a "clinical judgment basket" — the specific criteria feeding into
 2. **Risk assessment flexibility**: Different implementations can expand/contract the high-risk criteria based on available data
 3. **SME clarity**: The table clearly shows the two pathways (400mcg vs 4mg) without drowning in criteria details
 4. **Matches USPSTF structure**: USPSTF distinguishes "average risk" vs "increased risk" — the DMN mirrors this
+
+### HIV Screening: Two-Model Approach
+
+**The USPSTF recommendation (Grade A) has two distinct populations:**
+
+| Population | Recommendation |
+|------------|----------------|
+| Adolescents & adults 15-65 | Universal screening |
+| Outside 15-65 | Screen if risk factors present |
+| Pregnant persons (all ages) | Screen at first prenatal visit |
+
+**Decision: Separate age-based and pregnancy-specific models**
+
+Rather than a single unified model, we use two DMN files:
+
+| Model | Inputs | Outputs |
+|-------|--------|---------|
+| `HIVScreeningAge.dmn` | AgeInYears, HasHIVRiskFactors, HasHIVTest | RecommendHIVTesting |
+| `HIVScreeningPregnancy.dmn` | IsPregnant, HasHIVRiskFactors, HIVTestedThisPregnancy | RecommendHIVTesting, RepeatThirdTrimester |
+
+**Rationale for separation:**
+
+1. **Different scoping**: Age model uses lifetime `HasHIVTest`; pregnancy model uses `HIVTestedThisPregnancy`
+2. **Pregnancy-specific output**: `RepeatThirdTrimester` flag only applies to pregnant persons
+3. **Cleaner integration**: Calling system can invoke the appropriate model based on pregnancy status
+4. **Pregnancy trumps age**: A pregnant 14-year-old or 70-year-old gets screened via the pregnancy model regardless of the age model
+
+### HIV Screening: The Third-Trimester Repeat Pattern
+
+**The USPSTF guidance:**
+
+> "Third-trimester repeat screening is recommended for pregnant persons with risk factors... CDC notes repeat third-trimester screening 'may be considered in all women'"
+
+**The challenge:** Modeling trimester-specific logic in a stateless decision table leads to combinatorial explosion (see `HIVScreeningPregnancyDraft.dmn` with 6 inputs).
+
+**Solution: Care plan flag, not real-time decision**
+
+The `RepeatThirdTrimester` output is a **flag for the care plan**, not a "test now" directive:
+
+| IsPregnant | HasHIVRiskFactors | HIVTestedThisPregnancy | RecommendHIVTesting | RepeatThirdTrimester |
+|------------|-------------------|------------------------|---------------------|----------------------|
+| true | false | false | true | false |
+| true | false | true | false | false |
+| true | true | false | true | true |
+| true | true | true | false | true |
+
+When `RepeatThirdTrimester=true`, the calling system:
+1. Records this on the patient's care plan
+2. Checks the flag when the patient reaches third trimester
+3. Triggers a repeat screening recommendation at that time
+
+**Why this works:**
+
+1. **Separation of concerns**: DMN answers "what should happen"; workflow layer handles "when"
+2. **Stateless evaluation**: No need to track trimester state within DMN
+3. **DMN stays simple**: 3 inputs, 2 outputs, 5 rules
+4. **Matches clinical workflow**: Care plans already track "things to do later"
+
+**Alternative considered and rejected:** Explicit trimester inputs (`IsIn1stTrimester`, `IsIn3rdTrimester`, `HIVTested1stTrimester`, `HIVTestedThis3rdTrimester`) — this fights DMN's stateless nature and creates confusing rule combinations.
+
+### HIV Screening: Risk Factor Abstraction
+
+Same pattern as folic acid: `HasHIVRiskFactors` is a clinical judgment basket.
+
+**Risk factors per USPSTF:**
+- Male-to-male sexual contact (67% of new diagnoses)
+- Injection drug use
+- Unprotected sex with multiple partners of unknown status
+- Transactional sex
+- STIs or partners with STIs
+- Partners living with HIV
+- High-prevalence settings (STI clinics, correctional facilities, homeless shelters)
+
+**Why abstract:**
+
+1. Many factors involve sensitive information or clinical judgment
+2. Data availability varies by implementation
+3. DMN stays focused on the decision logic, not data collection
+
+### HIV Screening: Frequency Not Specified
+
+**USPSTF explicitly states:** "insufficient evidence to determine appropriate or optimal time intervals" for repeat screening.
+
+**CDC recommends:** Annual screening for at-risk individuals.
+
+**Decision:** The `HasHIVTest` input abstracts recency — the calling system defines what "recent" means:
+- For eCQM alignment: test within measurement period
+- For clinical CDS: configurable (annual, per-encounter, etc.)
+
+This matches our "configurable frequency" pattern from tobacco screening.
 
 ## Target Stack
 

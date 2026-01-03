@@ -1,0 +1,12 @@
+{
+  "description": "Not pregnant - defer to HIVScreeningAge.dmn",
+  "input": {
+    "IsPregnant": false,
+    "HasHIVRiskFactors": false,
+    "HIVTestedThisPregnancy": false
+  },
+  "expected": {
+    "RecommendHIVTesting": false,
+    "RepeatThirdTrimester": false
+  }
+}

@@ -19,6 +19,10 @@ const dmnFiles = {
   colorectal: resolve(__dirname, '../input/dmn/ColorectalCancerScreening.dmn'),
   // tests/dmn/folicacid/*.json use FolicAcidSupplementation.dmn
   folicacid: resolve(__dirname, '../input/dmn/FolicAcidSupplementation.dmn'),
+  // tests/dmn/hiv-age/*.json use HIVScreeningAge.dmn
+  'hiv-age': resolve(__dirname, '../input/dmn/HIVScreeningAge.dmn'),
+  // tests/dmn/hiv-pregnancy/*.json use HIVScreeningPregnancy.dmn
+  'hiv-pregnancy': resolve(__dirname, '../input/dmn/HIVScreeningPregnancy.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -152,6 +156,64 @@ describe('Folic Acid Supplementation Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.folicacid);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('HIV Screening By Age Decision Table', () => {
+  const hivAgeTestsDir = resolve(testsDir, 'hiv-age');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles['hiv-age']);
+  });
+
+  // Skip if hiv-age tests directory doesn't exist
+  if (!existsSync(hivAgeTestsDir)) {
+    it.skip('No HIV age tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(hivAgeTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(hivAgeTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles['hiv-age']);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('HIV Screening Pregnancy Decision Table', () => {
+  const hivPregnancyTestsDir = resolve(testsDir, 'hiv-pregnancy');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles['hiv-pregnancy']);
+  });
+
+  // Skip if hiv-pregnancy tests directory doesn't exist
+  if (!existsSync(hivPregnancyTestsDir)) {
+    it.skip('No HIV pregnancy tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(hivPregnancyTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(hivPregnancyTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles['hiv-pregnancy']);
 
       expect(result).toEqual(testData.expected);
     });

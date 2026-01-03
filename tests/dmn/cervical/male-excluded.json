@@ -6,6 +6,6 @@
     "HasHrHPVInLastFiveYears": false
   },
   "expected": [
-    { "CervicalCytologyDue": null, "hrHPVDue": null }
+    { "CervicalCytologyDue": false, "hrHPVDue": false }
   ]
 }

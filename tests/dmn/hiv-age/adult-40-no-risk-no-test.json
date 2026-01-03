@@ -1,0 +1,11 @@
+{
+  "description": "Age 40, no risk factors, no prior test - recommend testing (universal 15-65)",
+  "input": {
+    "AgeInYears": 40,
+    "HasHIVRiskFactors": false,
+    "HasHIVTest": false
+  },
+  "expected": {
+    "RecommendHIVTesting": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Pregnant, no risk factors, already tested - no recommendation, no repeat",
+  "input": {
+    "IsPregnant": true,
+    "HasHIVRiskFactors": false,
+    "HIVTestedThisPregnancy": true
+  },
+  "expected": {
+    "RecommendHIVTesting": false,
+    "RepeatThirdTrimester": false
+  }
+}

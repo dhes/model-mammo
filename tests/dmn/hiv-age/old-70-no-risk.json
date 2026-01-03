@@ -1,0 +1,11 @@
+{
+  "description": "Age 70, no risk factors - no recommendation (outside 15-65, no risk)",
+  "input": {
+    "AgeInYears": 70,
+    "HasHIVRiskFactors": false,
+    "HasHIVTest": false
+  },
+  "expected": {
+    "RecommendHIVTesting": false
+  }
+}

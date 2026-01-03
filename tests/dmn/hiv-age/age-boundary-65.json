@@ -1,0 +1,11 @@
+{
+  "description": "Age 65 (upper boundary), no risk, no test - recommend testing",
+  "input": {
+    "AgeInYears": 65,
+    "HasHIVRiskFactors": false,
+    "HasHIVTest": false
+  },
+  "expected": {
+    "RecommendHIVTesting": true
+  }
+}

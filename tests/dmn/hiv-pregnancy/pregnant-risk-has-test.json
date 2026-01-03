@@ -1,0 +1,12 @@
+{
+  "description": "Pregnant, has risk factors, already tested - no recommendation now, but flag for repeat",
+  "input": {
+    "IsPregnant": true,
+    "HasHIVRiskFactors": true,
+    "HIVTestedThisPregnancy": true
+  },
+  "expected": {
+    "RecommendHIVTesting": false,
+    "RepeatThirdTrimester": true
+  }
+}

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1yy0f39" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <decision id="Decision_0fq39u4" name="Human Immunodeficiency Virus (HIV) Infection By Age">
+    <decisionTable id="DecisionTable_02sld14">
+      <input id="InputClause_0bwtro5" label="Age In Years" biodi:width="150">
+        <inputExpression id="LiteralExpression_1q4on4x" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0lybltd" label="Has HIV Risk Factors" biodi:width="150">
+        <inputExpression id="LiteralExpression_1ubeesz" typeRef="boolean">
+          <text>HasHIVRiskFactors</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0po03ju" label="Has HIV Test" biodi:width="150">
+        <inputExpression id="LiteralExpression_0k365fm" typeRef="boolean">
+          <text>HasHIVTest</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Recommend HIV Testing" name="RecommendHIVTesting" typeRef="boolean" biodi:width="240" />
+      <rule id="DecisionRule_157c8og">
+        <inputEntry id="UnaryTests_08l0cdu">
+          <text>[15..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hn28cv">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cl5t6k">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l05ee0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1biucu7">
+        <inputEntry id="UnaryTests_0kztk2d">
+          <text>[15..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zf410u">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gxdufx">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vsb49q">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1opq89n">
+        <inputEntry id="UnaryTests_0h93s2n">
+          <text>[15..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rbc085">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06l2tup">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e03wfu">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13722mi">
+        <inputEntry id="UnaryTests_1or0t4z">
+          <text>[15..65]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k56mdc">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1taby13">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mgqe54">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lelqs2">
+        <inputEntry id="UnaryTests_12711cq">
+          <text>&lt;15</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nig6xi">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jtkxrb">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vmsljw">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x2os6k">
+        <inputEntry id="UnaryTests_0q8oua8">
+          <text>&lt;15</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bhsxm9">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06p24gp">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10q105j">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_133l894">
+        <inputEntry id="UnaryTests_17ar7go">
+          <text>&lt;15</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14db56b">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ljp48w">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19y976n">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_040wl4b">
+        <inputEntry id="UnaryTests_1o9poj9">
+          <text>&gt;65</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0io3ql1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ofn5ga">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0amhnmv">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1v3jgpf">
+        <inputEntry id="UnaryTests_14z1g2t">
+          <text>&gt;65</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_156zogq">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kkanvk">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g57ges">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jb0iy6">
+        <inputEntry id="UnaryTests_0e1yj05">
+          <text>&gt;65</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hgz21g">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t4i1w2">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0jfzeyf">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0fq39u4">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
