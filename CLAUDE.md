@@ -663,6 +663,46 @@ This aligns with:
 
 Individual PlanDefinitions can override the default when wrapping our CQL libraries.
 
+### FHIR PlanDefinition Type Selection
+
+**The FHIR PlanDefinition.type options:**
+
+| Type | FHIR Definition | Fit for Our Work |
+|------|-----------------|------------------|
+| **order-set** | Pre-defined group of orders for a condition/stage | Poor — implies bundled orders, not decision logic |
+| **clinical-protocol** | Progression of clinical activities with preconditions and triggers | Moderate — captures "when" but implies multi-step workflow |
+| **eca-rule** | Event-Condition-Action rule | **Best fit** — exactly our pattern |
+| **workflow-definition** | Multi-system event flow with steps and constraints | Poor — implies orchestration complexity we don't have |
+
+**Why `eca-rule` fits best:**
+
+Our DMN models follow the ECA pattern precisely:
+
+```
+Event:     encounter-start (named-event trigger)
+Condition: DMN decision table (HIVStatus, GestationalAgeInWeeks, etc.)
+Action:    PerformHIVTest = true → create ServiceRequest
+```
+
+The `eca-rule` type signals:
+1. **Stateless evaluation** — no progression tracking needed
+2. **Single decision point** — one trigger, one evaluation, one action
+3. **Reactive logic** — fires when event occurs, not polling
+
+**When other types would apply:**
+
+| Type | Use case |
+|------|----------|
+| `clinical-protocol` | Full ANC pathway (first visit → second trimester → third trimester → delivery) as a progression with state |
+| `order-set` | Bundled related orders (e.g., "prenatal panel" with HIV + HBsAg + rubella together) |
+| `workflow-definition` | Handoffs between systems (lab → provider → patient notification) |
+
+**Implication for our models:**
+
+Each DMN decision table maps to one `eca-rule` PlanDefinition. The pregnancy HIV model with `IsFirstPrenatalVisit` and `GestationalAgeInWeeks` evaluates fresh at each encounter rather than tracking state — this is exactly what ECA rules do.
+
+The WHO L2 spreadsheet's "Trigger: ANC.B9" annotation maps directly to `PlanDefinition.action.trigger.type = named-event`.
+
 **Current artifacts:**
 
 *Tobacco Cessation:*
