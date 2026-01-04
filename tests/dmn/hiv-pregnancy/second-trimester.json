@@ -1,0 +1,12 @@
+{
+  "description": "Second trimester (<29 weeks), not first visit - no test needed",
+  "input": {
+    "HIVStatus": "negative",
+    "HasHIVRiskFactors": false,
+    "IsFirstPrenatalVisit": false,
+    "GestationalAgeInWeeks": 20
+  },
+  "expected": {
+    "PerformHIVTest": false
+  }
+}

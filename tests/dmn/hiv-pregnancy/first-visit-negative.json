@@ -1,0 +1,12 @@
+{
+  "description": "First prenatal visit, HIV status negative (tested before pregnancy) - test again",
+  "input": {
+    "HIVStatus": "negative",
+    "HasHIVRiskFactors": false,
+    "IsFirstPrenatalVisit": true,
+    "GestationalAgeInWeeks": 8
+  },
+  "expected": {
+    "PerformHIVTest": true
+  }
+}

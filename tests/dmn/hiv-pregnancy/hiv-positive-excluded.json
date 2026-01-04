@@ -1,0 +1,12 @@
+{
+  "description": "Already HIV positive - no test needed",
+  "input": {
+    "HIVStatus": "positive",
+    "HasHIVRiskFactors": false,
+    "IsFirstPrenatalVisit": true,
+    "GestationalAgeInWeeks": 10
+  },
+  "expected": {
+    "PerformHIVTest": false
+  }
+}

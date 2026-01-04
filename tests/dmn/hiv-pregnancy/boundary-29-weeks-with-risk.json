@@ -1,0 +1,12 @@
+{
+  "description": "Exactly 29 weeks (boundary), not first visit, has risk - test",
+  "input": {
+    "HIVStatus": "negative",
+    "HasHIVRiskFactors": true,
+    "IsFirstPrenatalVisit": false,
+    "GestationalAgeInWeeks": 29
+  },
+  "expected": {
+    "PerformHIVTest": true
+  }
+}

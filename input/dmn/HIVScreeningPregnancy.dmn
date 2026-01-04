@@ -1,108 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1yy0f39" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>HIV Screening in Pregnant Persons
+
+USPSTF Grade A Recommendation:
+"The USPSTF recommends screening for HIV infection in all pregnant persons, including those who present in labor or at delivery whose HIV status is unknown."
+
+Third-Trimester Repeat (USPSTF):
+"Third-trimester repeat screening is recommended for pregnant persons in areas with elevated HIV incidence and for those with risk factors for HIV acquisition."
+
+Trigger: Evaluate at each pregnancy-related encounter (named-event: encounter-start)
+
+Glossary:
+- HIVStatus: Patient's known HIV status ("positive", "negative", "unknown")
+- IsFirstPrenatalVisit: True if this is the first contact in pregnancy (including labor/delivery presentation)
+- GestationalAgeInWeeks: Current gestational age; ≥29 weeks = third trimester (per WHO ANC.DT.08)
+- HasHIVRiskFactors: Clinical judgment basket including injection drug use, multiple partners, STIs, partners with HIV
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/human-immunodeficiency-virus-hiv-infection-screening
+- WHO SMART-ANC Decision Table ANC.DT.08</description>
   <decision id="Decision_0fq39u4" name="Human Immunodeficiency Virus (HIV) Infection Pregnancy">
     <decisionTable id="DecisionTable_02sld14">
-      <input id="Input_1" label="Is Pregnant" biodi:width="150">
-        <inputExpression id="InputExpression_1" typeRef="boolean">
-          <text>IsPregnant</text>
+      <input id="InputClause_0px736z" label="HIV Status" biodi:width="187">
+        <inputExpression id="LiteralExpression_1xh4p02" typeRef="string">
+          <text>HIVStatus</text>
         </inputExpression>
+        <inputValues id="UnaryTests_09tsrec">
+          <text>"unknown","negative","positive"</text>
+        </inputValues>
       </input>
       <input id="InputClause_0lybltd" label="Has HIV Risk Factors" biodi:width="150">
         <inputExpression id="LiteralExpression_1ubeesz" typeRef="boolean">
           <text>HasHIVRiskFactors</text>
         </inputExpression>
       </input>
-      <input id="InputClause_0po03ju" label="HIV Tested This Pregnancy" biodi:width="150">
-        <inputExpression id="LiteralExpression_0k365fm" typeRef="boolean">
-          <text>HIVTestedThisPregnancy</text>
+      <input id="InputClause_0fatly4" label="Is First Prenatal Visit" biodi:width="150">
+        <inputExpression id="LiteralExpression_0fmgien" typeRef="boolean">
+          <text>IsFirstPrenatalVisit</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Recommend HIV Testing" name="RecommendHIVTesting" typeRef="boolean" biodi:width="150" />
-      <output id="OutputClause_1gkqeu8" label="Repeat Third Trimester" name="RepeatThirdTrimester" typeRef="boolean" biodi:width="150" />
+      <input id="InputClause_0huscmy" label="Gestational Age In Weeks" biodi:width="150">
+        <inputExpression id="LiteralExpression_1i67g8u" typeRef="number">
+          <text>GestationalAgeInWeeks</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Perform HIV Test" name="PerformHIVTest" typeRef="boolean" biodi:width="150" />
       <rule id="DecisionRule_0p08lw9">
-        <inputEntry id="UnaryTests_0gb73sk">
-          <text>true</text>
+        <description>WHO ANC.DT.08: "A test is not required if the woman is already confirmed HIV positive." No additional screening needed for known positive status.</description>
+        <inputEntry id="UnaryTests_06scq4t">
+          <text>"positive"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1614wh1">
-          <text>false</text>
+          <text>-</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1oerpke">
-          <text>false</text>
+        <inputEntry id="UnaryTests_0cs5r6y">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ig56xi">
+          <text>-</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0nwgymd">
-          <text>true</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1hru0op">
           <text>false</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0p7ys0j">
-        <inputEntry id="UnaryTests_1u5ftbo">
-          <text>true</text>
+        <description>USPSTF: "Screen for HIV infection in all pregnant persons, including those who present in labor or at delivery whose HIV status is unknown." WHO ANC.DT.08: "An HIV test is required for all pregnant women at the first contact in pregnancy."</description>
+        <inputEntry id="UnaryTests_1nf0qcb">
+          <text>"negative", "unknown"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1x42rd0">
-          <text>false</text>
+          <text>-</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1l265om">
+        <inputEntry id="UnaryTests_1sssue5">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o3mmbx">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mfnsv8">
-          <text>false</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_11junjq">
-          <text>false</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0j9rxjg">
-        <inputEntry id="UnaryTests_0vd509c">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0a9vylc">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1h0lzbp">
-          <text>true</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0fnen0d">
-          <text>false</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0z4j2zn">
           <text>true</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0b3xfom">
-        <inputEntry id="UnaryTests_032hy8l">
-          <text>true</text>
+      <rule id="DecisionRule_0oibdc0">
+        <description>Second trimester (before 29 weeks), not first visit: No routine re-screening indicated. Initial screening was done at first visit; third-trimester repeat not yet due.</description>
+        <inputEntry id="UnaryTests_04rpsdt">
+          <text>"negative", "unknown"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1klwuko">
-          <text>true</text>
+        <inputEntry id="UnaryTests_0718ll6">
+          <text>-</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_16sz823">
+        <inputEntry id="UnaryTests_1u03l31">
           <text>false</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1w2otzk">
-          <text>true</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0algjqk">
-          <text>true</text>
+        <inputEntry id="UnaryTests_1xzxyq6">
+          <text>&lt;29</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1uvg9dj">
+          <text>false</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_157c8og">
-        <description>Outside the scope of this guideline. See HIVScreeningAge.dmn</description>
-        <inputEntry id="UnaryTests_1xjg657">
+      <rule id="DecisionRule_1t86lnm">
+        <description>Third trimester (≥29 weeks), NO risk factors: No repeat test indicated. USPSTF recommends third-trimester repeat only "for those with risk factors for HIV acquisition."</description>
+        <inputEntry id="UnaryTests_1y5wxzb">
+          <text>"negative", "unknown"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bi1g6v">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0hn28cv">
-          <text></text>
+        <inputEntry id="UnaryTests_0ak32wb">
+          <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0cl5t6k">
-          <text></text>
+        <inputEntry id="UnaryTests_1k44tcx">
+          <text>&gt;=29</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1l05ee0">
+        <outputEntry id="LiteralExpression_11ob40q">
           <text>false</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0a18404">
+      </rule>
+      <rule id="DecisionRule_1vtvpqp">
+        <description>Third trimester (≥29 weeks), HAS risk factors: Repeat test indicated. USPSTF: "Third-trimester repeat screening is recommended for pregnant persons... with risk factors for HIV acquisition." WHO ANC.DT.08: "Another HIV test is required for all pregnant women at the first contact of the 3rd trimester (28 weeks)." [Note: WHO uses ≥29 weeks in CQL implementation despite narrative saying 28 weeks.]</description>
+        <inputEntry id="UnaryTests_0yisdga">
+          <text>"negative", "unknown"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ngxlvp">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17l0tsr">
           <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14va5xb">
+          <text>&gt;=29</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0anajl2">
+          <text>true</text>
         </outputEntry>
       </rule>
     </decisionTable>

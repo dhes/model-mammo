@@ -1,0 +1,12 @@
+{
+  "description": "First 'prenatal' visit is at labor/delivery, status unknown - test",
+  "input": {
+    "HIVStatus": "unknown",
+    "HasHIVRiskFactors": false,
+    "IsFirstPrenatalVisit": true,
+    "GestationalAgeInWeeks": 40
+  },
+  "expected": {
+    "PerformHIVTest": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "description": "First prenatal visit, HIV status unknown - test",
+  "input": {
+    "HIVStatus": "unknown",
+    "HasHIVRiskFactors": false,
+    "IsFirstPrenatalVisit": true,
+    "GestationalAgeInWeeks": 10
+  },
+  "expected": {
+    "PerformHIVTest": true
+  }
+}

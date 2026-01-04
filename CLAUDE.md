@@ -29,6 +29,41 @@ DMN decision tables look like spreadsheets but are:
 - Testable (`npm test` validates logic before CQL is written)
 - Designed for CQL translation
 
+**The SME readability question:**
+
+The diagram above shows "SMEs can review this" at L2. This is aspirational but nuanced in practice.
+
+| Artifact | SME-readable? | Machine-executable? | Ambiguous? |
+|----------|---------------|---------------------|------------|
+| USPSTF narrative | ✓ | ✗ | ✓ |
+| WHO L2 spreadsheet | ✓ (mostly) | ✗ (needs interpretation) | Somewhat |
+| Our DMN | Limited | ✓ | ✗ |
+| CQL | ✗ | ✓ | ✗ |
+
+**Why final DMN tables diverge from narrative:**
+
+1. **Ambiguity resolution** — Every decision ("biennial means interval elapsed," "could become pregnant means age 15-45") moves us away from narrative language
+2. **Operationalization** — We invent inputs (`HIVTestedThisPregnancy`, `GestationalAgeInWeeks`) that aren't in guidelines because guidelines say *what* but not *how to know*
+3. **Edge cases** — We add rules for males, too young, too old, already tested. Guidelines assume clinical context; our tables must be complete
+4. **Formal structure** — Typed columns, explicit outputs, no merged cells
+
+**The "bridge" is the process, not the artifact:**
+
+DMN decision tables are not intended to be directly readable by SMEs in the same way narrative guidelines are. The bridge is the *process* — starting from narrative, iterating with SME input, documenting decisions — not the artifact itself.
+
+**SME validation happens through:**
+
+1. **Test cases** — Input/expected pairs that SMEs can verify ("Yes, if it's her first visit and status unknown, we should test")
+2. **Annotations** — Rule annotations linking back to guideline language
+3. **CLAUDE.md documentation** — Explaining each operationalization decision with rationale
+4. **Glossary mappings** — `GestationalAgeInWeeks >= 29` → "third trimester"
+
+**The value of DMN isn't SME readability of the final table.** The value is:
+- **Testable** — `npm test` validates logic before CQL
+- **Unambiguous** — FEEL has strict semantics
+- **Translatable** — Maps cleanly to CQL
+- **Auditable** — Every rule explicit, every edge case visible
+
 **"Plan forward" design principle:**
 
 Column names and FEEL expressions are chosen to map directly to CQL:
@@ -539,6 +574,95 @@ This can be modeled as:
 
 Both are valid L2 representations. The process model makes the workflow explicit for SME review; the single table is simpler for CQL translation.
 
+### Trigger vs Context: WHO L2 vs Our DMN Approach
+
+**The problem:** When should a decision table be evaluated?
+
+WHO's Digital Adaptation Kits (e.g., SMART-ANC) and our DMN approach answer this differently.
+
+**WHO L2 Spreadsheet approach — Explicit Trigger:**
+
+```
+Decision ID: ANC.DT.08 HIV testing
+Trigger: ANC.B9. Conduct laboratory tests and imaging
+```
+
+WHO embeds decision tables in a workflow. The "Trigger" row references a specific activity (`ANC.B9`) in their BPMN-style care pathway. The decision table fires when the clinician reaches that step.
+
+**Our DMN approach — Context, no trigger:**
+
+Our DMN files declare *what* to evaluate but not *when*. The calling system (EHR, CDS hook) decides the trigger.
+
+| Approach | Trigger | Context | Who decides "when"? |
+|----------|---------|---------|---------------------|
+| WHO L2 | Explicit (`ANC.B9`) | Implicit (within pathway) | The workflow |
+| Our DMN | None | Explicit (in description) | The calling system |
+
+**Implications:**
+
+| Dimension | WHO L2 | Our DMN |
+|-----------|--------|---------|
+| Workflow coupling | High — assumes specific pathway | Low — trigger-agnostic |
+| State assumptions | Workflow tracks state (contact #, gestational age) | Stateless — only knows EHR state at this moment |
+| Flexibility | Fits WHO's specific pathway | Fits any CDS integration |
+| Input design | Can use `ANC contact number = 1` | Uses `IsFirstPrenatalVisit`, `GestationalAgeInWeeks` |
+
+**Example: HIV screening in pregnancy**
+
+WHO can use `"Gestational age" ≥ 29 weeks` as an input because their workflow fires `ANC.B9` at known points — they know when it's the third trimester.
+
+After refactoring to align with WHO, our `HIVScreeningPregnancy.dmn` now also uses `GestationalAgeInWeeks >= 29` directly. This works because we assume `encounter-start` trigger — the calling system provides current gestational age at each encounter, and the DMN evaluates whether to test *now*.
+
+**WHO L2 structural differences:**
+
+WHO's L2 spreadsheets differ structurally from OMG DMN:
+
+| Aspect | WHO L2 Spreadsheet | OMG DMN (Camunda) |
+|--------|-------------------|-------------------|
+| Input definition | Embedded in each cell: `"ANC contact number" = 1` | Separated: column header defines variable, cell contains test |
+| Wildcards | Cell merging | Empty cell or `-` |
+| Output | Expression: `"HIV test required" = TRUE` | Typed value in output column |
+| Formalism | Pseudo-FEEL, human-readable | Strict FEEL, machine-parseable |
+
+WHO optimizes for **SME readability** — clinicians can read `"Gestational age" ≥ 29 weeks` without knowing FEEL. The trade-off is less formal rigor: no schema, no type checking, no guaranteed machine-parseability.
+
+**Our design choice:**
+
+We chose trigger-agnostic DMN because:
+
+1. **Broader applicability**: Works with any EHR or CDS hook, not just WHO's pathway
+2. **Stateless evaluation**: No assumptions about what the calling system tracks
+3. **CQL translation**: Maps cleanly to FHIR CDS without workflow dependencies
+
+The cost is that temporal logic (like "third trimester") must be handled via flags and the calling system, rather than assumed from workflow position.
+
+**Default trigger model:**
+
+While our DMN files don't embed triggers, we assume a default trigger for FHIR PlanDefinition integration:
+
+```yaml
+trigger:
+  type: named-event
+  name: "encounter-start"
+```
+
+This means: evaluate the decision table when a patient encounter begins — when the patient is in front of the clinician and screening decisions are actionable.
+
+This aligns with:
+- CDS Hooks `patient-view` / `encounter-start`
+- Clinical reality: screening decisions are made when the patient presents
+
+**Trigger overrides for specific use cases:**
+
+| Use case | Trigger type | Named event / data |
+|----------|--------------|-------------------|
+| Screening (default) | `named-event` | `encounter-start` |
+| Order-time decisions | `named-event` | `order-sign` |
+| Result-triggered | `data-added` | Observation resource |
+| Periodic quality checks | `periodic` | Timing schedule |
+
+Individual PlanDefinitions can override the default when wrapping our CQL libraries.
+
 **Current artifacts:**
 
 *Tobacco Cessation:*
@@ -648,47 +772,45 @@ Rather than a single unified model, we use two DMN files:
 | Model | Inputs | Outputs |
 |-------|--------|---------|
 | `HIVScreeningAge.dmn` | AgeInYears, HasHIVRiskFactors, HasHIVTest | RecommendHIVTesting |
-| `HIVScreeningPregnancy.dmn` | IsPregnant, HasHIVRiskFactors, HIVTestedThisPregnancy | RecommendHIVTesting, RepeatThirdTrimester |
+| `HIVScreeningPregnancy.dmn` | HIVStatus, HasHIVRiskFactors, IsFirstPrenatalVisit, GestationalAgeInWeeks | PerformHIVTest |
 
 **Rationale for separation:**
 
-1. **Different scoping**: Age model uses lifetime `HasHIVTest`; pregnancy model uses `HIVTestedThisPregnancy`
-2. **Pregnancy-specific output**: `RepeatThirdTrimester` flag only applies to pregnant persons
-3. **Cleaner integration**: Calling system can invoke the appropriate model based on pregnancy status
-4. **Pregnancy trumps age**: A pregnant 14-year-old or 70-year-old gets screened via the pregnancy model regardless of the age model
+1. **Different inputs**: Age model uses lifetime `HasHIVTest`; pregnancy model uses encounter-specific inputs
+2. **Different populations**: Age-based (15-65) vs pregnancy (all ages)
+3. **Cleaner integration**: Calling system invokes the appropriate model based on pregnancy status
+4. **Pregnancy trumps age**: A pregnant 14-year-old or 70-year-old gets screened via the pregnancy model
 
-### HIV Screening: The Third-Trimester Repeat Pattern
+### HIV Screening Pregnancy: WHO-Aligned Refactoring
 
-**The USPSTF guidance:**
+**The evolution:**
 
-> "Third-trimester repeat screening is recommended for pregnant persons with risk factors... CDC notes repeat third-trimester screening 'may be considered in all women'"
+Initial approach used a `RepeatThirdTrimester` flag — evaluate at first visit, flag for later. This conflated "first visit decision" with "any-visit status check."
 
-**The challenge:** Modeling trimester-specific logic in a stateless decision table leads to combinatorial explosion (see `HIVScreeningPregnancyDraft.dmn` with 6 inputs).
+**Refactored approach (WHO-aligned):**
 
-**Solution: Care plan flag, not real-time decision**
+The pregnancy model now evaluates "should we test NOW?" at any encounter:
 
-The `RepeatThirdTrimester` output is a **flag for the care plan**, not a "test now" directive:
+| HIVStatus | HasHIVRiskFactors | IsFirstPrenatalVisit | GestationalAgeInWeeks | PerformHIVTest |
+|-----------|-------------------|----------------------|----------------------|----------------|
+| "positive" | - | - | - | false |
+| "negative","unknown" | - | true | - | true |
+| "negative","unknown" | false | false | ≥29 | false |
+| "negative","unknown" | true | false | ≥29 | true |
+| "negative","unknown" | - | false | <29 | false |
 
-| IsPregnant | HasHIVRiskFactors | HIVTestedThisPregnancy | RecommendHIVTesting | RepeatThirdTrimester |
-|------------|-------------------|------------------------|---------------------|----------------------|
-| true | false | false | true | false |
-| true | false | true | false | false |
-| true | true | false | true | true |
-| true | true | true | false | true |
+**Key design choices:**
 
-When `RepeatThirdTrimester=true`, the calling system:
-1. Records this on the patient's care plan
-2. Checks the flag when the patient reaches third trimester
-3. Triggers a repeat screening recommendation at that time
+1. **`HIVStatus` enum** — Aligns with WHO's `"HIV status" = "HIV positive"` exclusion
+2. **`IsFirstPrenatalVisit`** — Mirrors WHO's `"ANC contact number" = 1`
+3. **`GestationalAgeInWeeks`** — Direct WHO alignment; called system provides current value at each encounter
+4. **Single output** — "Test now?" not "test now and schedule later"
 
-**Why this works:**
+**Why this works with our trigger model:**
 
-1. **Separation of concerns**: DMN answers "what should happen"; workflow layer handles "when"
-2. **Stateless evaluation**: No need to track trimester state within DMN
-3. **DMN stays simple**: 3 inputs, 2 outputs, 5 rules
-4. **Matches clinical workflow**: Care plans already track "things to do later"
+Assuming `encounter-start` trigger, the calling system provides current gestational age at each encounter. The DMN evaluates whether to test *at this encounter*, not what to schedule for later.
 
-**Alternative considered and rejected:** Explicit trimester inputs (`IsIn1stTrimester`, `IsIn3rdTrimester`, `HIVTested1stTrimester`, `HIVTestedThis3rdTrimester`) — this fights DMN's stateless nature and creates confusing rule combinations.
+**Alternative considered and rejected:** Flag-based approach with `RepeatThirdTrimester` output — required the calling system to track flags and check them later. The WHO-aligned approach is simpler: each encounter is a fresh evaluation.
 
 ### HIV Screening: Risk Factor Abstraction
 
