@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_084v3p1" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>HIV Pre-Exposure Prophylaxis (PrEP)
+
+USPSTF Grade A Recommendation:
+"The USPSTF recommends that clinicians prescribe preexposure prophylaxis (PrEP) using effective antiretroviral therapy to persons who are at increased risk of HIV acquisition."
+
+Population: Adults and adolescents weighing at least 35 kg (77 lb). Age floor of 13 years operationalizes "adolescents" for consent/legal considerations.
+
+Eligibility Criteria (all must be met):
+- Age ≥13 years (operationalized adolescent threshold)
+- Weight ≥35 kg (FDA pharmacokinetic threshold)
+- HIV-negative status (documented)
+- Adequate renal function (creatinine clearance ≥60 mL/min per WHO)
+- No symptoms of acute HIV infection
+- No probable recent HIV exposure (recent exposure → PEP, not PrEP)
+- No contraindications to PrEP medications
+
+Risk Indication (abstracted):
+HasPrEPIndication is a clinical judgment basket computed at L3 from:
+- Sexual partner with HIV (especially if not virally suppressed)
+- Bacterial STI (syphilis, gonorrhea, chlamydia) in past 6 months
+- Inconsistent/no condom use with partners of unknown HIV status
+- Shares injection drug equipment
+- Drug-injecting partner with HIV
+- Key populations: MSM, transgender women, persons who inject drugs, transactional sex
+
+Trigger: Evaluate at clinical encounters where HIV risk assessment is performed (named-event: encounter-start)
+
+Glossary:
+- AgeInYears: Patient age; ≥13 per operationalized adolescent threshold
+- WeightInKilo: Patient weight; ≥35 kg per FDA approval
+- HIVNegative: Documented negative HIV test result
+- CreatinineClearanceAdequate: Estimated creatinine clearance ≥60 mL/min (per WHO guidelines)
+- NoAcuteHIVSymptoms: No signs of acute HIV infection (fever, rash, lymphadenopathy, etc.)
+- NoProbableRecentExposure: No high-risk exposure in past 72 hours (else → PEP pathway)
+- NoContraindications: No allergies or contraindications to TDF/FTC or other PrEP medications
+- HasPrEPIndication: True if patient has one or more risk factors warranting PrEP (computed at L3)
+
+Medications (USPSTF/FDA):
+- Oral TDF/FTC (tenofovir disoproxil fumarate/emtricitabine)
+- Oral TAF/FTC (tenofovir alafenamide/emtricitabine) — not for receptive vaginal sex risk
+- Injectable cabotegravir (long-acting, every 8 weeks)
+
+Note: No MADiE eCQM correlate found. WHO SMART-HIV repository has CQL library HIVC7DTLogic.
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prevention-of-human-immunodeficiency-virus-hiv-infection-pre-exposure-prophylaxis
+- WHO SMART-HIV: HIVC7DTLogic.cql</description>
+  <decision id="Decision_1ge1c1n" name="HIV Pre-Exposure Prophylaxis (PrEP)">
+    <decisionTable id="DecisionTable_0uhj0fr" hitPolicy="FIRST">
+      <input id="InputClause_0ymrp8l" label="Age In Years" biodi:width="150">
+        <inputExpression id="LiteralExpression_07uxeu6" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="Input_1" label="Weight In Kilo" biodi:width="150">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>WeightInKilo</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1hiv" label="HIV Negative" biodi:width="150">
+        <inputExpression id="LiteralExpression_1hiv" typeRef="boolean">
+          <text>HIVNegative</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1renal" label="Creatinine Clearance Adequate" biodi:width="150">
+        <inputExpression id="LiteralExpression_1renal" typeRef="boolean">
+          <text>CreatinineClearanceAdequate</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1acute" label="No Acute HIV Symptoms" biodi:width="150">
+        <inputExpression id="LiteralExpression_1acute" typeRef="boolean">
+          <text>NoAcuteHIVSymptoms</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1exposure" label="No Probable Recent Exposure" biodi:width="150">
+        <inputExpression id="LiteralExpression_1exposure" typeRef="boolean">
+          <text>NoProbableRecentExposure</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1contra" label="No Contraindications" biodi:width="150">
+        <inputExpression id="LiteralExpression_1contra" typeRef="boolean">
+          <text>NoContraindications</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1indication" label="Has PrEP Indication" biodi:width="150">
+        <inputExpression id="LiteralExpression_1indication" typeRef="boolean">
+          <text>HasPrEPIndication</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Prescribe PrEP" name="PrescribePrEP" typeRef="boolean" />
+      <rule id="DecisionRule_age">
+        <description>Under 13 years: Below operationalized adolescent threshold. USPSTF specifies "adolescents" without explicit age; 13 chosen for consent/legal considerations.</description>
+        <inputEntry id="UnaryTests_age">
+          <text>&lt;13</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_age_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_age">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_weight">
+        <description>Under 35 kg: Below FDA-approved weight threshold. USPSTF: "weighing at least 35 kg (77 lb)."</description>
+        <inputEntry id="UnaryTests_weight_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight">
+          <text>&lt;35</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_ac">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_weight_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_weight">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_hiv">
+        <description>Not HIV-negative: PrEP requires documented negative HIV status. If HIV-positive, patient needs treatment, not prophylaxis.</description>
+        <inputEntry id="UnaryTests_hiv_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_ac">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hiv_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_hiv">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_renal">
+        <description>Inadequate renal function: Creatinine clearance &lt;60 mL/min. WHO: "TDF-containing PrEP requires adequate kidney function." Consider alternative regimens or defer.</description>
+        <inputEntry id="UnaryTests_renal_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_ac">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_renal_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_renal">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_acute">
+        <description>Acute HIV symptoms present: May indicate acute HIV infection (window period). Defer PrEP; perform additional HIV testing (RNA/viral load).</description>
+        <inputEntry id="UnaryTests_acute_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_acute_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_acute">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_exposure">
+        <description>Probable recent exposure: High-risk exposure within 72 hours → PEP pathway, not PrEP. WHO: "If recent high-risk HIV exposure, offer PEP and transition to PrEP after completion."</description>
+        <inputEntry id="UnaryTests_exposure_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_ac">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_c">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_exposure_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_exposure">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_contra">
+        <description>Contraindications present: Allergy or contraindication to PrEP medications (TDF, FTC, etc.). Counsel on risk reduction; consider alternative prevention strategies.</description>
+        <inputEntry id="UnaryTests_contra_a">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_w">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_h">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_r">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_ac">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_e">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_contra_i">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_contra">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_noindication">
+        <description>No PrEP indication: Patient is eligible but has no identified risk factors for HIV acquisition. PrEP not indicated at this time; reassess if risk factors change.</description>
+        <inputEntry id="UnaryTests_noind_a">
+          <text>&gt;=13</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_w">
+          <text>&gt;=35</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_h">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_r">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_ac">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_e">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind_c">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_noind">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_noind">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_prescribe">
+        <description>Eligible with indication: All eligibility criteria met AND has PrEP indication. USPSTF: "prescribe preexposure prophylaxis... to persons who are at increased risk of HIV acquisition."</description>
+        <inputEntry id="UnaryTests_prescribe_a">
+          <text>&gt;=13</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_w">
+          <text>&gt;=35</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_h">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_r">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_ac">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_e">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe_c">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_prescribe">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_prescribe">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1ge1c1n">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

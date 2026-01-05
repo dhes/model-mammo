@@ -1,0 +1,16 @@
+{
+  "description": "Exactly 35 kg: At FDA weight threshold - eligible if other criteria met",
+  "input": {
+    "AgeInYears": 25,
+    "WeightInKilo": 35,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": true
+  }
+}

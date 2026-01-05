@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_1bsd2mm" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Rh(D) Incompatibility Screening (First Prenatal Visit)
+
+USPSTF Grade A Recommendation:
+"The USPSTF strongly recommends Rh(D) blood typing and antibody testing for all pregnant women during their first visit for pregnancy-related care."
+
+Population: All pregnant women at first pregnancy-related care visit.
+
+Scope: This model covers only the Grade A (first visit) recommendation. The Grade B recommendation (repeat antibody testing at 24-28 weeks for unsensitized Rh(D)-negative women) is not modeled.
+
+Trigger: Prenatal care encounters. Fires on each encounter until testing is documented. Context begins with first prenatal visit and ends with delivery.
+
+Pattern: Persistent reminder — recommend testing until documented (same as Ophthalmia Neonatorum Prophylaxis).
+
+Glossary:
+- RhDAndAntibodyScreenDone: True if Rh(D) blood typing AND antibody screen have been performed this pregnancy
+- PerformRhDAndAntibodyTests: True if testing should be performed at this encounter
+
+WHO: Rh incompatibility discussed in WHO ANC recommendations, but first-visit testing not expressly recommended (likely due to resource constraints in LMIC settings).
+
+CMS: No related eCQMs found in MADiE (searched 2026-01-05).
+
+Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/rh-d-incompatibility-screening</description>
+  <decision id="Decision_0og466o" name="RhD Incompatibility">
+    <decisionTable id="DecisionTable_1ocg0vu">
+      <input id="Input_1" label="RhD And Antibody Screen Done" biodi:width="150">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>RhDAndAntibodyScreenDone</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Perform RhD And Antibody Tests" name="PerformRhDAndAntibodyTests" typeRef="boolean" biodi:width="150" />
+      <rule id="DecisionRule_1v3jqmd">
+        <description>Testing not yet done: Recommend Rh(D) blood typing and antibody screen. USPSTF: "for all pregnant women during their first visit for pregnancy-related care."</description>
+        <inputEntry id="UnaryTests_116eu79">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gyg9a2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02462wh">
+        <description>Testing already done this pregnancy: No further action needed for Grade A recommendation.</description>
+        <inputEntry id="UnaryTests_0et2ku0">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1dbc3si">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0og466o">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

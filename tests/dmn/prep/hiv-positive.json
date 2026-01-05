@@ -1,0 +1,16 @@
+{
+  "description": "Not HIV-negative: Patient needs treatment, not prophylaxis",
+  "input": {
+    "AgeInYears": 30,
+    "WeightInKilo": 70,
+    "HIVNegative": false,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

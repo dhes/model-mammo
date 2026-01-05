@@ -1,0 +1,9 @@
+{
+  "description": "Testing already done this pregnancy - no further action needed for Grade A recommendation",
+  "input": {
+    "RhDAndAntibodyScreenDone": true
+  },
+  "expected": {
+    "PerformRhDAndAntibodyTests": false
+  }
+}

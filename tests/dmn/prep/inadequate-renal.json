@@ -1,0 +1,16 @@
+{
+  "description": "Inadequate renal function: Creatinine clearance <60 mL/min - TDF-containing PrEP requires adequate kidney function",
+  "input": {
+    "AgeInYears": 45,
+    "WeightInKilo": 80,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": false,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

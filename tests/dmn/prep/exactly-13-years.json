@@ -1,0 +1,16 @@
+{
+  "description": "Exactly 13 years: At operationalized adolescent threshold - eligible if other criteria met",
+  "input": {
+    "AgeInYears": 13,
+    "WeightInKilo": 40,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": true
+  }
+}

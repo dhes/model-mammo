@@ -1,0 +1,9 @@
+{
+  "description": "Testing not yet done this pregnancy - recommend Rh(D) blood typing and antibody screen (USPSTF Grade A)",
+  "input": {
+    "RhDAndAntibodyScreenDone": false
+  },
+  "expected": {
+    "PerformRhDAndAntibodyTests": true
+  }
+}

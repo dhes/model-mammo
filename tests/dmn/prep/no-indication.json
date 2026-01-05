@@ -1,0 +1,16 @@
+{
+  "description": "No PrEP indication: Eligible but has no identified risk factors for HIV acquisition - reassess if risk factors change",
+  "input": {
+    "AgeInYears": 35,
+    "WeightInKilo": 70,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": false
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

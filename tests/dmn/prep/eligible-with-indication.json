@@ -1,0 +1,16 @@
+{
+  "description": "Eligible with indication: All eligibility criteria met AND has PrEP indication - prescribe PrEP",
+  "input": {
+    "AgeInYears": 28,
+    "WeightInKilo": 72,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": true
+  }
+}

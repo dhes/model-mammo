@@ -27,6 +27,10 @@ const dmnFiles = {
   hypertension: resolve(__dirname, '../input/dmn/HypertensionScreeningAdult.dmn'),
   // tests/dmn/ophthalmia/*.json use OphthalmiaNeonatorumProphylaxis.dmn
   ophthalmia: resolve(__dirname, '../input/dmn/OphthalmiaNeonatorumProphylaxis.dmn'),
+  // tests/dmn/prep/*.json use HIVPreexposureProphylaxis.dmn
+  prep: resolve(__dirname, '../input/dmn/HIVPreexposureProphylaxis.dmn'),
+  // tests/dmn/rhd/*.json use RhdIncompatibility.dmn
+  rhd: resolve(__dirname, '../input/dmn/RhdIncompatibility.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -276,6 +280,64 @@ describe('Ophthalmia Neonatorum Prophylaxis Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.ophthalmia);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('HIV Pre-Exposure Prophylaxis Decision Table', () => {
+  const prepTestsDir = resolve(testsDir, 'prep');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.prep);
+  });
+
+  // Skip if prep tests directory doesn't exist
+  if (!existsSync(prepTestsDir)) {
+    it.skip('No PrEP tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(prepTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(prepTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.prep);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('RhD Incompatibility Screening Decision Table', () => {
+  const rhdTestsDir = resolve(testsDir, 'rhd');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.rhd);
+  });
+
+  // Skip if rhd tests directory doesn't exist
+  if (!existsSync(rhdTestsDir)) {
+    it.skip('No RhD tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(rhdTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(rhdTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.rhd);
 
       expect(result).toEqual(testData.expected);
     });

@@ -1,0 +1,16 @@
+{
+  "description": "Contraindications present: Allergy or contraindication to PrEP medications (TDF, FTC, etc.)",
+  "input": {
+    "AgeInYears": 40,
+    "WeightInKilo": 85,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": false,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

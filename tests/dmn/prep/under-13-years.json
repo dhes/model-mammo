@@ -1,0 +1,16 @@
+{
+  "description": "Under 13 years: Below operationalized adolescent threshold (USPSTF specifies 'adolescents' without explicit age)",
+  "input": {
+    "AgeInYears": 12,
+    "WeightInKilo": 40,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

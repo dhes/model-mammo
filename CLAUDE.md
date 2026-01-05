@@ -703,6 +703,19 @@ Each DMN decision table maps to one `eca-rule` PlanDefinition. The pregnancy HIV
 
 The WHO L2 spreadsheet's "Trigger: ANC.B9" annotation maps directly to `PlanDefinition.action.trigger.type = named-event`.
 
+### Assumed Implementation Context
+
+These DMN models assume an execution environment with:
+
+1. **Structured patient data** — Queryable clinical history available at decision time
+2. **Event-driven evaluation** — Decisions triggered by clinical events (encounter start, birth, etc.)
+3. **Alert surfacing** — Positive recommendations presented as actionable reminders
+4. **Closed-loop capture** — Practitioner actions recorded in structured form, available to future evaluations
+
+In current US practice, this typically means FHIR/CQL (data + logic), CDS Hooks or PlanDefinition (triggers), and QI-Core profiles (structured capture). But the L2 models are technology-agnostic — the same DMN could target HL7v2/Arden Syntax or proprietary EMR logic.
+
+**Key separation:** L2 specifies the decision; L3/L4 specifies the plumbing.
+
 **Current artifacts:**
 
 *Tobacco Cessation:*
@@ -728,6 +741,12 @@ The WHO L2 spreadsheet's "Trigger: ANC.B9" annotation maps directly to `PlanDefi
 
 *Ophthalmia Neonatorum Prophylaxis:*
 - `OphthalmiaNeonatorumProphylaxis.dmn` — universal newborn prophylaxis; persistent reminder until documented
+
+*HIV Pre-Exposure Prophylaxis:*
+- `HIVPreexposureProphylaxis.dmn` — eligibility + indication model; 8 inputs, FIRST hit policy for early exclusion
+
+*Rh(D) Incompatibility Screening:*
+- `RhdIncompatibility.dmn` — Grade A only (first prenatal visit); persistent reminder pattern
 
 ### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
 
@@ -1032,6 +1051,162 @@ This guideline has no MADiE eCQM implementation. WHO provides narrative guidance
 | WHO | tetracycline 1%, erythromycin 0.5%, povidone iodine 2.5%, silver nitrate 1%, chloramphenicol 1% |
 
 The input `OcularProphylaxisAdministered` abstracts over these options — any documented prophylaxis clears the alert.
+
+### HIV Pre-Exposure Prophylaxis (PrEP): Eligibility + Indication Pattern
+
+**The USPSTF recommendation (Grade A):**
+
+> "The USPSTF recommends that clinicians prescribe preexposure prophylaxis (PrEP) using effective antiretroviral therapy to persons who are at increased risk of HIV acquisition."
+
+**Population:** "Adults and adolescents weighing at least 35 kg (77 lb)"
+
+**Structural complexity:**
+
+Unlike simple screening recommendations, PrEP requires:
+1. **Eligibility criteria** — Can this person safely receive PrEP?
+2. **Indication criteria** — Should this person receive PrEP?
+
+Both must be satisfied for a prescription.
+
+### PrEP: Operationalizing "Adolescents"
+
+**The ambiguity:** USPSTF specifies "adolescents" without an explicit lower age bound.
+
+**Options considered:**
+
+| Age | Rationale |
+|-----|-----------|
+| None | Let weight (35kg) be the only threshold |
+| 12 | Aligns with CMS138 tobacco screening adolescent threshold |
+| 13 | Common legal threshold for adolescent consent |
+| 15 | Aligns with HIV screening age-based threshold |
+| 18 | Adults only |
+
+**Decision: 13 years**
+
+Rationale:
+1. Commonly recognized as adolescent threshold for consent/legal purposes
+2. Conservative — aligns with when adolescents may begin sexual activity
+3. The 35kg weight threshold provides additional physiological gating
+4. Matches WHO SMART-HIV approach (references "adolescents" broadly)
+
+### PrEP: Weight Threshold per FDA
+
+**The requirement:** "weighing at least 35 kg (77 lb)"
+
+This is an FDA pharmacokinetic threshold, not a clinical guideline judgment. The DMN enforces it directly as `WeightInKilo >= 35`.
+
+### PrEP: WHO-Informed Exclusion Criteria
+
+**Beyond USPSTF:** The WHO and CDC provide implementation guidance that informs eligibility criteria:
+
+| Criterion | Source | Rationale |
+|-----------|--------|-----------|
+| HIV-negative | USPSTF/WHO | PrEP is prophylaxis; HIV+ persons need treatment |
+| Creatinine clearance ≥60 mL/min | WHO | TDF-containing PrEP requires adequate kidney function |
+| No acute HIV symptoms | WHO/CDC | May indicate acute HIV infection (window period) — defer, test further |
+| No probable recent exposure (72h) | WHO | Recent exposure → PEP pathway, not PrEP |
+| No contraindications | Clinical | Allergy or drug interactions with TDF/FTC/etc. |
+
+These become the first 7 exclusion rules in the table (FIRST hit policy).
+
+### PrEP: HasPrEPIndication Abstraction
+
+**The complexity:** USPSTF defines "increased risk" through multiple factors:
+
+- Sexual partner with HIV (especially if not virally suppressed)
+- Bacterial STI in past 6 months (syphilis, gonorrhea, chlamydia)
+- Inconsistent/no condom use with partners of unknown HIV status
+- Shares injection drug equipment
+- Drug-injecting partner with HIV
+- Key populations: MSM, transgender women, persons who inject drugs, transactional sex
+
+**Decision: Abstract to `HasPrEPIndication` boolean**
+
+Same pattern as `HasHIVRiskFactors`, `HighRiskForNTD`, and `AtIncreasedRisk`:
+
+1. **DMN stays focused**: One boolean captures "patient has risk factors warranting PrEP"
+2. **L3 computes the details**: CQL evaluates STI history, partner status, key populations
+3. **Flexibility**: Different implementations can use available data
+4. **Clinical judgment preserved**: Clinician can override based on conversation
+
+The list of risk factors is documented in the DMN description for traceability, but the decision logic uses the abstracted flag.
+
+### PrEP: FIRST Hit Policy for Early Exclusion
+
+**Design choice:** Use `hitPolicy="FIRST"` with exclusions ordered first.
+
+**Rule order:**
+
+1. Age < 13 → false (exclude)
+2. Weight < 35 → false (exclude)
+3. HIV+ → false (exclude)
+4. Renal insufficient → false (exclude)
+5. Acute HIV symptoms → false (exclude)
+6. Recent exposure → false (exclude — use PEP pathway)
+7. Contraindications → false (exclude)
+8. No indication → false (eligible but no risk factors)
+9. All criteria met → true (prescribe)
+
+**Why FIRST:**
+
+1. **Short-circuit evaluation**: Stop at first matching exclusion
+2. **Clear precedence**: Exclusions take priority over indication
+3. **SME clarity**: Read top-to-bottom as "first check age, then weight, then..."
+4. **Matches clinical workflow**: Rule out ineligible patients first
+
+### PrEP: No eCQM Correlate
+
+Unlike tobacco (CMS138) or colorectal (CMS130), there is no MADiE eCQM for PrEP. The WHO SMART-HIV repository contains `HIVC7DTLogic.cql` with related decision logic, which informed the eligibility criteria structure.
+
+**Sources:**
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prevention-of-human-immunodeficiency-virus-hiv-infection-pre-exposure-prophylaxis
+- WHO SMART-HIV: HIVC7DTLogic.cql
+
+### Rh(D) Incompatibility Screening: Grade A Only
+
+**The USPSTF recommendations:**
+
+| Grade | Population | Recommendation |
+|-------|------------|----------------|
+| A | All pregnant women, first visit | Rh(D) blood typing and antibody testing |
+| B | Unsensitized Rh(D)-negative women, 24-28 weeks | Repeat antibody testing |
+
+**Decision: Model Grade A only**
+
+The `RhdIncompatibility.dmn` covers only the Grade A (first prenatal visit) recommendation.
+
+**Rationale:**
+1. **Clear boundary**: Grade A is universal; Grade B requires knowing Rh status from the first test
+2. **Separate concerns**: Grade B depends on Grade A results — better modeled as a separate decision
+3. **Scope clarity**: Keeps each DMN focused on one recommendation
+
+Grade B would require additional inputs (`RhDNegative`, `Sensitized`, `GestationalAgeInWeeks`) and could be a future extension.
+
+### Rh(D) Incompatibility: Persistent Reminder Pattern
+
+Same pattern as Ophthalmia Neonatorum Prophylaxis:
+
+```
+RhDAndAntibodyScreenDone = false → PerformRhDAndAntibodyTests = true  (keep reminding)
+RhDAndAntibodyScreenDone = true  → PerformRhDAndAntibodyTests = false (task complete)
+```
+
+**Trigger context:** Prenatal care encounters (begins first prenatal visit, ends at delivery).
+
+**Why this works:** Unlike periodic screening (e.g., mammography every 2 years), Rh(D) testing is a one-time action per pregnancy. The alert fires on every prenatal encounter until testing is documented.
+
+### Rh(D) Incompatibility: No eCQM or WHO Correlate
+
+| Source | Status |
+|--------|--------|
+| MADiE eCQM | None found (searched 2026-01-05) |
+| WHO ANC | Discusses Rh incompatibility but doesn't expressly recommend first-visit testing |
+| ACOG | Assumes universal first-visit testing (paywalled) |
+
+The DMN is derived directly from USPSTF Grade A recommendation.
+
+**Source:** https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/rh-d-incompatibility-screening
 
 ## Target Stack
 

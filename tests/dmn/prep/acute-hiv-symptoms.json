@@ -1,0 +1,16 @@
+{
+  "description": "Acute HIV symptoms present: May indicate acute HIV infection (window period) - defer PrEP, perform additional testing",
+  "input": {
+    "AgeInYears": 28,
+    "WeightInKilo": 65,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": false,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

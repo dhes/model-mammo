@@ -1,0 +1,16 @@
+{
+  "description": "Probable recent exposure: High-risk exposure within 72 hours - PEP pathway, not PrEP",
+  "input": {
+    "AgeInYears": 32,
+    "WeightInKilo": 75,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": false,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}

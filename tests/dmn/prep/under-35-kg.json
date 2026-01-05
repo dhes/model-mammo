@@ -1,0 +1,16 @@
+{
+  "description": "Under 35 kg: Below FDA-approved weight threshold (USPSTF: 'weighing at least 35 kg')",
+  "input": {
+    "AgeInYears": 25,
+    "WeightInKilo": 34,
+    "HIVNegative": true,
+    "CreatinineClearanceAdequate": true,
+    "NoAcuteHIVSymptoms": true,
+    "NoProbableRecentExposure": true,
+    "NoContraindications": true,
+    "HasPrEPIndication": true
+  },
+  "expected": {
+    "PrescribePrEP": false
+  }
+}
