@@ -723,6 +723,9 @@ The WHO L2 spreadsheet's "Trigger: ANC.B9" annotation maps directly to `PlanDefi
 - `HIVScreeningAge.dmn` — age-based model: universal 15-65, risk-based outside that range
 - `HIVScreeningPregnancy.dmn` — pregnancy-specific model with third-trimester repeat flag
 
+*Hypertension Screening:*
+- `HypertensionScreeningAdult.dmn` — screening-only model; age-stratified intervals (annual for 40+ and at-risk, 3-5 years for low-risk 18-39)
+
 ### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
 
 **The USPSTF language:**
@@ -882,6 +885,99 @@ Same pattern as folic acid: `HasHIVRiskFactors` is a clinical judgment basket.
 - For clinical CDS: configurable (annual, per-encounter, etc.)
 
 This matches our "configurable frequency" pattern from tobacco screening.
+
+### Hypertension Screening: Screening vs Management Scope
+
+**The problem:** CMS22 eCQM measures both screening AND follow-up actions. How do we scope the DMN?
+
+**CMS22 structure:**
+
+| BP Reading | Required Follow-up |
+|------------|-------------------|
+| Normal (<120/<80) | None |
+| Elevated (120-129/<80) | Rescreen 6 months + lifestyle interventions |
+| Stage 1 HTN first reading (≥130 OR ≥80) | Rescreen 4 weeks + lifestyle (or referral) |
+| Stage 1 HTN second reading (130-139/80-89) | Lab/ECG + lifestyle + rescreen 6 months |
+| Stage 2 HTN second reading (≥140 OR ≥90) | Lab/ECG + lifestyle + pharmacotherapy + rescreen 4 weeks |
+
+**Decision: Screening-only scope**
+
+The `HypertensionScreeningAdult.dmn` answers only: "Should we measure BP at this encounter?"
+
+Follow-up logic (what to do after measuring) would be a separate decision table. This separation:
+
+1. **Matches clinical workflow**: Screening is a pre-measurement decision; follow-up is post-measurement
+2. **Keeps each table focused**: One question per table
+3. **Aligns with our ECA pattern**: Event (encounter) → Condition (DMN) → Action (measure or not)
+
+### Hypertension Screening: Age-Stratified Intervals
+
+**USPSTF specifies three populations:**
+
+| Population | Interval | DMN Implementation |
+|------------|----------|-------------------|
+| Adults 40+ years | Annual | Check `OBPMBInTheLastYear` |
+| Adults 18-39 at increased risk | Annual | Check `OBPMBInTheLastYear` |
+| Adults 18-39 low-risk with prior normal | Every 3-5 years | Check `OBPMBInTheLast4Years` |
+
+**The 3-5 year ambiguity:**
+
+USPSTF says "every 3 to 5 years" without specifying exactly.
+
+**Decision: 4 years as operational midpoint**
+
+Using 4 years:
+- More conservative than 5 years (biased toward screening)
+- More practical than 3 years (reduces unnecessary visits)
+- Matches common clinical workflows (round numbers)
+
+### Hypertension Screening: Risk Factor Abstraction
+
+**USPSTF defines "increased risk" as:**
+- Age 40+ (captured separately in table)
+- Black persons
+- High-normal blood pressure (120-129/<80)
+- Overweight or obese
+
+**Decision: Abstract to `AtIncreasedRisk` boolean**
+
+Same pattern as `HasHIVRiskFactors` and `HighRiskForNTD`:
+
+1. DMN uses a single boolean input
+2. CQL/implementation layer computes the flag based on available data
+3. Allows flexibility across implementations with varying data availability
+
+**Note:** "High-normal BP" creates a circular dependency — you need to measure BP to know if they have high-normal BP. In practice:
+- Prior BP readings inform current risk status
+- First-visit patients default to screening (no prior BP to assess)
+
+### Hypertension Screening: Two Interval Inputs Pattern
+
+**The design challenge:**
+
+Two different intervals apply to different populations:
+- Annual (1 year) for 40+ and at-risk 18-39
+- 3-5 years (4 years) for low-risk 18-39
+
+**Initial approach had impossible states:**
+
+Using two boolean inputs (`OBPMBInTheLastYear`, `OBPMBInTheLast4Years`) created logically impossible combinations:
+- `OBPMBInTheLastYear=true` AND `OBPMBInTheLast4Years=false` — impossible (if you have a BP in last year, you have one in last 4 years)
+
+**Solution: Wildcards for irrelevant intervals**
+
+Each population only cares about ONE interval:
+
+| Population | Cares about 1yr? | Cares about 4yr? |
+|------------|-----------------|------------------|
+| 40+ | Yes | No (wildcard) |
+| 18-39 at-risk | Yes | No (wildcard) |
+| 18-39 low-risk | No (wildcard) | Yes |
+
+By using `-` (wildcard) for the interval that doesn't apply, we:
+1. Eliminate impossible state combinations
+2. Make the table logic clearer
+3. Signal which interval applies to which population
 
 ## Target Stack
 

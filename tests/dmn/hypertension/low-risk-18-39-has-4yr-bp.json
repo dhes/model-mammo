@@ -1,0 +1,13 @@
+{
+  "description": "Low-risk 18-39, has BP in last 4 years - covered (USPSTF: every 3-5 years)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 30,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": true
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": false
+  }
+}

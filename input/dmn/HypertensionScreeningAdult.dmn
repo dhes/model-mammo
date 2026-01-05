@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0ld1kxt" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Hypertension Screening in Adults
+
+USPSTF Grade A Recommendation:
+"The USPSTF recommends screening for hypertension in adults 18 years or older with office blood pressure measurement (OBPM). The USPSTF recommends obtaining blood pressure measurements outside of the clinical setting for diagnostic confirmation before starting treatment."
+
+Screening Intervals (USPSTF):
+- Adults 40+ years: Annual screening
+- Adults 18-39 at increased risk: Annual screening
+- Adults 18-39 not at increased risk with prior normal readings: Every 3-5 years
+
+Scope: This decision table covers SCREENING only (should we measure BP?). Follow-up actions based on BP readings (confirmatory testing, lifestyle interventions, pharmacotherapy) are covered in separate management protocols per CMS22 eCQM structure.
+
+Trigger: Evaluate at each qualifying office encounter (named-event: encounter-start)
+
+Glossary:
+- DiagnosisOfHypertension: True if patient has existing hypertension diagnosis (excludes from screening, defers to management)
+- AgeInYears: Patient age; 18+ for USPSTF recommendation, 40+ triggers annual screening
+- AtIncreasedRisk: Clinical judgment basket per USPSTF: Black persons, high-normal BP (120-129/&lt;80), overweight/obese
+- OBPMBInTheLastYear: Office BP measurement within last 12 months (for annual screening populations)
+- OBPMBInTheLast4Years: Office BP measurement within last 4 years (operationalizes "3-5 years" for low-risk 18-39)
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening
+- CMS22 FHIR eCQM: Preventive Care and Screening: Screening for High Blood Pressure and Follow-Up Documented</description>
+  <decision id="Decision_1sj51w5" name="Hypertension in Adults: Screening">
+    <decisionTable id="DecisionTable_1dfnfsx" biodi:annotationsWidth="509">
+      <input id="InputClause_0tnfkb6" label="Diagnosis Of Hypertension" biodi:width="150">
+        <inputExpression id="LiteralExpression_0zjhqcb" typeRef="boolean">
+          <text>DiagnosisOfHypertension</text>
+        </inputExpression>
+      </input>
+      <input id="Input_1" label="Age In Years" biodi:width="150">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>AgeInYears</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1wacovq" label="At Increased Risk">
+        <inputExpression id="LiteralExpression_0z2746x" typeRef="boolean">
+          <text>AtIncreasedRisk</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1tzec1j" label="OBPMB In The Last Year" biodi:width="150">
+        <inputExpression id="LiteralExpression_1jdgt1k" typeRef="boolean">
+          <text>OBPMBInTheLastYear</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_004b2fp" label="OBPMB In The Last 4 Years" biodi:width="150">
+        <inputExpression id="LiteralExpression_00f6qdh" typeRef="boolean">
+          <text>OBPMBInTheLast4Years</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Office Blood Pressure Measurement" name="OfficeBloodPressureMeasurement" typeRef="boolean" biodi:width="150" />
+      <rule id="DecisionRule_0zgzly4">
+        <description>Existing hypertension diagnosis: Exclude from screening population. CMS22 Denominator Exclusion: "Patients with a diagnosis of hypertension overlapping the measurement period." These patients are managed under hypertension treatment protocols, not screening.</description>
+        <inputEntry id="UnaryTests_0f4lgac">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g3azyf">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hdrszm">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b4uugn">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01371c9">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0utyp0z">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vaobyn">
+        <description>Under 18 years: USPSTF recommendation applies to "adults 18 years or older." Pediatric BP screening follows separate guidelines.</description>
+        <inputEntry id="UnaryTests_19ant7n">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0au1nwz">
+          <text>&lt;18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iu069v">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vjnbah">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0oxtnxn">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0s9yi28">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0yt668x">
+        <description>Ages 18-39, NOT at increased risk, no BP in 4 years: Screen now. USPSTF: "Adults aged 18 to 39 years with normal blood pressure... who do not have other risk factors should be rescreened every 3 to 5 years." Using 4 years as operational midpoint.</description>
+        <inputEntry id="UnaryTests_17ubfan">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w42f8m">
+          <text>[18..39]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nhvwj5">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lufrqa">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11nar5p">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ga7zcn">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1rrp1n0">
+        <description>Ages 18-39, NOT at increased risk, HAS BP in last 4 years: Covered. Low-risk young adults with recent normal screening are covered for 3-5 years per USPSTF.</description>
+        <inputEntry id="UnaryTests_03q4gkq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1345gzu">
+          <text>[18..39]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1flfbd1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xwh028">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gkmsma">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1g8ou8o">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1atwurg">
+        <description>Ages 18-39, AT increased risk, no BP in last year: Screen now. USPSTF: "Screening annually may be useful for... persons with risk factors for hypertension." Risk factors include Black persons, high-normal BP, overweight/obese.</description>
+        <inputEntry id="UnaryTests_1e1z9tr">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ypk4sz">
+          <text>[18..39]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12lkfbs">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u85eyj">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_132sgt6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wb33hk">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0565yut">
+        <description>Ages 18-39, AT increased risk, HAS BP in last year: Covered. At-risk patients with recent annual screening are covered until next annual interval.</description>
+        <inputEntry id="UnaryTests_0e74enp">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00y5i6a">
+          <text>[18..39]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cuvz3i">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0seewm7">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kej909">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0fss2fh">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hmaf8s">
+        <description>Age 40+, no BP in last year: Screen now. USPSTF: "The USPSTF suggests annual screening for adults aged 40 years or older." Age 40+ triggers annual screening regardless of other risk factors.</description>
+        <inputEntry id="UnaryTests_0tgoytn">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qtsswn">
+          <text>&gt;39</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1nzcrpw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c9xmvm">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ekvdtr">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1almgud">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0u61i5a">
+        <description>Age 40+, HAS BP in last year: Covered. Adults 40+ with recent annual screening are covered until next annual interval.</description>
+        <inputEntry id="UnaryTests_0zl276t">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u1vyjh">
+          <text>&gt;39</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02b1aq0">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15udtgh">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19v07gj">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p44v9z">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1sj51w5">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

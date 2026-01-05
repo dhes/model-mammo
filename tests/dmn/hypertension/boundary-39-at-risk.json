@@ -1,0 +1,13 @@
+{
+  "description": "Boundary: exactly 39, at-risk, no 1yr BP - screen (annual applies)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 39,
+    "AtIncreasedRisk": true,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": true
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": true
+  }
+}

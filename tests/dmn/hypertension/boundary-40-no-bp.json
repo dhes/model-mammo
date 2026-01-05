@@ -1,0 +1,13 @@
+{
+  "description": "Boundary: exactly 40, no 1yr BP - screen (40+ triggers annual)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 40,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": false
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": true
+  }
+}

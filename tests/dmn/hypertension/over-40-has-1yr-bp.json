@@ -1,0 +1,13 @@
+{
+  "description": "Age 40+, has BP in last year - covered (USPSTF: annual for 40+)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 55,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": true,
+    "OBPMBInTheLast4Years": true
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": false
+  }
+}

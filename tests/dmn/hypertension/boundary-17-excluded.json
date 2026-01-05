@@ -1,0 +1,13 @@
+{
+  "description": "Boundary: exactly 17 - excluded (under 18)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 17,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": false
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": false
+  }
+}

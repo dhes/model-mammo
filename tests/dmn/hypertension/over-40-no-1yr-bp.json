@@ -1,0 +1,13 @@
+{
+  "description": "Age 40+, no BP in last year - screen (USPSTF: annual for 40+)",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 55,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": true
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": true
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "description": "Known hypertension diagnosis - defer to management protocols",
+  "input": {
+    "DiagnosisOfHypertension": true,
+    "AgeInYears": 45,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": false
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": false
+  }
+}

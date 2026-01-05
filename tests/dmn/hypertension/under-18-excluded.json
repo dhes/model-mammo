@@ -1,0 +1,13 @@
+{
+  "description": "Under 18 years old - USPSTF recommendation is for adults 18+",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 16,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": false
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": false
+  }
+}

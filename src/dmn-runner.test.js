@@ -23,6 +23,8 @@ const dmnFiles = {
   'hiv-age': resolve(__dirname, '../input/dmn/HIVScreeningAge.dmn'),
   // tests/dmn/hiv-pregnancy/*.json use HIVScreeningPregnancy.dmn
   'hiv-pregnancy': resolve(__dirname, '../input/dmn/HIVScreeningPregnancy.dmn'),
+  // tests/dmn/hypertension/*.json use HypertensionScreeningAdult.dmn
+  hypertension: resolve(__dirname, '../input/dmn/HypertensionScreeningAdult.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -214,6 +216,35 @@ describe('HIV Screening Pregnancy Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles['hiv-pregnancy']);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('Hypertension Screening Decision Table', () => {
+  const hypertensionTestsDir = resolve(testsDir, 'hypertension');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.hypertension);
+  });
+
+  // Skip if hypertension tests directory doesn't exist
+  if (!existsSync(hypertensionTestsDir)) {
+    it.skip('No hypertension tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(hypertensionTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(hypertensionTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.hypertension);
 
       expect(result).toEqual(testData.expected);
     });

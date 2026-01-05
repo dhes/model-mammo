@@ -1,0 +1,13 @@
+{
+  "description": "Boundary: exactly 18, low-risk, no recent BP - screen",
+  "input": {
+    "DiagnosisOfHypertension": false,
+    "AgeInYears": 18,
+    "AtIncreasedRisk": false,
+    "OBPMBInTheLastYear": false,
+    "OBPMBInTheLast4Years": false
+  },
+  "expected": {
+    "OfficeBloodPressureMeasurement": true
+  }
+}
