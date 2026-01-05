@@ -1,0 +1,9 @@
+{
+  "description": "Prophylaxis already documented - no further action needed",
+  "input": {
+    "OcularProphylaxisAdministered": true
+  },
+  "expected": {
+    "AdministerOcularProphylaxis": false
+  }
+}

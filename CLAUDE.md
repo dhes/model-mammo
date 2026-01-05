@@ -726,6 +726,9 @@ The WHO L2 spreadsheet's "Trigger: ANC.B9" annotation maps directly to `PlanDefi
 *Hypertension Screening:*
 - `HypertensionScreeningAdult.dmn` — screening-only model; age-stratified intervals (annual for 40+ and at-risk, 3-5 years for low-risk 18-39)
 
+*Ophthalmia Neonatorum Prophylaxis:*
+- `OphthalmiaNeonatorumProphylaxis.dmn` — universal newborn prophylaxis; persistent reminder until documented
+
 ### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
 
 **The USPSTF language:**
@@ -978,6 +981,57 @@ By using `-` (wildcard) for the interval that doesn't apply, we:
 1. Eliminate impossible state combinations
 2. Make the table logic clearer
 3. Signal which interval applies to which population
+
+### Ophthalmia Neonatorum Prophylaxis: Universal with Persistent Reminder
+
+**The simplest guideline:**
+
+USPSTF Grade A: "The USPSTF recommends prophylactic ocular topical medication for all newborns to prevent gonococcal ophthalmia neonatorum."
+
+- Universal recommendation (all newborns)
+- No exclusions
+- One-time action at birth
+
+**Design question: Input or no input?**
+
+| Option | Logic | Trade-off |
+|--------|-------|-----------|
+| No input | Always return `true` | Maximally simple; "once" enforced by trigger |
+| With input | Check if already done | Persistent reminder until documented |
+
+**Decision: Keep the input (persistent reminder pattern)**
+
+Clinical reality in delivery settings:
+- Routine delivery: medication given and recorded promptly
+- Complicated delivery: chaos, possible oversight, unit transfers
+- The alert should **keep firing** until someone documents administration
+
+This matches a "to-do list" pattern:
+```
+OcularProphylaxisAdministered = false → AdministerOcularProphylaxis = true  (keep reminding)
+OcularProphylaxisAdministered = true  → AdministerOcularProphylaxis = false (task complete)
+```
+
+**Trigger model:**
+
+Unlike periodic screenings (encounter-start), this fires:
+1. At birth (initial trigger)
+2. On each chart access until documented (persistent reminder)
+
+This ensures the NICU nurse asking "did you give the drops?" gets an answer from the system.
+
+**No eCQM or WHO SMART correlate:**
+
+This guideline has no MADiE eCQM implementation. WHO provides narrative guidance (Recommendations on Newborn Health, 2017) but no SMART decision table. The DMN is derived directly from USPSTF.
+
+**Medication variation:**
+
+| Source | Approved agents |
+|--------|-----------------|
+| USPSTF/FDA | 0.5% erythromycin (only US option) |
+| WHO | tetracycline 1%, erythromycin 0.5%, povidone iodine 2.5%, silver nitrate 1%, chloramphenicol 1% |
+
+The input `OcularProphylaxisAdministered` abstracts over these options — any documented prophylaxis clears the alert.
 
 ## Target Stack
 

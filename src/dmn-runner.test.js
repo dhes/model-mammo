@@ -25,6 +25,8 @@ const dmnFiles = {
   'hiv-pregnancy': resolve(__dirname, '../input/dmn/HIVScreeningPregnancy.dmn'),
   // tests/dmn/hypertension/*.json use HypertensionScreeningAdult.dmn
   hypertension: resolve(__dirname, '../input/dmn/HypertensionScreeningAdult.dmn'),
+  // tests/dmn/ophthalmia/*.json use OphthalmiaNeonatorumProphylaxis.dmn
+  ophthalmia: resolve(__dirname, '../input/dmn/OphthalmiaNeonatorumProphylaxis.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -245,6 +247,35 @@ describe('Hypertension Screening Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.hypertension);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('Ophthalmia Neonatorum Prophylaxis Decision Table', () => {
+  const ophthalmiaTestsDir = resolve(testsDir, 'ophthalmia');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.ophthalmia);
+  });
+
+  // Skip if ophthalmia tests directory doesn't exist
+  if (!existsSync(ophthalmiaTestsDir)) {
+    it.skip('No ophthalmia tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(ophthalmiaTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(ophthalmiaTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.ophthalmia);
 
       expect(result).toEqual(testData.expected);
     });

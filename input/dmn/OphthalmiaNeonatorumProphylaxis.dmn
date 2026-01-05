@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0092biv" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Ocular Prophylaxis for Gonococcal Ophthalmia Neonatorum
+
+USPSTF Grade A Recommendation:
+"The USPSTF recommends prophylactic ocular topical medication for all newborns to prevent gonococcal ophthalmia neonatorum."
+
+Medication (USPSTF):
+- 0.5% erythromycin ophthalmic ointment (only FDA-approved option in US)
+
+Timing: "Shortly after birth" — infection can cause severe damage as early as 24 hours after birth.
+
+Trigger: Evaluate at birth and on each chart access until prophylaxis is documented (named-event: birth, encounter-start). This persistent reminder pattern ensures prophylaxis is not forgotten in complicated deliveries or unit transfers.
+
+Glossary:
+- OcularProphylaxisAdministered: True if prophylactic eye medication has been documented as given. Includes erythromycin (US), or WHO alternatives: tetracycline, povidone iodine, silver nitrate, chloramphenicol.
+
+Context: Live newborn delivered in a hospital or other modern healthcare facility.
+
+WHO Alternative (WHO Recommendations on Newborn Health, 2017):
+"For all neonates, the WHO STI guideline recommends topical ocular prophylaxis for the prevention of gonococcal and chlamydial ophthalmia neonatorum." (Strong recommendation)
+WHO-approved agents: tetracycline 1%, erythromycin 0.5%, povidone iodine 2.5% (water-based), silver nitrate 1%, chloramphenicol 1%.
+
+Note: No correlate found in MADiE eCQMs or WHO SMART guidelines.
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/ocular-prophylaxis-for-gonococcal-ophthalmia-neonatorum-preventive-medication
+- WHO Recommendations on Newborn Health (2017)</description>
+  <decision id="Decision_1ry6f6f" name="Ocular Prophylaxis for Gonococcal Ophthalmia Neonatorum">
+    <decisionTable id="DecisionTable_0rpbv0a">
+      <input id="Input_1" label="Ocular Prophylaxis Administered">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>OcularProphylaxisAdministered</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Administer Ocular Prophylaxis" name="AdministerOcularProphylaxis" typeRef="boolean" />
+      <rule id="DecisionRule_0dkmck5">
+        <description>Prophylaxis not yet documented: Recommend administration. USPSTF: "prophylactic ocular topical medication for all newborns." Alert persists until action is documented — ensures prophylaxis is not forgotten in complicated deliveries or unit transfers.</description>
+        <inputEntry id="UnaryTests_1j4tita">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0onrdp7">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1aqyevv">
+        <description>Prophylaxis already documented: No further action needed. Task complete — alert clears.</description>
+        <inputEntry id="UnaryTests_05umtj6">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1m29h8x">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1ry6f6f">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

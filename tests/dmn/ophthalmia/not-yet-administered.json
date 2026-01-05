@@ -1,0 +1,9 @@
+{
+  "description": "Prophylaxis not yet documented - recommend administration (USPSTF: all newborns)",
+  "input": {
+    "OcularProphylaxisAdministered": false
+  },
+  "expected": {
+    "AdministerOcularProphylaxis": true
+  }
+}
