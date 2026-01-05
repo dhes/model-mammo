@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0ldzmp2" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Syphilis Screening (Composite: Pregnancy and Non-Pregnancy)
+
+USPSTF Grade A Recommendations (two populations):
+
+1. Non-Pregnant Population:
+   "The USPSTF recommends screening for syphilis infection in persons who are at increased risk for infection."
+   Population: Asymptomatic, nonpregnant adolescents and adults at increased risk.
+
+2. Pregnant Population:
+   "The USPSTF recommends early, universal screening for syphilis infection during pregnancy; if an individual is not screened early in pregnancy, the USPSTF recommends screening at the first available opportunity."
+   Population: All asymptomatic pregnant persons (universal, not risk-based).
+
+Design Notes:
+- Composite table: Combines both USPSTF recommendations into a single decision table.
+- Trade-off: L4 implementation needs complete rule set; SMEs may find two-table format easier to review.
+- Symptomatic patients: Excluded from screening (they need diagnostic testing, not screening).
+
+Trigger: Encounter-start. Evaluate at clinical encounters where syphilis risk assessment or prenatal care occurs.
+
+Glossary:
+- Pregnant: True if patient is currently pregnant
+- Asymptomatic: True if no signs/symptoms of syphilis (chancre, rash, etc.)
+- AdolescentOrAdult: True if patient is adolescent or adult (not a child)
+- AtIncreasedRisk: True if patient has risk factors (MSM, HIV, STIs, drug use, incarceration, sex work, high-prevalence community)
+- FirstPrenatalVisit: True if this is the patient's first prenatal care visit this pregnancy
+- PregnancyScreeningDone: True if syphilis screening has been performed this pregnancy
+- PerformSyphilisTesting: Output — True if screening should be performed at this encounter
+
+WHO: SMART-ANC covers syphilis in ANCDT11.cql (https://github.com/WorldHealthOrganization/smart-anc).
+
+CMS: No eCQM found in MADiE for syphilis screening (searched 2026-01-05).
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-nonpregnant-adults-adolescents-screening
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-in-pregnancy-screening</description>
+  <decision id="Decision_1mqahti" name="Syphilis Screening">
+    <decisionTable id="DecisionTable_06mifyf">
+      <input id="InputClause_03skrp8" label="Pregnant" biodi:width="150">
+        <inputExpression id="LiteralExpression_0hjnkh0" typeRef="boolean">
+          <text>Pregnant</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1lgqved" label="Asymptomatic" biodi:width="150">
+        <inputExpression id="LiteralExpression_1te7exo" typeRef="boolean">
+          <text>Asymptomatic</text>
+        </inputExpression>
+      </input>
+      <input id="Input_1" label="Adolescent Or Adult" biodi:width="150">
+        <inputExpression id="InputExpression_1" typeRef="boolean">
+          <text>AdolescentOrAdult</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_016fgkz" label="At Increased Risk" biodi:width="150">
+        <inputExpression id="LiteralExpression_0pzgpx2" typeRef="boolean">
+          <text>AtIncreasedRisk</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0sg1de9" label="First Prenatal Visit" biodi:width="150">
+        <inputExpression id="LiteralExpression_08f3sck" typeRef="boolean">
+          <text>FirstPrenatalVisit</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0puhchv" label="Pregnancy ScreeningDone" biodi:width="150">
+        <inputExpression id="LiteralExpression_17pyyvp" typeRef="boolean">
+          <text>PregnancyScreeningDone</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Perform Syphilis Testing" name="PerformSyphilisTesting" typeRef="boolean" biodi:width="150" />
+      <rule id="DecisionRule_0pzqlqq">
+        <description>Non-pregnant, asymptomatic, adolescent/adult, at increased risk: Screen. USPSTF: "recommends screening for syphilis infection in persons who are at increased risk."</description>
+        <inputEntry id="UnaryTests_0knjtuq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0hlbciz">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08hmpku">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12vlxrp">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d9da0z">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06q31me">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jz5rng">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17i7kj1">
+        <description>Non-pregnant, asymptomatic, adolescent/adult, NOT at increased risk: No screening. USPSTF recommendation applies only to those at increased risk.</description>
+        <inputEntry id="UnaryTests_003h96y">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18jmkul">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1sdqgf2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a8ngkr">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0npslkc">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1621jga">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o60yhq">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ymg8ql">
+        <description>Non-pregnant child (not adolescent/adult): No screening. USPSTF specifies "adolescents and adults" — children excluded from screening population.</description>
+        <inputEntry id="UnaryTests_0pbcvwd">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fz80en">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1syscf0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lctlwq">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bb22a7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dos6k5">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ccfl0k">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0tv7fju">
+        <description>Pregnant, asymptomatic, first prenatal visit: Screen. USPSTF: "recommends early, universal screening for syphilis infection during pregnancy."</description>
+        <inputEntry id="UnaryTests_0ib28vm">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13ndsu1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ethdl9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pzlwtq">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05b34dz">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1n7fvo0">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wcbja0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dj3nzn">
+        <description>Pregnant, asymptomatic, not first visit, not yet screened: Screen. USPSTF: "if an individual is not screened early in pregnancy, the USPSTF recommends screening at the first available opportunity."</description>
+        <inputEntry id="UnaryTests_1b3b364">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_030qmop">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e93as3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eri9ro">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oxz8st">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02oz6dl">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tct80e">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0an4ytn">
+        <description>Pregnant, asymptomatic, already screened this pregnancy: No further screening needed for Grade A recommendation.</description>
+        <inputEntry id="UnaryTests_0qu9lyo">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0biuury">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0blnyjg">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0drzqtn">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xki7wq">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zzw05b">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1448tcf">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02l0tqz">
+        <description>Symptomatic (any population): No screening — symptomatic patients need diagnostic testing, not screening. USPSTF specifies "asymptomatic" populations.</description>
+        <inputEntry id="UnaryTests_0rn4tn9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gcmft5">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ureax5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00qjpig">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bvfh9z">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bgh6ns">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x1icqz">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_1mqahti">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

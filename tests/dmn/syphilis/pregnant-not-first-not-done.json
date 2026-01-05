@@ -1,0 +1,14 @@
+{
+  "description": "Pregnant, asymptomatic, not first visit, not yet screened - screen at first opportunity",
+  "input": {
+    "Pregnant": true,
+    "Asymptomatic": true,
+    "AdolescentOrAdult": true,
+    "AtIncreasedRisk": false,
+    "FirstPrenatalVisit": false,
+    "PregnancyScreeningDone": false
+  },
+  "expected": {
+    "PerformSyphilisTesting": true
+  }
+}

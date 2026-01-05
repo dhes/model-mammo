@@ -1,0 +1,14 @@
+{
+  "description": "Pregnant, asymptomatic, already screened this pregnancy - no further screening for Grade A",
+  "input": {
+    "Pregnant": true,
+    "Asymptomatic": true,
+    "AdolescentOrAdult": true,
+    "AtIncreasedRisk": false,
+    "FirstPrenatalVisit": false,
+    "PregnancyScreeningDone": true
+  },
+  "expected": {
+    "PerformSyphilisTesting": false
+  }
+}

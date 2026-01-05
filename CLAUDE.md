@@ -748,6 +748,9 @@ In current US practice, this typically means FHIR/CQL (data + logic), CDS Hooks 
 *Rh(D) Incompatibility Screening:*
 - `RhdIncompatibility.dmn` — Grade A only (first prenatal visit); persistent reminder pattern
 
+*Syphilis Screening:*
+- `SyphilisScreening.dmn` — composite table (pregnancy + non-pregnancy); 7 rules
+
 ### Folic Acid Supplementation: Operationalizing "Could Become Pregnant"
 
 **The USPSTF language:**
@@ -1207,6 +1210,68 @@ RhDAndAntibodyScreenDone = true  → PerformRhDAndAntibodyTests = false (task co
 The DMN is derived directly from USPSTF Grade A recommendation.
 
 **Source:** https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/rh-d-incompatibility-screening
+
+### Syphilis Screening: Composite Table Design
+
+**Two USPSTF Grade A recommendations combined:**
+
+| Population | Recommendation | Risk-based? |
+|------------|----------------|-------------|
+| Non-pregnant adolescents/adults | Screen if at increased risk | Yes |
+| Pregnant persons | Universal early screening | No |
+
+**Design decision: Single composite table**
+
+Rather than two separate DMN files, we combine both recommendations into one 7-rule table.
+
+**Rationale:**
+1. **L4 completeness**: Implementation needs all rules regardless of how they're presented
+2. **Mutual exclusivity**: Pregnant and non-pregnant pathways don't overlap
+3. **Shared exclusions**: Symptomatic patients excluded from both (need diagnostic testing)
+
+**Trade-off:** SMEs may find a two-table format easier to review. A future refactor could split into `SyphilisScreeningPregnancy.dmn` and `SyphilisScreeningNonPregnancy.dmn`.
+
+### Syphilis Screening: AdolescentOrAdult Consolidation
+
+**The problem:** Initial draft had separate `Adolescent` and `Adult` boolean columns, creating:
+- Impossible states (both true, or both false)
+- Redundant rules (paired adolescent/adult versions of each rule)
+- 10 rules instead of 7
+
+**Solution:** Consolidate to single `AdolescentOrAdult` boolean.
+
+This mirrors USPSTF language ("adolescents and adults") and eliminates the impossible state problem. The calling system determines the threshold (typically 12-15 years) for what constitutes "adolescent."
+
+**Child exclusion:** Rule 3 explicitly handles `AdolescentOrAdult=false` (children) → no screening, since USPSTF specifies "adolescents and adults."
+
+### Syphilis Screening: Symptomatic Exclusion
+
+**USPSTF specifies "asymptomatic" for both populations.**
+
+Symptomatic patients (chancre, rash, etc.) need diagnostic testing, not screening. Rule 7 catches all symptomatic cases (pregnant or not) with a single rule:
+
+```
+Asymptomatic=false → PerformSyphilisTesting=false
+```
+
+This is a clean catch-all that applies regardless of other inputs.
+
+### Syphilis Screening: No Repeat Screening in Pregnancy (Grade A)
+
+The Grade A recommendation covers only the initial screening. USPSTF does not make a definitive recommendation on repeat screening (insufficient evidence).
+
+**CDC/ACOG recommend repeat screening at 28 weeks and delivery for high-risk pregnant persons**, but this is not modeled in the current DMN (would require additional inputs for risk status during pregnancy and gestational age).
+
+### Syphilis Screening: No eCQM Correlate
+
+| Source | Status |
+|--------|--------|
+| MADiE eCQM | None found (searched 2026-01-05) |
+| WHO SMART-ANC | ANCDT11.cql covers syphilis in pregnancy |
+
+**Sources:**
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-nonpregnant-adults-adolescents-screening
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-in-pregnancy-screening
 
 ## Target Stack
 

@@ -31,6 +31,8 @@ const dmnFiles = {
   prep: resolve(__dirname, '../input/dmn/HIVPreexposureProphylaxis.dmn'),
   // tests/dmn/rhd/*.json use RhdIncompatibility.dmn
   rhd: resolve(__dirname, '../input/dmn/RhdIncompatibility.dmn'),
+  // tests/dmn/syphilis/*.json use SyphilisScreening.dmn
+  syphilis: resolve(__dirname, '../input/dmn/SyphilisScreening.dmn'),
 };
 
 describe('Breast Cancer Screening Decision Table', () => {
@@ -338,6 +340,35 @@ describe('RhD Incompatibility Screening Decision Table', () => {
       const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
 
       const result = evaluateDecision(testData.input, dmnFiles.rhd);
+
+      expect(result).toEqual(testData.expected);
+    });
+  });
+});
+
+describe('Syphilis Screening Decision Table', () => {
+  const syphilisTestsDir = resolve(testsDir, 'syphilis');
+
+  beforeAll(() => {
+    loadDMN(dmnFiles.syphilis);
+  });
+
+  // Skip if syphilis tests directory doesn't exist
+  if (!existsSync(syphilisTestsDir)) {
+    it.skip('No syphilis tests found', () => {});
+    return;
+  }
+
+  const testFiles = readdirSync(syphilisTestsDir).filter(f => f.endsWith('.json'));
+
+  testFiles.forEach(testFile => {
+    const testName = testFile.replace('.json', '');
+
+    it(`should evaluate correctly for: ${testName}`, () => {
+      const testPath = resolve(syphilisTestsDir, testFile);
+      const testData = JSON.parse(readFileSync(testPath, 'utf-8'));
+
+      const result = evaluateDecision(testData.input, dmnFiles.syphilis);
 
       expect(result).toEqual(testData.expected);
     });

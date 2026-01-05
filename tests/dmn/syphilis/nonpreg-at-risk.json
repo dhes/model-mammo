@@ -1,0 +1,14 @@
+{
+  "description": "Non-pregnant, asymptomatic, adolescent/adult, at increased risk - screen (USPSTF Grade A)",
+  "input": {
+    "Pregnant": false,
+    "Asymptomatic": true,
+    "AdolescentOrAdult": true,
+    "AtIncreasedRisk": true,
+    "FirstPrenatalVisit": false,
+    "PregnancyScreeningDone": false
+  },
+  "expected": {
+    "PerformSyphilisTesting": true
+  }
+}

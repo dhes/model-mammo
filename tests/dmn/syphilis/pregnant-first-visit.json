@@ -1,0 +1,14 @@
+{
+  "description": "Pregnant, asymptomatic, first prenatal visit - screen (USPSTF: early universal screening)",
+  "input": {
+    "Pregnant": true,
+    "Asymptomatic": true,
+    "AdolescentOrAdult": true,
+    "AtIncreasedRisk": false,
+    "FirstPrenatalVisit": true,
+    "PregnancyScreeningDone": false
+  },
+  "expected": {
+    "PerformSyphilisTesting": true
+  }
+}

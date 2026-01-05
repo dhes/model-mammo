@@ -1,0 +1,14 @@
+{
+  "description": "Non-pregnant child (not adolescent/adult) - no screening (outside USPSTF population)",
+  "input": {
+    "Pregnant": false,
+    "Asymptomatic": true,
+    "AdolescentOrAdult": false,
+    "AtIncreasedRisk": true,
+    "FirstPrenatalVisit": false,
+    "PregnancyScreeningDone": false
+  },
+  "expected": {
+    "PerformSyphilisTesting": false
+  }
+}

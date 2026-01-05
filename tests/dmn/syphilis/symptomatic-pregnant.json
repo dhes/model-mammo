@@ -1,0 +1,14 @@
+{
+  "description": "Symptomatic, pregnant - no screening (needs diagnostic testing instead)",
+  "input": {
+    "Pregnant": true,
+    "Asymptomatic": false,
+    "AdolescentOrAdult": true,
+    "AtIncreasedRisk": false,
+    "FirstPrenatalVisit": true,
+    "PregnancyScreeningDone": false
+  },
+  "expected": {
+    "PerformSyphilisTesting": false
+  }
+}
