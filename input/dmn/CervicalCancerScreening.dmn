@@ -1,5 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0r7lnm7" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Cervical Cancer Screening
+
+USPSTF Grade A Recommendation (Ages 21-29):
+"The USPSTF recommends screening for cervical cancer every 3 years with cervical cytology alone in women aged 21 to 29 years."
+
+USPSTF Grade A Recommendation (Ages 30-65):
+"The USPSTF recommends screening for cervical cancer every 3 years with cervical cytology alone, every 5 years with high-risk human papillomavirus (hrHPV) testing alone, or every 5 years with hrHPV testing in combination with cytology (cotesting) in women aged 30 to 65 years."
+
+Population: Women aged 21-65 years with a cervix.
+
+Exclusions:
+- Women who have had a hysterectomy with removal of the cervix and have no history of high-grade precancerous lesions or cervical cancer
+- Women younger than 21 years
+- Women older than 65 years who have had adequate prior screening and are not otherwise at high risk
+
+Design Notes:
+- Uses COLLECT hit policy for ages 30-65 to present all three USPSTF-equivalent screening options
+- For ages 21-29, only cytology is recommended (single result)
+- Absence of cervix (hysterectomy) excludes from all screening
+- CDS presentation: single "Cervical Screening Due" alert with tooltip explaining options
+
+Trigger: Encounter-start or preventive care visit.
+
+Glossary:
+- AgeInYears: Patient age in years
+- Gender: "female" or "male"
+- HasCervicalCytologyInLastThreeYears: True if Pap test within 3 years
+- HasHrHPVInLastFiveYears: True if high-risk HPV test within 5 years
+- HasAbsenceOfCervix: True if hysterectomy with cervix removal or congenital absence
+- CervicalCytologyDue: Output — True if cervical cytology (Pap) is due
+- hrHPVDue: Output — True if high-risk HPV testing is due
+
+CMS: CMS124 (Cervical Cancer Screening) measures screening completion, not real-time recommendations.
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/cervical-cancer-screening</description>
   <decision id="Decision_1tr3ohj" name="Cervical Cancer Screening">
     <decisionTable id="DecisionTable_0rek5wg" hitPolicy="COLLECT">
       <input id="Input_1" label="Age In Years">
@@ -25,9 +61,39 @@
           <text>HasHrHPVInLastFiveYears</text>
         </inputExpression>
       </input>
+      <input id="InputClause_hysterectomy" label="Has Absence Of Cervix">
+        <inputExpression id="LiteralExpression_hysterectomy" typeRef="boolean">
+          <text>HasAbsenceOfCervix</text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Cervical Cytology Due" name="CervicalCytologyDue" typeRef="boolean" />
       <output id="OutputClause_0jiyynr" label="hrHPV Due" name="hrHPVDue" typeRef="boolean" />
+      <rule id="DecisionRule_hysterectomy">
+        <description>Exclusion: Absence of cervix. USPSTF: "This recommendation does not apply to women who have had a hysterectomy with removal of the cervix." Includes hysterectomy with no residual cervix or congenital absence.</description>
+        <inputEntry id="UnaryTests_hyst_age">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hyst_gender">
+          <text>"female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hyst_cytology">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hyst_hpv">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_hyst_absent">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_hyst_cytology">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_hyst_hpv">
+          <text>false</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0f4sc3c">
+        <description>Ages 21-29, recent cytology: No screening due. Patient has had cervical cytology within 3 years per USPSTF interval.</description>
         <inputEntry id="UnaryTests_1mpw0w3">
           <text>[21..29]</text>
         </inputEntry>
@@ -40,6 +106,9 @@
         <inputEntry id="UnaryTests_1nze03j">
           <text>-</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0f4sc3c_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0srbvuh">
           <text>false</text>
         </outputEntry>
@@ -48,7 +117,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_13vs2cy">
-        <description></description>
+        <description>Ages 21-29, no recent cytology: Cytology due. USPSTF: "screening every 3 years with cervical cytology alone in women aged 21 to 29 years."</description>
         <inputEntry id="UnaryTests_0r5v5q3">
           <text>[21..29]</text>
         </inputEntry>
@@ -61,6 +130,9 @@
         <inputEntry id="UnaryTests_1l3g9jz">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_13vs2cy_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0it64np">
           <text>true</text>
         </outputEntry>
@@ -69,6 +141,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1dc37ri">
+        <description>Ages 30-65, recent cytology: No screening due. Patient has had cervical cytology within 3 years, satisfying cytology-alone option.</description>
         <inputEntry id="UnaryTests_0qzi09q">
           <text>[30..65]</text>
         </inputEntry>
@@ -81,6 +154,9 @@
         <inputEntry id="UnaryTests_1g0fbwo">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1dc37ri_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_04o6wwr">
           <text>false</text>
         </outputEntry>
@@ -89,6 +165,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_14awd91">
+        <description>Ages 30-65, recent hrHPV: No screening due. Patient has had hrHPV testing within 5 years, satisfying hrHPV-alone or cotesting option.</description>
         <inputEntry id="UnaryTests_0z81m1c">
           <text>[30..65]</text>
         </inputEntry>
@@ -101,6 +178,9 @@
         <inputEntry id="UnaryTests_11o3x5g">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_14awd91_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1fy5390">
           <text>false</text>
         </outputEntry>
@@ -109,6 +189,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1emfdg7">
+        <description>Ages 30-65, no recent screening: Option 1 — Cytology alone. USPSTF: "every 3 years with cervical cytology alone."</description>
         <inputEntry id="UnaryTests_0khilal">
           <text>[30..65]</text>
         </inputEntry>
@@ -121,6 +202,9 @@
         <inputEntry id="UnaryTests_083pgkg">
           <text>false</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1emfdg7_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1lcupbv">
           <text>true</text>
         </outputEntry>
@@ -129,6 +213,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1b2o303">
+        <description>Ages 30-65, no recent screening: Option 2 — hrHPV alone. USPSTF: "every 5 years with high-risk human papillomavirus (hrHPV) testing alone."</description>
         <inputEntry id="UnaryTests_0lbcg9e">
           <text>[30..65]</text>
         </inputEntry>
@@ -141,6 +226,9 @@
         <inputEntry id="UnaryTests_145xbqt">
           <text>false</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1b2o303_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0ykt0mq">
           <text>false</text>
         </outputEntry>
@@ -149,6 +237,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1fpdvvw">
+        <description>Ages 30-65, no recent screening: Option 3 — Cotesting. USPSTF: "every 5 years with hrHPV testing in combination with cytology (cotesting)."</description>
         <inputEntry id="UnaryTests_1l5ylgn">
           <text>[30..65]</text>
         </inputEntry>
@@ -161,6 +250,9 @@
         <inputEntry id="UnaryTests_0q60pj7">
           <text>false</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1fpdvvw_hyst">
+          <text>false</text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_11wsklx">
           <text>true</text>
         </outputEntry>
@@ -169,6 +261,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0f1cbzv">
+        <description>Male: Not applicable. Cervical cancer screening applies only to individuals with a cervix.</description>
         <inputEntry id="UnaryTests_13fbzz4">
           <text>-</text>
         </inputEntry>
@@ -180,6 +273,9 @@
         </inputEntry>
         <inputEntry id="UnaryTests_09llda4">
           <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f1cbzv_hyst">
+          <text>-</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0eeth5c">
           <text>false</text>

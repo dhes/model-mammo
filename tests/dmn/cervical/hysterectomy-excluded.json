@@ -1,10 +1,11 @@
 {
+  "description": "Absence of cervix (hysterectomy) excludes from screening per USPSTF",
   "input": {
     "AgeInYears": 45,
     "Gender": "female",
-    "HasCervicalCytologyInLastThreeYears": true,
+    "HasCervicalCytologyInLastThreeYears": false,
     "HasHrHPVInLastFiveYears": false,
-    "HasAbsenceOfCervix": false
+    "HasAbsenceOfCervix": true
   },
   "expected": [
     { "CervicalCytologyDue": false, "hrHPVDue": false }

@@ -65,6 +65,30 @@ const GUIDELINE_CONFIG = {
       { label: 'Is Current Tobacco User', value: getValue(result, 'IsCurrentTobaccoUser') },
     ],
   },
+  ccs: {
+    libraryId: 'CervicalCancerScreening',
+    title: 'Cervical Cancer Screening',
+    getAlerts: (result, getValue) => {
+      const screeningDue = getValue(result, 'CervicalScreeningDue')
+      const screeningInterval = getValue(result, 'ScreeningInterval')
+      return [{
+        key: 'screening',
+        active: screeningDue === true,
+        activeText: 'Cervical Screening Due',
+        inactiveText: 'No Cervical Screening Due',
+        tooltip: screeningInterval, // Age-appropriate options
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Gender', value: getValue(result, 'Gender') },
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Screening Options', value: getValue(result, 'ScreeningInterval') },
+      { label: 'Cytology in Last 3 Years', value: getValue(result, 'HasCervicalCytologyInLastThreeYears') },
+      { label: 'hrHPV in Last 5 Years', value: getValue(result, 'HasHrHPVInLastFiveYears') },
+      { label: 'Absence of Cervix', value: getValue(result, 'HasAbsenceOfCervix') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
 }
 
 function App() {

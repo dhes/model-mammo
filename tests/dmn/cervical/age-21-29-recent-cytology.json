@@ -3,7 +3,8 @@
     "AgeInYears": 25,
     "Gender": "female",
     "HasCervicalCytologyInLastThreeYears": true,
-    "HasHrHPVInLastFiveYears": false
+    "HasHrHPVInLastFiveYears": false,
+    "HasAbsenceOfCervix": false
   },
   "expected": [
     { "CervicalCytologyDue": false, "hrHPVDue": false }

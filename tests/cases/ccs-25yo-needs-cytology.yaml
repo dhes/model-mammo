@@ -1,0 +1,60 @@
+# Test case: Female, 25 years old, no recent cytology - should recommend cytology
+# Ages 21-29: Cytology every 3 years
+
+id: ccs-25yo-needs-cytology
+description: "Female, 25, no recent cytology - should recommend screening"
+tags:
+  - cervical-cancer-screening
+  - positive-case
+  - age-21-29
+
+expected:
+  CervicalScreeningDue: true
+  CervicalCytologyDue: true
+  hrHPVDue: false
+  HasCervicalCytologyInLastThreeYears: false
+  HasAbsenceOfCervix: false
+  AgeInYears: 25
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: ccs-25yo-needs-cytology
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-25yo-needs-cytology
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: ccs-25yo-needs-cytology
+    name:
+      - family: TestPatient
+        given:
+          - CervicalScreening
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 25

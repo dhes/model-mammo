@@ -1357,6 +1357,11 @@ curl -X PUT "http://localhost:8080/fhir/Library/TobaccoScreening" \
 
 **Root cause:** Likely related to re-using the same Library ID across versions. Stricter version control (e.g., `TobaccoScreening-0.0.2`) might avoid this, but expunge is the reliable workaround.
 
+**Severe caching:** In some cases, the cache is keyed by the CQL library NAME (not just the FHIR resource ID). If DELETE + expunge doesn't work, try:
+1. Change the `library Name version 'X.Y.Z'` declaration in the CQL file
+2. Regenerate and deploy with a completely new library name
+3. Once verified, rename back to the original name (with new version)
+
 **Note:** This affects development iteration. Production deployments with proper versioning may not encounter this issue.
 
 ## Notes

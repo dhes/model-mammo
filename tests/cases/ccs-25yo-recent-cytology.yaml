@@ -1,0 +1,89 @@
+# Test case: Female, 25 years old, recent cytology - should NOT recommend
+# Ages 21-29: Cytology every 3 years - patient has recent Pap
+
+id: ccs-25yo-recent-cytology
+description: "Female, 25, recent cytology - no screening due"
+tags:
+  - cervical-cancer-screening
+  - negative-case
+  - age-21-29
+  - has-cytology
+
+expected:
+  CervicalScreeningDue: false
+  CervicalCytologyDue: false
+  hrHPVDue: false
+  HasCervicalCytologyInLastThreeYears: true
+  HasAbsenceOfCervix: false
+  AgeInYears: 25
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: ccs-25yo-recent-cytology
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-25yo-recent-cytology
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: ccs-25yo-recent-cytology
+    name:
+      - family: TestPatient
+        given:
+          - RecentPap
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 25
+
+  - resourceType: Observation
+    id: ccs-25yo-recent-cytology-pap
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-25yo-recent-cytology
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: laboratory
+            display: Laboratory
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "10524-7"
+          display: Microscopic observation [Identifier] in Cervix by Cyto stain
+    subject:
+      reference: Patient/ccs-25yo-recent-cytology
+    effectiveDateTime:
+      $fn: monthsAgo
+      months: 6
+    valueString: "NILM (Negative for intraepithelial lesion or malignancy)"

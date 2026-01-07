@@ -1,0 +1,93 @@
+# Test case: Female, 45 years old, recent hrHPV test - should NOT recommend
+# Ages 30-65: Has recent hrHPV, satisfies hrHPV-alone option
+
+id: ccs-45yo-has-hrHPV
+description: "Female, 45, recent hrHPV test - no screening due"
+tags:
+  - cervical-cancer-screening
+  - negative-case
+  - age-30-65
+  - has-hrhpv
+
+expected:
+  CervicalScreeningDue: false
+  CervicalCytologyDue: false
+  hrHPVDue: false
+  HasHrHPVInLastFiveYears: true
+  HasAbsenceOfCervix: false
+  AgeInYears: 45
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: ccs-45yo-has-hrHPV
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-45yo-has-hrHPV
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: ccs-45yo-has-hrHPV
+    name:
+      - family: TestPatient
+        given:
+          - HasHPV
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 45
+
+  - resourceType: Observation
+    id: ccs-45yo-has-hrHPV-hpv
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-45yo-has-hrHPV
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: laboratory
+            display: Laboratory
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "21440-3"
+          display: Human papilloma virus 16+18+31+33+35+39+45+51+52+56+58+59+68 DNA [Presence] in Cervix by Probe
+    subject:
+      reference: Patient/ccs-45yo-has-hrHPV
+    effectiveDateTime:
+      $fn: yearsAgo
+      years: 2
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "260385009"
+          display: Negative

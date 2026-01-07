@@ -1,0 +1,82 @@
+# Test case: Female, 45 years old, hysterectomy - should NOT recommend
+# Exclusion: Absence of cervix (hysterectomy with removal of cervix)
+
+id: ccs-hysterectomy-excluded
+description: "Female, 45, hysterectomy - excluded from screening"
+tags:
+  - cervical-cancer-screening
+  - negative-case
+  - exclusion
+  - hysterectomy
+
+expected:
+  CervicalScreeningDue: false
+  CervicalCytologyDue: false
+  hrHPVDue: false
+  HasAbsenceOfCervix: true
+  AgeInYears: 45
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: ccs-hysterectomy-excluded
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-hysterectomy-excluded
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: ccs-hysterectomy-excluded
+    name:
+      - family: TestPatient
+        given:
+          - Hysterectomy
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 45
+
+  - resourceType: Procedure
+    id: ccs-hysterectomy-excluded-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: ccs-test
+        - system: http://example.org/test-lifecycle
+          code: ccs-hysterectomy-excluded
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "116140006"
+          display: Total hysterectomy
+    subject:
+      reference: Patient/ccs-hysterectomy-excluded
+    performedDateTime:
+      $fn: yearsAgo
+      years: 5
