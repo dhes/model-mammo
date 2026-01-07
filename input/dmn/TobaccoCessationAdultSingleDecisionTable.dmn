@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_12aevoh" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.41.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.8.0">
+  <description>Tobacco Cessation Interventions (Adults)
+
+USPSTF Grade A Recommendation:
+"The USPSTF recommends that clinicians ask all adults about tobacco use, advise them to stop using tobacco, and provide behavioral interventions and US Food and Drug Administration (FDA)–approved pharmacotherapy for cessation to nonpregnant adults who use tobacco."
+
+USPSTF Grade A Recommendation (Pregnant):
+"The USPSTF recommends that clinicians ask all pregnant persons about tobacco use, advise them to stop using tobacco, and provide behavioral interventions for cessation to pregnant persons who use tobacco."
+
+Note: Pharmacotherapy for pregnant persons is Grade I (insufficient evidence).
+
+Population: Adults aged 18+ years.
+
+Design Notes:
+- Single composite table with 4 outputs covering screening and intervention recommendations
+- TobaccoUseStatus of null triggers recording prompt (status unknown)
+- Pregnancy status affects pharmacotherapy recommendation only
+
+Trigger: Encounter-start. Evaluate at clinical encounters where tobacco status assessment is appropriate.
+
+Glossary:
+- AgeInYears: Patient age in years; must be 18+ for adult recommendation
+- TobaccoUseStatus: "current", "former", "never", or null (unknown/not recorded)
+- IsPregnant: True if patient is currently pregnant
+- RecordTobaccoUse: Output — True if tobacco status needs to be recorded
+- AdviseToQuit: Output — True if patient should receive quit advice
+- OfferPharmacotherapy: Output — True if FDA-approved cessation medications should be offered
+- OfferBehavioralTherapy: Output — True if behavioral interventions should be offered
+
+CMS: CMS138 (Preventive Care and Screening: Tobacco Use) is related but measures screening/intervention, not real-time recommendations.
+
+Sources:
+- https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/tobacco-use-in-adults-and-pregnant-women-counseling-and-interventions</description>
   <decision id="Decision_0cdkyyi" name="Tobacco Screening">
     <decisionTable id="DecisionTable_1n74cs6">
       <input id="Input_1" label="Age In Years" biodi:width="150">
@@ -25,7 +57,7 @@
       <output id="OutputClause_0nd003q" label="Offer Pharmacotherapy" name="OfferPharmacotherapy" typeRef="boolean" />
       <output id="OutputClause_024c28j" label="Offer Behavioral Therapy" name="OfferBehavioralTherapy" typeRef="boolean" />
       <rule id="DecisionRule_0cd6lvl">
-        <description></description>
+        <description>Adult, tobacco status unknown: Prompt to record status. USPSTF: "ask all adults about tobacco use."</description>
         <inputEntry id="UnaryTests_0ozzjse">
           <text>&gt;=18</text>
         </inputEntry>
@@ -49,6 +81,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ghrrhf">
+        <description>Adult current smoker, not pregnant: Full cessation intervention. USPSTF: "provide behavioral interventions and FDA-approved pharmacotherapy for cessation to nonpregnant adults who use tobacco."</description>
         <inputEntry id="UnaryTests_1q9vcqa">
           <text>&gt;=18</text>
         </inputEntry>
@@ -72,6 +105,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0md1cwu">
+        <description>Adult current smoker, pregnant: Behavioral intervention only. USPSTF: "provide behavioral interventions for cessation to pregnant persons who use tobacco." Pharmacotherapy is Grade I (insufficient evidence).</description>
         <inputEntry id="UnaryTests_094gmx4">
           <text>&gt;=18</text>
         </inputEntry>
@@ -95,6 +129,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1lbe3p7">
+        <description>Adult former or never smoker: No intervention needed. Status is recorded; no cessation intervention required.</description>
         <inputEntry id="UnaryTests_03vpj2s">
           <text>&gt;=18</text>
         </inputEntry>
@@ -118,7 +153,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_04ljhvk">
-        <description></description>
+        <description>Under 18: Outside adult recommendation scope. USPSTF adult recommendation specifies 18+ years. Adolescent tobacco prevention is a separate Grade B recommendation.</description>
         <inputEntry id="UnaryTests_1fk70g9">
           <text>&lt;18</text>
         </inputEntry>

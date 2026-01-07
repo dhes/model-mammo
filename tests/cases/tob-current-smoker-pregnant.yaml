@@ -1,0 +1,126 @@
+# Test case: Adult current smoker, pregnant - behavioral only, no pharmacotherapy
+# USPSTF: "provide behavioral interventions for cessation to pregnant persons"
+# Note: Pharmacotherapy for pregnant persons is Grade I (insufficient evidence)
+
+id: tob-current-smoker-pregnant
+description: "28yo current smoker, pregnant - behavioral only, no pharmacotherapy"
+tags:
+  - tobacco-screening
+  - current-smoker
+  - pregnant
+  - behavioral-only
+
+expected:
+  RecordTobaccoUse: false
+  AdviseToQuit: true
+  OfferPharmacotherapy: false
+  OfferBehavioralTherapy: true
+  AgeInYears: 28
+  IsCurrentTobaccoUser: true
+  IsPregnant: true
+
+resources:
+  - resourceType: Patient
+    id: tob-current-smoker-pregnant
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-current-smoker-pregnant
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: tob-current-smoker-pregnant
+    name:
+      - family: Smoker
+        given:
+          - Pregnant
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 28
+
+  - resourceType: Observation
+    id: tob-current-smoker-pregnant-smoking
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-current-smoker-pregnant
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: social-history
+            display: Social History
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "72166-2"
+          display: Tobacco smoking status
+    subject:
+      reference: Patient/tob-current-smoker-pregnant
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 30
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "449868002"
+          display: Current every day smoker
+
+  - resourceType: Observation
+    id: tob-current-smoker-pregnant-preg
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-current-smoker-pregnant
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: social-history
+            display: Social History
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "82810-3"
+          display: Pregnancy status
+    subject:
+      reference: Patient/tob-current-smoker-pregnant
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 7
+    valueCodeableConcept:
+      coding:
+        - system: http://loinc.org
+          code: "LA15173-0"
+          display: Pregnant

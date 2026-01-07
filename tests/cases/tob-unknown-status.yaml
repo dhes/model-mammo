@@ -1,0 +1,60 @@
+# Test case: Adult with no tobacco status recorded - should prompt recording
+# USPSTF: "ask all adults about tobacco use"
+
+id: tob-unknown-status
+description: "45yo adult, no tobacco status - should prompt recording"
+tags:
+  - tobacco-screening
+  - unknown-status
+  - needs-screening
+
+expected:
+  RecordTobaccoUse: true
+  AdviseToQuit: false
+  OfferPharmacotherapy: false
+  OfferBehavioralTherapy: false
+  AgeInYears: 45
+  IsCurrentTobaccoUser: false
+  IsPregnant: false
+
+resources:
+  - resourceType: Patient
+    id: tob-unknown-status
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-unknown-status
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2054-5"
+              display: Black or African American
+          - url: text
+            valueString: Black or African American
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: tob-unknown-status
+    name:
+      - family: NoStatus
+        given:
+          - Unknown
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 45

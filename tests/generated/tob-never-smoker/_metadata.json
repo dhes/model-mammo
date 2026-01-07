@@ -1,0 +1,31 @@
+{
+  "id": "tob-never-smoker",
+  "description": "40yo never smoker - no intervention needed",
+  "tags": [
+    "tobacco-screening",
+    "never-smoker",
+    "no-intervention"
+  ],
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false,
+    "AgeInYears": 40,
+    "IsCurrentTobaccoUser": false,
+    "IsPregnant": false
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "tob-never-smoker",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/tob-never-smoker/Patient/tob-never-smoker.json"
+    },
+    {
+      "type": "Observation",
+      "id": "tob-never-smoker-smoking",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/tob-never-smoker/Observation/tob-never-smoker-smoking.json"
+    }
+  ],
+  "generatedAt": "2026-01-05T22:37:55.764Z"
+}

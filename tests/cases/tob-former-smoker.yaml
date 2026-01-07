@@ -1,0 +1,92 @@
+# Test case: Adult former smoker - no cessation intervention needed
+# Status recorded, no current use = no intervention
+
+id: tob-former-smoker
+description: "52yo former smoker - no intervention needed"
+tags:
+  - tobacco-screening
+  - former-smoker
+  - no-intervention
+
+expected:
+  RecordTobaccoUse: false
+  AdviseToQuit: false
+  OfferPharmacotherapy: false
+  OfferBehavioralTherapy: false
+  AgeInYears: 52
+  IsCurrentTobaccoUser: false
+  IsPregnant: false
+
+resources:
+  - resourceType: Patient
+    id: tob-former-smoker
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-former-smoker
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: tob-former-smoker
+    name:
+      - family: Smoker
+        given:
+          - Former
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 52
+
+  - resourceType: Observation
+    id: tob-former-smoker-smoking
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: tob-test
+        - system: http://example.org/test-lifecycle
+          code: tob-former-smoker
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: social-history
+            display: Social History
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "72166-2"
+          display: Tobacco smoking status
+    subject:
+      reference: Patient/tob-former-smoker
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 60
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "8517006"
+          display: Ex-smoker

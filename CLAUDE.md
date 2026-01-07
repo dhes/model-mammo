@@ -1321,6 +1321,44 @@ The `generate-library.js` script:
 
 This eliminates the need for Java tooling and ELM compilation in the development workflow.
 
+### HAPI Library Caching Issue
+
+**Problem:** HAPI caches compiled CQL/ELM internally. When you update a Library resource with the same ID, HAPI may continue using the cached (old) version for `$evaluate` operations.
+
+**Symptoms:**
+- `$evaluate` returns `unknown` for outputs that should work
+- New CQL expressions (e.g., helper definitions) are missing from output
+- Old behavior persists despite successful PUT of updated Library
+
+**Diagnosis:** If an expression defined in your CQL doesn't appear in `$evaluate` output, HAPI is likely using a cached older version.
+
+**Workaround:** Delete and expunge the Library before re-uploading:
+
+```bash
+# 1. Delete the Library
+curl -X DELETE "http://localhost:8080/fhir/Library/TobaccoScreening"
+
+# 2. Expunge all versions (clears the cache)
+curl -X POST "http://localhost:8080/fhir/Library/TobaccoScreening/$expunge" \
+  -H "Content-Type: application/fhir+json" \
+  -d '{
+    "resourceType": "Parameters",
+    "parameter": [
+      {"name": "expungeDeletedResources", "valueBoolean": true},
+      {"name": "expungePreviousVersions", "valueBoolean": true}
+    ]
+  }'
+
+# 3. Re-upload the Library
+curl -X PUT "http://localhost:8080/fhir/Library/TobaccoScreening" \
+  -H "Content-Type: application/fhir+json" \
+  -T input/resources/library/Library-TobaccoScreening.json
+```
+
+**Root cause:** Likely related to re-using the same Library ID across versions. Stricter version control (e.g., `TobaccoScreening-0.0.2`) might avoid this, but expunge is the reliable workaround.
+
+**Note:** This affects development iteration. Production deployments with proper versioning may not encounter this issue.
+
 ## Notes
 
 - `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation

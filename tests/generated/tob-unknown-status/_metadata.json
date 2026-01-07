@@ -1,0 +1,26 @@
+{
+  "id": "tob-unknown-status",
+  "description": "45yo adult, no tobacco status - should prompt recording",
+  "tags": [
+    "tobacco-screening",
+    "unknown-status",
+    "needs-screening"
+  ],
+  "expected": {
+    "RecordTobaccoUse": true,
+    "AdviseToQuit": false,
+    "OfferPharmacotherapy": false,
+    "OfferBehavioralTherapy": false,
+    "AgeInYears": 45,
+    "IsCurrentTobaccoUser": false,
+    "IsPregnant": false
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "tob-unknown-status",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/tob-unknown-status/Patient/tob-unknown-status.json"
+    }
+  ],
+  "generatedAt": "2026-01-05T22:37:55.765Z"
+}

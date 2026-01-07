@@ -1,0 +1,31 @@
+{
+  "id": "tob-current-smoker-not-pregnant",
+  "description": "35yo current smoker, not pregnant - full cessation intervention",
+  "tags": [
+    "tobacco-screening",
+    "current-smoker",
+    "full-intervention"
+  ],
+  "expected": {
+    "RecordTobaccoUse": false,
+    "AdviseToQuit": true,
+    "OfferPharmacotherapy": true,
+    "OfferBehavioralTherapy": true,
+    "AgeInYears": 35,
+    "IsCurrentTobaccoUser": true,
+    "IsPregnant": false
+  },
+  "resources": [
+    {
+      "type": "Patient",
+      "id": "tob-current-smoker-not-pregnant",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/tob-current-smoker-not-pregnant/Patient/tob-current-smoker-not-pregnant.json"
+    },
+    {
+      "type": "Observation",
+      "id": "tob-current-smoker-not-pregnant-smoking",
+      "path": "/Users/danheslinga/model-mammo/tests/generated/tob-current-smoker-not-pregnant/Observation/tob-current-smoker-not-pregnant-smoking.json"
+    }
+  ],
+  "generatedAt": "2026-01-05T22:37:55.759Z"
+}
