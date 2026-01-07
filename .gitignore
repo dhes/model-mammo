@@ -18,7 +18,10 @@ npm-debug.log*
 # Test coverage
 coverage/
 
-# Generated (uncomment if you prefer to regenerate rather than commit)
+# Generated test resources (regenerate via: npm run test:generate)
+tests/generated/
+
+# Generated FHIR Libraries (uncomment if you prefer to regenerate rather than commit)
 # input/resources/library/
 
 # HAPI/FHIR temp files
