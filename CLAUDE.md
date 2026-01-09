@@ -1364,6 +1364,52 @@ curl -X PUT "http://localhost:8080/fhir/Library/TobaccoScreening" \
 
 **Note:** This affects development iteration. Production deployments with proper versioning may not encounter this issue.
 
+### QICore Profile-to-CQL Type Mapping
+
+**Critical:** The QICore profile on your FHIR resource must match the CQL retrieve type. Mismatches cause silent failures — the query returns empty results.
+
+| QICore Profile | CQL Retrieve Type | Use Case |
+|----------------|-------------------|----------|
+| `qicore-observation-lab` | `LaboratoryResultObservation` | Lab tests (Pap, HPV, glucose, etc.) |
+| `qicore-simple-observation` | `SimpleObservation` | Simple clinical observations |
+| `qicore-observation-clinical-result` | `ObservationClinicalResult` | Clinical test results |
+| `qicore-procedure` | `Procedure` | Procedures (mammogram, colonoscopy) |
+| `qicore-condition-problems-health-concerns` | `ConditionProblemsHealthConcerns` | Diagnoses, conditions |
+
+**How to get it right:**
+
+1. **Check CMS eCQM test cases first.** If CMS124 (Cervical Cancer Screening) uses `qicore-observation-lab` for Pap tests, use that profile and `LaboratoryResultObservation` in CQL.
+
+2. **Match profile to type.** If your YAML test case declares `profile: qicore-observation-lab`, your CQL must use `[LaboratoryResultObservation: "ValueSet"]`, not `[SimpleObservation: ...]`.
+
+3. **Symptoms of mismatch:**
+   - `$evaluate` returns `null` or empty for observation-based outputs
+   - Patient-level outputs (age, gender) work fine
+   - Observation/Procedure outputs fail
+
+**Example (correct):**
+
+```yaml
+# Test case YAML
+- resourceType: Observation
+  meta:
+    profile:
+      - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab
+  code:
+    coding:
+      - system: http://loinc.org
+        code: "10524-7"  # Pap test
+```
+
+```cql
+// CQL - LaboratoryResultObservation matches qicore-observation-lab
+define QualifyingCervicalCytology:
+  [LaboratoryResultObservation: "Pap Test"] Obs
+    where Obs.status in { 'final', 'amended', 'corrected' }
+```
+
+**Lesson learned:** When observation retrieves fail, check profile alignment before trying workarounds like direct codes or different observation types.
+
 ## Notes
 
 - `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation

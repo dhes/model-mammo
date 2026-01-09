@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "generate:library": "node src/generate-library.js input/cql/BreastCancerScreening.cql",
+    "generate:library": "node src/generate-library.js",
     "test:generate": "node src/test-generator.js --all",
     "test:generate:one": "node src/test-generator.js",
     "test:deploy": "node src/test-deployer.js --all",

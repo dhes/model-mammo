@@ -64,7 +64,7 @@ resources:
     id: ccs-45yo-has-hrHPV-hpv
     meta:
       profile:
-        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab
       tag:
         - system: http://example.org/test-lifecycle
           code: ccs-test

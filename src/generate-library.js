@@ -2,16 +2,26 @@
 /**
  * Generates a FHIR Library resource from a CQL file.
  *
- * Usage: node src/generate-library.js input/cql/BreastCancerScreening.cql
+ * Usage:
+ *   node src/generate-library.js CervicalCancerScreening     # library name
+ *   node src/generate-library.js input/cql/MyLibrary.cql     # full path
  */
 
 import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname, basename } from 'path';
 
-const cqlPath = process.argv[2];
+let cqlPath = process.argv[2];
 if (!cqlPath) {
-  console.error('Usage: node src/generate-library.js <cql-file>');
+  console.error('Usage: node src/generate-library.js <library-name-or-path>');
+  console.error('  Examples:');
+  console.error('    npm run generate:library CervicalCancerScreening');
+  console.error('    npm run generate:library input/cql/MyLibrary.cql');
   process.exit(1);
+}
+
+// If no path separator, treat as library name and construct path
+if (!cqlPath.includes('/') && !cqlPath.includes('\\')) {
+  cqlPath = `input/cql/${cqlPath}.cql`;
 }
 
 const cqlContent = readFileSync(resolve(cqlPath), 'utf-8');

@@ -18,12 +18,6 @@ include Status version '1.13.000'
 // Valuesets from CMS124 (Cervical Cancer Screening eCQM)
 valueset "Pap Test": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1017'
 valueset "HPV Test": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.110.12.1059'
-
-// Direct code definitions (fallback for valueset issues)
-codesystem "LOINC": 'http://loinc.org'
-code "Pap Test Code": '10524-7' from "LOINC" display 'Microscopic observation in Cervix by Cyto stain'
-code "HPV Test Code": '21440-3' from "LOINC" display 'Human papilloma virus DNA in Cervix'
-
 valueset "Hysterectomy with No Residual Cervix": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1014'
 valueset "Congenital or Acquired Absence of Cervix": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1027'
 
@@ -45,9 +39,9 @@ define Gender:
 // Cervical Cytology (Pap Test)
 // ============================================================================
 
-// Use SimpleObservation with code in retrieve (same pattern as TobaccoScreening)
+// Use LaboratoryResultObservation for qicore-observation-lab profile
 define QualifyingCervicalCytology:
-  [SimpleObservation: "Pap Test Code"] Obs
+  [LaboratoryResultObservation: "Pap Test"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentCervicalCytology:
@@ -67,7 +61,7 @@ define HasCervicalCytologyInLastThreeYears:
 // ============================================================================
 
 define QualifyingHPVTests:
-  [SimpleObservation: "HPV Test Code"] Obs
+  [LaboratoryResultObservation: "HPV Test"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentHPVTest:
