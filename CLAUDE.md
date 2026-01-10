@@ -1410,6 +1410,126 @@ define QualifyingCervicalCytology:
 
 **Lesson learned:** When observation retrieves fail, check profile alignment before trying workarounds like direct codes or different observation types.
 
+## Two Web Apps: Server-Side vs Client-Side CQL
+
+This project includes two React/Vite applications demonstrating different CQL execution approaches:
+
+| | mock-emr | smart-app |
+|---|----------|-----------|
+| Location | `/mock-emr` | `/smart-app` |
+| Port | 3000 | 3001 |
+| CQL execution | HAPI `$evaluate` (server-side) | `cql-execution` (browser) |
+| ELM required? | No (HAPI compiles CQL) | Yes (`src/elm/*.json`) |
+| ValueSets required? | No (HAPI resolves from Library) | Yes (`src/valuesets.js`) |
+| Data source | HAPI @ localhost:8080 | HAPI @ localhost:8080 |
+
+Both apps use the same test patients in HAPI — useful for comparing server-side vs client-side CQL behavior.
+
+**Architecture:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    HAPI FHIR Server                         │
+│                   localhost:8080                            │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
+│  │  Patients   │  │ Observations│  │  Libraries  │         │
+│  └─────────────┘  └─────────────┘  └─────────────┘         │
+└─────────────────────────────────────────────────────────────┘
+         │                                    │
+         │ FHIR queries                       │ $evaluate
+         ▼                                    ▼
+┌─────────────────┐                 ┌─────────────────┐
+│   smart-app     │                 │    mock-emr     │
+│   (port 3001)   │                 │   (port 3000)   │
+│                 │                 │                 │
+│  ┌───────────┐  │                 │  CQL runs on    │
+│  │cql-exec   │  │                 │  HAPI server    │
+│  │(browser)  │  │                 │                 │
+│  └───────────┘  │                 │                 │
+│  ┌───────────┐  │                 │                 │
+│  │ ELM JSON  │  │                 │                 │
+│  └───────────┘  │                 │                 │
+│  ┌───────────┐  │                 │                 │
+│  │ ValueSets │  │                 │                 │
+│  └───────────┘  │                 │                 │
+└─────────────────┘                 └─────────────────┘
+```
+
+### Client-Side CQL Setup (smart-app)
+
+**1. Compile CQL to ELM:**
+
+```bash
+cd tools/cql-translator
+mvn exec:java -q -Dexec.args="--input ../../input/cql/MyLibrary.cql --output ../../smart-app/src/elm/ --format JSON"
+```
+
+The Maven project uses `cql-to-elm-cli` (v3.29.0) from the cqframework. Dependencies are downloaded to `~/.m2/repository/` (not committed to repo).
+
+**2. Download ValueSets from VSAC:**
+
+```bash
+cd tools/vsac-download
+VSAC_API_KEY=your-key ./download-valuesets.sh
+```
+
+Get your API key from: https://uts.nlm.nih.gov/uts/profile
+
+ValueSets are saved to `input/valuesets/` as FHIR ValueSet resources.
+
+**3. Convert ValueSets to cql-execution format:**
+
+```bash
+node tools/vsac-download/convert-valuesets.js
+```
+
+Generates `smart-app/src/valuesets.js` with:
+- All ValueSet codes indexed by OID
+- A `codeService` object with `findValueSet(oid, version)` method
+- The `hasMatch(code)` method required by cql-execution for retrieve operations
+
+**codeService interface requirement:**
+
+The `cql-execution` library expects `findValueSet()` to return an object with:
+- `codes`: array of `{code, system, display}`
+- `hasMatch(code)`: function that checks if a code is in the ValueSet
+
+```javascript
+// Generated codeService structure
+export const codeService = {
+  findValueSet: (oid, version) => ({
+    oid,
+    version,
+    codes: [...],
+    hasMatch: (code) => {
+      // Check if code.code + code.system matches any entry
+    },
+  }),
+};
+```
+
+Without `hasMatch()`, CQL retrieves like `[Procedure: "Mammography"]` will fail with "codes.hasMatch is not a function".
+
+### ValueSet OID Maintenance
+
+ValueSet OIDs can change or be retired. If a ValueSet download fails:
+
+1. Check MADiE for the current eCQM OID
+2. Search VSAC directly: https://vsac.nlm.nih.gov
+3. Update both:
+   - `tools/vsac-download/download-valuesets.sh`
+   - The CQL valueset declaration
+
+**Example fix (Congenital Absence of Cervix):**
+
+Original OID `2.16.840.1.113883.3.464.1003.198.12.1027` was not found.
+Correct OID is `2.16.840.1.113883.3.464.1003.111.12.1016`.
+
+Updated in:
+- `download-valuesets.sh` (line 20)
+- `CervicalCancerScreening.cql` (valueset declaration)
+- Recompiled ELM after CQL change
+
 ## Notes
 
 - `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation
