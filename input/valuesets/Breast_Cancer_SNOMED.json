@@ -1,0 +1,183 @@
+{
+  "resourceType": "ValueSet",
+  "id": "2.16.840.1.113883.3.1444.3.102",
+  "meta": {
+    "versionId": "11",
+    "lastUpdated": "2025-09-30T01:02:46.000-04:00",
+    "profile": [ "http://hl7.org/fhir/StructureDefinition/shareablevalueset", "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/computable-valueset-cqfm", "http://hl7.org/fhir/us/cqfmeasures/StructureDefinition/publishable-valueset-cqfm" ]
+  },
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/valueset-effectiveDate",
+    "valueDate": "2025-09-30"
+  } ],
+  "url": "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.1444.3.102",
+  "identifier": [ {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:oid:2.16.840.1.113883.3.1444.3.102"
+  } ],
+  "version": "20250930",
+  "name": "BreastCancer",
+  "title": "Breast Cancer",
+  "status": "active",
+  "date": "2025-09-30T01:02:46-04:00",
+  "publisher": "American Society of Clinical Oncology Steward",
+  "expansion": {
+    "identifier": "urn:uuid:92860608-3a25-44cd-8e03-20d80f1b5467",
+    "timestamp": "2026-01-10T16:03:33-05:00",
+    "total": 29,
+    "offset": 0,
+    "parameter": [ {
+      "name": "count",
+      "valueInteger": 1000
+    }, {
+      "name": "offset",
+      "valueInteger": 0
+    } ],
+    "contains": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "188157005",
+      "display": "Malignant neoplasm of overlapping sites of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "254837009",
+      "display": "Malignant neoplasm of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "254838004",
+      "display": "Carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "254839007",
+      "display": "Scirrhous carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "254840009",
+      "display": "Inflammatory carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "278054005",
+      "display": "Lobular carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "286893002",
+      "display": "Carcinoma of breast - upper, inner quadrant (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "286894008",
+      "display": "Carcinoma of breast - lower, inner quadrant (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "286895009",
+      "display": "Carcinoma of upper outer quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "286896005",
+      "display": "Carcinoma breast - lower, outer quadrant (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "286897001",
+      "display": "Carcinoma of breast - axillary tail (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "372092003",
+      "display": "Primary malignant neoplasm of axillary tail of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "372094002",
+      "display": "Malignant neoplasm of axillary tail of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "372137005",
+      "display": "Primary malignant neoplasm of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373080008",
+      "display": "Malignant neoplasm of lower inner quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373081007",
+      "display": "Malignant neoplasm of lower outer quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373082000",
+      "display": "Malignant neoplasm of upper inner quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373083005",
+      "display": "Malignant neoplasm of upper outer quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373088001",
+      "display": "Primary malignant neoplasm of upper outer quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373089009",
+      "display": "Primary malignant neoplasm of upper inner quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373090000",
+      "display": "Primary malignant neoplasm of lower inner quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "373091001",
+      "display": "Primary malignant neoplasm of lower outer quadrant of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "408643008",
+      "display": "Infiltrating duct carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "444604002",
+      "display": "Carcinoma of breast with ductal and lobular features (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "444712000",
+      "display": "Mucinous carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "708921005",
+      "display": "Carcinoma of central portion of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "713609000",
+      "display": "Invasive carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "722524005",
+      "display": "Primary invasive pleomorphic lobular carcinoma of breast (disorder)"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/731000124108/version/20250901",
+      "code": "722832009",
+      "display": "Primary solid papillary carcinoma with invasion of breast (disorder)"
+    } ]
+  }
+}
