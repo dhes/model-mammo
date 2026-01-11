@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMART Launch - USPSTF CDS</title>
+  <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+</head>
+<body>
+  <p>Launching SMART app...</p>
+
+  <script>
+    // SMART on FHIR Launch Handler
+    // This page initiates the OAuth2 authorization flow
+    //
+    // The EHR redirects here with ?iss=...&launch=...
+    // We then redirect to the EHR's authorize endpoint
+    // After auth, the EHR redirects to our redirectUri (index.html)
+
+    FHIR.oauth2.authorize({
+      // Client ID - obtained when registering the app with the EHR
+      // For SMART Launcher testing with "Loose" validation, any string works
+      clientId: 'uspstf-cds-app',
+
+      // Scopes requested
+      // - launch: receive launch context
+      // - openid fhirUser: get user identity
+      // - patient/*.read: read all patient data
+      scope: 'launch openid fhirUser patient/*.read',
+
+      // Where to redirect after authorization
+      // This should be the main app page (use absolute URL for reliability)
+      redirectUri: window.location.origin + '/',
+
+      // Compliant authorization - use PKCE
+      completeInTarget: true
+    }).catch(err => {
+      document.body.innerHTML = `
+        <h2>Launch Error</h2>
+        <p>${err.message}</p>
+        <p>Make sure you're launching from an EHR or the SMART Launcher.</p>
+        <p><a href="index.html">Go to standalone mode</a></p>
+      `;
+      console.error('SMART launch error:', err);
+    });
+  </script>
+</body>
+</html>

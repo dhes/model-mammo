@@ -261,3 +261,20 @@ body {
   border-radius: 3px;
   font-family: monospace;
 }
+
+.smart-context-info {
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: #047857;
+}
+
+.smart-context-info strong {
+  font-family: monospace;
+  background: rgba(4, 120, 87, 0.1);
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+}

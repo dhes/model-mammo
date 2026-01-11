@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Library, Executor, Repository } from 'cql-execution'
 import { PatientSource } from 'cql-exec-fhir'
+import { fhirService } from './fhir-service.js'
 
 // =============================================================================
 // ELM Libraries (compiled CQL)
@@ -184,14 +185,23 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [executionTime, setExecutionTime] = useState(null)
+  const [fhirReady, setFhirReady] = useState(false)
+  const [launchMode, setLaunchMode] = useState(null) // 'standalone' or 'smart'
 
   // Check if ELM is loaded
   const elmLoaded = Object.keys(elmLibraries).length > 0
 
-  // Fetch patients on mount
+  // Initialize FHIR client on mount
   useEffect(() => {
-    fetchPatients()
+    initFhirClient()
   }, [])
+
+  // Fetch patients after FHIR client is ready (standalone mode only)
+  useEffect(() => {
+    if (fhirReady && launchMode === 'standalone') {
+      fetchPatients()
+    }
+  }, [fhirReady, launchMode])
 
   // Evaluate CDS when patient is selected
   useEffect(() => {
@@ -205,22 +215,33 @@ function App() {
     }
   }, [selectedPatientId])
 
+  async function initFhirClient() {
+    try {
+      await fhirService.initAuto('/fhir')
+      setFhirReady(true)
+      setLaunchMode(fhirService.mode)
+
+      // If SMART launch, try to get patient from context
+      if (fhirService.mode === 'smart') {
+        const contextPatient = await fhirService.getPatientFromContext()
+        if (contextPatient) {
+          setSelectedPatientId(contextPatient.id)
+          setSelectedPatient(contextPatient)
+        }
+      }
+
+      console.log(`[App] FHIR initialized: ${fhirService.mode} mode, server: ${fhirService.getServerUrl()}`)
+    } catch (err) {
+      setError('Failed to initialize FHIR client: ' + err.message)
+    }
+  }
+
   async function fetchPatients() {
     try {
       const tagBase = 'http://example.org/test-lifecycle'
       const guidelineTags = Object.keys(GUIDELINE_CONFIG).map(prefix => `${prefix}-test`)
-      const allPatients = new Map()
 
-      for (const tag of guidelineTags) {
-        const response = await fetch(
-          `/fhir/Patient?_tag=${encodeURIComponent(tagBase + '|' + tag)}&_count=100`
-        )
-        const bundle = await response.json()
-        const patients = bundle.entry?.map(e => e.resource) || []
-        patients.forEach(p => allPatients.set(p.id, p))
-      }
-
-      const patientList = Array.from(allPatients.values())
+      const patientList = await fhirService.fetchPatientsByTag(tagBase, guidelineTags)
       patientList.sort((a, b) => a.id.localeCompare(b.id))
       setPatients(patientList)
     } catch (err) {
@@ -229,6 +250,7 @@ function App() {
   }
 
   function getGuidelineFromPatient(patient) {
+    // First, check for test tags (used with HAPI test patients)
     const tags = patient.meta?.tag || []
     for (const tag of tags) {
       if (tag.system === 'http://example.org/test-lifecycle') {
@@ -238,6 +260,20 @@ function App() {
         }
       }
     }
+
+    // Fallback: determine guideline by eligibility criteria (for real patients)
+    const age = getPatientAge(patient)
+    const gender = patient.gender?.toLowerCase()
+
+    // Breast Cancer Screening: female, age 40-74
+    if (gender === 'female' && age >= 40 && age <= 74) {
+      return GUIDELINE_CONFIG.bcs
+    }
+
+    // Could add more guidelines here:
+    // Cervical Cancer: female, age 21-65 → GUIDELINE_CONFIG.ccs
+    // Tobacco: adult 18+ → GUIDELINE_CONFIG.tob
+
     return null
   }
 
@@ -249,9 +285,9 @@ function App() {
     setExecutionTime(null)
 
     try {
-      // Fetch patient details
-      const patientResponse = await fetch(`/fhir/Patient/${patientId}`)
-      const patient = await patientResponse.json()
+      // Fetch patient and build bundle using fhirService
+      const bundle = await fhirService.buildPatientBundle(patientId)
+      const patient = bundle.entry.find(e => e.resource?.resourceType === 'Patient')?.resource
       setSelectedPatient(patient)
 
       // Determine which guideline to evaluate
@@ -266,22 +302,6 @@ function App() {
       if (!elmLoaded) {
         setError('ELM libraries not loaded. Complete the setup steps first.')
         return
-      }
-
-      // Build FHIR bundle with patient and related resources
-      const bundle = {
-        resourceType: 'Bundle',
-        type: 'collection',
-        entry: [{ resource: patient }]
-      }
-
-      // Fetch related resources
-      const resourceTypes = ['Observation', 'Condition', 'Procedure']
-      for (const type of resourceTypes) {
-        const response = await fetch(`/fhir/${type}?patient=${patientId}&_count=100`)
-        const result = await response.json()
-        const entries = result.entry || []
-        entries.forEach(e => bundle.entry.push({ resource: e.resource }))
       }
 
       // Execute CQL locally and measure time
@@ -335,9 +355,15 @@ function App() {
       <header className="header">
         <h1>
           USPSTF Clinical Decision Support
-          <span className="mode-badge">Local CQL</span>
+          <span className="mode-badge">
+            {launchMode === 'smart' ? 'SMART Launch' : 'Standalone'}
+          </span>
         </h1>
-        <p className="subtitle">SMART on FHIR Demo - Client-side Execution</p>
+        <p className="subtitle">
+          {fhirReady
+            ? `Connected to: ${fhirService.getServerUrl()}`
+            : 'Initializing FHIR client...'}
+        </p>
       </header>
 
       <main className="main">
@@ -359,21 +385,31 @@ mvn exec:java -q -Dexec.args="..."
           </div>
         )}
 
-        <section className="patient-selector">
-          <label htmlFor="patient-select">Select Patient:</label>
-          <select
-            id="patient-select"
-            value={selectedPatientId}
-            onChange={(e) => setSelectedPatientId(e.target.value)}
-          >
-            <option value="">-- Select a patient --</option>
-            {patients.map(patient => (
-              <option key={patient.id} value={patient.id}>
-                {patient.id}
-              </option>
-            ))}
-          </select>
-        </section>
+        {/* Patient selector - shown in standalone mode or if SMART launch has no patient */}
+        {launchMode === 'standalone' && (
+          <section className="patient-selector">
+            <label htmlFor="patient-select">Select Patient:</label>
+            <select
+              id="patient-select"
+              value={selectedPatientId}
+              onChange={(e) => setSelectedPatientId(e.target.value)}
+              disabled={!fhirReady}
+            >
+              <option value="">-- Select a patient --</option>
+              {patients.map(patient => (
+                <option key={patient.id} value={patient.id}>
+                  {patient.id}
+                </option>
+              ))}
+            </select>
+          </section>
+        )}
+
+        {launchMode === 'smart' && selectedPatient && (
+          <div className="smart-context-info">
+            Patient from EHR context: <strong>{selectedPatient.id}</strong>
+          </div>
+        )}
 
         {error && (
           <div className="error-card">
