@@ -180,8 +180,7 @@ function App() {
   const [patients, setPatients] = useState([])
   const [selectedPatientId, setSelectedPatientId] = useState('')
   const [selectedPatient, setSelectedPatient] = useState(null)
-  const [cdsResult, setCdsResult] = useState(null)
-  const [currentGuideline, setCurrentGuideline] = useState(null)
+  const [cdsResults, setCdsResults] = useState([]) // Array of { guideline, result }
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [executionTime, setExecutionTime] = useState(null)
@@ -208,9 +207,8 @@ function App() {
     if (selectedPatientId) {
       evaluateCds(selectedPatientId)
     } else {
-      setCdsResult(null)
+      setCdsResults([])
       setSelectedPatient(null)
-      setCurrentGuideline(null)
       setExecutionTime(null)
     }
   }, [selectedPatientId])
@@ -249,39 +247,47 @@ function App() {
     }
   }
 
-  function getGuidelineFromPatient(patient) {
+  function getApplicableGuidelines(patient) {
+    const applicable = []
+    const age = getPatientAge(patient)
+    const gender = patient.gender?.toLowerCase()
+
     // First, check for test tags (used with HAPI test patients)
+    // If tagged, only return the tagged guideline
     const tags = patient.meta?.tag || []
     for (const tag of tags) {
       if (tag.system === 'http://example.org/test-lifecycle') {
         const prefix = tag.code?.split('-')[0]
         if (prefix && GUIDELINE_CONFIG[prefix]) {
-          return GUIDELINE_CONFIG[prefix]
+          return [GUIDELINE_CONFIG[prefix]]
         }
       }
     }
 
-    // Fallback: determine guideline by eligibility criteria (for real patients)
-    const age = getPatientAge(patient)
-    const gender = patient.gender?.toLowerCase()
+    // For real patients: check eligibility for ALL guidelines
 
     // Breast Cancer Screening: female, age 40-74
     if (gender === 'female' && age >= 40 && age <= 74) {
-      return GUIDELINE_CONFIG.bcs
+      applicable.push(GUIDELINE_CONFIG.bcs)
     }
 
-    // Could add more guidelines here:
-    // Cervical Cancer: female, age 21-65 → GUIDELINE_CONFIG.ccs
-    // Tobacco: adult 18+ → GUIDELINE_CONFIG.tob
+    // Cervical Cancer Screening: female, age 21-65
+    if (gender === 'female' && age >= 21 && age <= 65) {
+      applicable.push(GUIDELINE_CONFIG.ccs)
+    }
 
-    return null
+    // Tobacco Screening: adults 18+
+    if (age >= 18) {
+      applicable.push(GUIDELINE_CONFIG.tob)
+    }
+
+    return applicable
   }
 
   async function evaluateCds(patientId) {
     setLoading(true)
     setError(null)
-    setCdsResult(null)
-    setCurrentGuideline(null)
+    setCdsResults([])
     setExecutionTime(null)
 
     try {
@@ -290,13 +296,12 @@ function App() {
       const patient = bundle.entry.find(e => e.resource?.resourceType === 'Patient')?.resource
       setSelectedPatient(patient)
 
-      // Determine which guideline to evaluate
-      const guideline = getGuidelineFromPatient(patient)
-      if (!guideline) {
-        setError('No matching CDS guideline found for this patient')
+      // Determine which guidelines apply to this patient
+      const guidelines = getApplicableGuidelines(patient)
+      if (guidelines.length === 0) {
+        setError('No applicable CDS guidelines found for this patient')
         return
       }
-      setCurrentGuideline(guideline)
 
       // Check if ELM is loaded
       if (!elmLoaded) {
@@ -304,13 +309,18 @@ function App() {
         return
       }
 
-      // Execute CQL locally and measure time
+      // Execute CQL for ALL applicable guidelines in parallel
       const startTime = performance.now()
-      const result = await executeCqlLocally(guideline.libraryId, bundle)
+      const results = await Promise.all(
+        guidelines.map(async (guideline) => {
+          const result = await executeCqlLocally(guideline.libraryId, bundle)
+          return { guideline, result }
+        })
+      )
       const endTime = performance.now()
       setExecutionTime(Math.round(endTime - startTime))
 
-      setCdsResult(result)
+      setCdsResults(results)
     } catch (err) {
       setError('Failed to evaluate CDS: ' + err.message)
     } finally {
@@ -342,13 +352,56 @@ function App() {
     return age
   }
 
-  // Get alerts for current guideline (note: result is now direct object, not FHIR Parameters)
-  const alerts = currentGuideline && cdsResult
-    ? currentGuideline.getAlerts(cdsResult)
-    : []
+  // Helper to render a single CDS card
+  function renderCdsCard({ guideline, result }) {
+    const alerts = guideline.getAlerts(result)
+    const activeAlerts = alerts.filter(a => a.active || a.inactiveText)
+    const hasPositiveRecommendation = alerts.some(a => a.active)
 
-  const activeAlerts = alerts.filter(a => a.active || a.inactiveText)
-  const hasPositiveRecommendation = alerts.some(a => a.active)
+    return (
+      <section
+        key={guideline.libraryId}
+        className={`cds-card ${hasPositiveRecommendation ? 'recommend' : 'no-recommend'}`}
+      >
+        <h2>CDS Recommendation: {guideline.title}</h2>
+
+        {activeAlerts.length === 0 && (
+          <div className="recommendation">
+            <span className="icon">-</span>
+            <span className="text">No Action Required</span>
+          </div>
+        )}
+
+        {activeAlerts.map(alert => (
+          <div key={alert.key} className="recommendation">
+            {alert.active ? (
+              <>
+                <span className="icon">+</span>
+                <span className="text">{alert.activeText}</span>
+              </>
+            ) : (
+              <>
+                <span className="icon">-</span>
+                <span className="text">{alert.inactiveText}</span>
+              </>
+            )}
+          </div>
+        ))}
+
+        <details className="cds-details">
+          <summary>View Decision Factors</summary>
+          <dl>
+            {guideline.getDetails(result).map(({ label, value }) => (
+              <React.Fragment key={label}>
+                <dt>{label}</dt>
+                <dd>{String(value ?? 'N/A')}</dd>
+              </React.Fragment>
+            ))}
+          </dl>
+        </details>
+      </section>
+    )
+  }
 
   return (
     <div className="app">
@@ -447,45 +500,10 @@ mvn exec:java -q -Dexec.args="..."
           </section>
         )}
 
-        {cdsResult && currentGuideline && !loading && (
-          <section className={`cds-card ${hasPositiveRecommendation ? 'recommend' : 'no-recommend'}`}>
-            <h2>CDS Recommendation: {currentGuideline.title}</h2>
-
-            {activeAlerts.length === 0 && (
-              <div className="recommendation">
-                <span className="icon">-</span>
-                <span className="text">No Action Required</span>
-              </div>
-            )}
-
-            {activeAlerts.map(alert => (
-              <div key={alert.key} className="recommendation">
-                {alert.active ? (
-                  <>
-                    <span className="icon">+</span>
-                    <span className="text">{alert.activeText}</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="icon">-</span>
-                    <span className="text">{alert.inactiveText}</span>
-                  </>
-                )}
-              </div>
-            ))}
-
-            <details className="cds-details">
-              <summary>View Decision Factors</summary>
-              <dl>
-                {currentGuideline.getDetails(cdsResult).map(({ label, value }) => (
-                  <React.Fragment key={label}>
-                    <dt>{label}</dt>
-                    <dd>{String(value ?? 'N/A')}</dd>
-                  </React.Fragment>
-                ))}
-              </dl>
-            </details>
-          </section>
+        {cdsResults.length > 0 && !loading && (
+          <div className="cds-cards">
+            {cdsResults.map(renderCdsCard)}
+          </div>
         )}
       </main>
 

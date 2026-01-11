@@ -1530,6 +1530,91 @@ Updated in:
 - `CervicalCancerScreening.cql` (valueset declaration)
 - Recompiled ELM after CQL change
 
+### SMART on FHIR Launch
+
+The smart-app supports two launch modes:
+
+| Mode | Entry Point | Auth | Patient Context | FHIR Server |
+|------|-------------|------|-----------------|-------------|
+| **Standalone** | `http://localhost:3001/` | None | Dropdown (test patients) | HAPI via proxy |
+| **SMART Launch** | `launch.html` (from EHR) | OAuth2 | From EHR context | EHR's FHIR API |
+
+**Key files:**
+
+- `src/fhir-service.js` — wraps `fhirclient` library, auto-detects launch mode
+- `public/launch.html` — SMART launch entry point, initiates OAuth2 flow
+
+**SMART launch flow:**
+
+```
+EHR (or SMART Launcher)
+    │
+    │ redirect with ?iss=...&launch=...
+    ▼
+launch.html
+    │
+    │ FHIR.oauth2.authorize() → stores state, redirects to auth server
+    ▼
+Auth Server (EHR's OAuth2 endpoint)
+    │
+    │ user authenticates, redirect with ?code=...&state=...
+    ▼
+index.html (React app)
+    │
+    │ FHIR.oauth2.ready() → exchanges code for token
+    │ fhirService.getPatientFromContext() → gets patient ID
+    ▼
+App displays CDS for patient
+```
+
+**Testing with SMART Launcher (launch.smarthealthit.org):**
+
+1. Go to https://launch.smarthealthit.org
+2. Configure:
+   - Launch Type: **Provider EHR Launch**
+   - FHIR Version: **R4**
+   - Patient: Click the picker icon, select any patient
+   - App Launch URL: `http://localhost:3001/launch.html`
+   - Client Registration tab: **Public**, **Loose** validation
+3. Click **Launch**
+4. Go through the simulated login (any password works)
+5. App should show "SMART Launch" badge and patient from context
+
+**Critical configuration in launch.html:**
+
+```javascript
+FHIR.oauth2.authorize({
+  clientId: 'uspstf-cds-app',  // REQUIRED: non-empty string
+  scope: 'launch openid fhirUser patient/*.read',
+  redirectUri: window.location.origin + '/',
+});
+```
+
+- `clientId` must be non-empty — fhirclient throws "Missing state.clientId" otherwise
+- For SMART Launcher testing, any clientId works with "Loose" validation
+- For real EHRs (Epic, Cerner), use the clientId from app registration
+
+**Patient selection: Tags vs Eligibility**
+
+| Mode | How guideline is selected |
+|------|---------------------------|
+| Test patients (HAPI) | By tag: `bcs-test`, `ccs-test`, `tob-test` |
+| Real patients (SMART) | By eligibility: age, gender |
+
+The app falls back to eligibility-based selection for patients without test tags:
+- Female, 40-74 → Breast Cancer Screening
+- (Can extend for other guidelines)
+
+**Profile matching: Server-side vs Client-side**
+
+| Aspect | HAPI `$evaluate` | Client-side `cql-execution` |
+|--------|------------------|----------------------------|
+| Profile enforcement | Strict — requires `meta.profile` | Lenient — matches by resource type |
+| QICore mapping | Must match exactly | Maps QICore types to base FHIR |
+| Real-world data | May miss unprofiled data | Finds data regardless of profile |
+
+Client-side execution is more forgiving for real EHR data that may not be QICore-profiled. This is advantageous for point-of-care CDS.
+
 ## Notes
 
 - `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation
