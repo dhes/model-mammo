@@ -1,21 +1,36 @@
 #!/usr/bin/env node
 /**
  * Runs CQL $evaluate against deployed test cases and compares to expected results.
+ * Automatically selects the correct library based on test case prefix (bcs-, tob-, ccs-, crc-).
  *
  * Usage: node src/test-runner.js bcs-recommend-57yo-female
  *        node src/test-runner.js --all
  *
  * Environment:
  *   HAPI_BASE_URL (default: http://localhost:8080/fhir)
- *   LIBRARY_ID (default: BreastCancerScreening)
  */
 
 import { readFileSync, readdirSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
 const HAPI_BASE_URL = process.env.HAPI_BASE_URL || 'http://localhost:8080/fhir';
-const LIBRARY_ID = process.env.LIBRARY_ID || 'BreastCancerScreening';
 const generatedDir = resolve(process.cwd(), 'tests/generated');
+
+// Map test case prefixes to CQL libraries
+const PREFIX_TO_LIBRARY = {
+  bcs: 'BreastCancerScreening',
+  tob: 'TobaccoScreening',
+  ccs: 'CervicalCancerScreening',
+  crc: 'ColorectalCancerScreening',
+};
+
+/**
+ * Determine library ID from case ID prefix
+ */
+function getLibraryForCase(caseId) {
+  const prefix = caseId.split('-')[0];
+  return PREFIX_TO_LIBRARY[prefix] || null;
+}
 
 /**
  * Extract parameter values from FHIR Parameters response
@@ -79,11 +94,17 @@ async function runTestCase(caseId) {
   }
 
   const patientId = patientRes.id;
-  const url = `${HAPI_BASE_URL}/Library/${LIBRARY_ID}/$evaluate?subject=Patient/${patientId}`;
+  const libraryId = getLibraryForCase(caseId);
+
+  if (!libraryId) {
+    throw new Error(`Unknown test case prefix: ${caseId}. Add mapping to PREFIX_TO_LIBRARY.`);
+  }
+
+  const url = `${HAPI_BASE_URL}/Library/${libraryId}/$evaluate?subject=Patient/${patientId}`;
 
   console.log(`Testing: ${caseId}`);
   console.log(`  ${metadata.description}`);
-  console.log(`  Patient: ${patientId}`);
+  console.log(`  Library: ${libraryId}, Patient: ${patientId}`);
 
   const response = await fetch(url, {
     method: 'GET',
@@ -120,12 +141,12 @@ if (args.length === 0) {
   console.error('Usage: node src/test-runner.js <case-id>');
   console.error('       node src/test-runner.js --all');
   console.error(`\nHAPI server: ${HAPI_BASE_URL}`);
-  console.error(`Library: ${LIBRARY_ID}`);
+  console.error(`Prefixes: ${Object.keys(PREFIX_TO_LIBRARY).join(', ')}`);
   process.exit(1);
 }
 
 console.log(`HAPI server: ${HAPI_BASE_URL}`);
-console.log(`Library: ${LIBRARY_ID}\n`);
+console.log(`Libraries: ${Object.values(PREFIX_TO_LIBRARY).join(', ')}\n`);
 
 let casesToRun = [];
 

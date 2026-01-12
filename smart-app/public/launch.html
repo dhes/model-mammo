@@ -11,35 +11,51 @@
 
   <script>
     // SMART on FHIR Launch Handler
-    // This page initiates the OAuth2 authorization flow
+    // Supports both EHR Launch and Standalone Launch modes
     //
-    // The EHR redirects here with ?iss=...&launch=...
-    // We then redirect to the EHR's authorize endpoint
-    // After auth, the EHR redirects to our redirectUri (index.html)
+    // EHR Launch: EHR redirects here with ?iss=...&launch=...
+    // Standalone: User navigates here with ?iss=... (no launch param)
 
-    FHIR.oauth2.authorize({
+    const params = new URLSearchParams(window.location.search);
+    const hasLaunchContext = params.has('launch');
+    const iss = params.get('iss');
+
+    // Choose scopes based on launch mode
+    const scope = hasLaunchContext
+      ? 'launch openid fhirUser patient/*.read'           // EHR Launch: use launch context
+      : 'launch/patient openid fhirUser patient/*.read';  // Standalone: request patient picker
+
+    console.log('[Launch] Mode:', hasLaunchContext ? 'EHR Launch' : 'Standalone Launch');
+    console.log('[Launch] ISS:', iss);
+    console.log('[Launch] Scopes:', scope);
+
+    // Build authorize options
+    const authorizeOptions = {
       // Client ID - obtained when registering the app with the EHR
-      // For SMART Launcher testing with "Loose" validation, any string works
       clientId: 'uspstf-cds-app',
 
-      // Scopes requested
-      // - launch: receive launch context
-      // - openid fhirUser: get user identity
-      // - patient/*.read: read all patient data
-      scope: 'launch openid fhirUser patient/*.read',
+      // Scopes - differ based on launch mode
+      scope: scope,
 
       // Where to redirect after authorization
-      // This should be the main app page (use absolute URL for reliability)
       redirectUri: window.location.origin + '/',
 
       // Compliant authorization - use PKCE
       completeInTarget: true
-    }).catch(err => {
+    };
+
+    // For standalone launch, explicitly set the FHIR server URL
+    if (iss && !hasLaunchContext) {
+      authorizeOptions.iss = iss;
+      console.log('[Launch] Standalone mode - setting iss explicitly');
+    }
+
+    FHIR.oauth2.authorize(authorizeOptions).catch(err => {
       document.body.innerHTML = `
         <h2>Launch Error</h2>
         <p>${err.message}</p>
         <p>Make sure you're launching from an EHR or the SMART Launcher.</p>
-        <p><a href="index.html">Go to standalone mode</a></p>
+        <p><a href="/">Go to standalone mode</a></p>
       `;
       console.error('SMART launch error:', err);
     });

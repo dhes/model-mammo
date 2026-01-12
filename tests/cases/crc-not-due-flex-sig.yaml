@@ -1,0 +1,81 @@
+# Test case: Age 52, flexible sigmoidoscopy 3 years ago - should NOT recommend screening
+# Flexible sigmoidoscopy covers 5 years, so patient is up to date
+
+id: crc-not-due-flex-sig
+description: "Age 52, flex sig 3 years ago - not due (flex sig within 5 years)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - flex-sig-coverage
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: true
+  HasFlexSigInLastFiveYears: true
+  AgeInYears: 52
+
+resources:
+  - resourceType: Patient
+    id: crc-not-due-flex-sig
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-flex-sig
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-not-due-flex-sig
+    name:
+      - family: TestPatient
+        given:
+          - FlexSig
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 52
+
+  - resourceType: Procedure
+    id: crc-not-due-flex-sig-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-flex-sig
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "44441009"
+          display: Flexible fiberoptic sigmoidoscopy (procedure)
+    subject:
+      reference: Patient/crc-not-due-flex-sig
+    performedDateTime:
+      $fn: yearsAgo
+      years: 3

@@ -1,0 +1,81 @@
+# Test case: Age 58, CT colonography 2 years ago - should NOT recommend screening
+# CT colonography covers 5 years, so patient is up to date
+
+id: crc-not-due-ct-colon
+description: "Age 58, CT colonography 2 years ago - not due (CT colon within 5 years)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - ct-colonography-coverage
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: true
+  HasCTColonographyInLastFiveYears: true
+  AgeInYears: 58
+
+resources:
+  - resourceType: Patient
+    id: crc-not-due-ct-colon
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-ct-colon
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-not-due-ct-colon
+    name:
+      - family: TestPatient
+        given:
+          - CTColon
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 58
+
+  - resourceType: Procedure
+    id: crc-not-due-ct-colon-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-ct-colon
+    status: completed
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "60515-4"
+          display: CT Colon and Rectum W air contrast PR
+    subject:
+      reference: Patient/crc-not-due-ct-colon
+    performedDateTime:
+      $fn: yearsAgo
+      years: 2

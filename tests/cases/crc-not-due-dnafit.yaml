@@ -1,0 +1,91 @@
+# Test case: Age 65, sDNA-FIT (Cologuard) 1 year ago - should NOT recommend screening
+# sDNA-FIT covers 2 years per CMS130, so patient is up to date
+
+id: crc-not-due-dnafit
+description: "Age 65, sDNA-FIT 1 year ago - not due (Cologuard within 2 years)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - dnafit-coverage
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: true
+  HasDNAFITInLastTwoYears: true
+  AgeInYears: 65
+
+resources:
+  - resourceType: Patient
+    id: crc-not-due-dnafit
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-dnafit
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-not-due-dnafit
+    name:
+      - family: TestPatient
+        given:
+          - Cologuard
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 65
+
+  - resourceType: Observation
+    id: crc-not-due-dnafit-obs
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-dnafit
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: laboratory
+            display: Laboratory
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "77354-9"
+          display: "Noninvasive colorectal cancer DNA and occult blood screening [Presence] in Stool"
+    subject:
+      reference: Patient/crc-not-due-dnafit
+    effectiveDateTime:
+      $fn: yearsAgo
+      years: 1
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "260385009"
+          display: Negative

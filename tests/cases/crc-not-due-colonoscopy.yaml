@@ -1,0 +1,81 @@
+# Test case: Age 60, colonoscopy 5 years ago - should NOT recommend screening
+# Colonoscopy covers 10 years, so patient is up to date
+
+id: crc-not-due-colonoscopy
+description: "Age 60, colonoscopy 5 years ago - not due (colonoscopy within 10 years)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - colonoscopy-coverage
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: true
+  HasColonoscopyInLastTenYears: true
+  AgeInYears: 60
+
+resources:
+  - resourceType: Patient
+    id: crc-not-due-colonoscopy
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-colonoscopy
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-not-due-colonoscopy
+    name:
+      - family: TestPatient
+        given:
+          - Colonoscopy
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 60
+
+  - resourceType: Procedure
+    id: crc-not-due-colonoscopy-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-not-due-colonoscopy
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "73761001"
+          display: Colonoscopy (procedure)
+    subject:
+      reference: Patient/crc-not-due-colonoscopy
+    performedDateTime:
+      $fn: yearsAgo
+      years: 5

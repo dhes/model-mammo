@@ -10,6 +10,7 @@ import { fhirService } from './fhir-service.js'
 import BreastCancerScreeningELM from './elm/BreastCancerScreening.json'
 import TobaccoScreeningELM from './elm/TobaccoScreening.json'
 import CervicalCancerScreeningELM from './elm/CervicalCancerScreening.json'
+import ColorectalCancerScreeningELM from './elm/ColorectalCancerScreening.json'
 import FHIRHelpersELM from './elm/FHIRHelpers.json'
 import QICoreCommonELM from './elm/QICoreCommon.json'
 import StatusELM from './elm/Status.json'
@@ -18,6 +19,7 @@ const elmLibraries = {
   BreastCancerScreening: BreastCancerScreeningELM,
   TobaccoScreening: TobaccoScreeningELM,
   CervicalCancerScreening: CervicalCancerScreeningELM,
+  ColorectalCancerScreening: ColorectalCancerScreeningELM,
   FHIRHelpers: FHIRHelpersELM,
   QICoreCommon: QICoreCommonELM,
   Status: StatusELM,
@@ -113,6 +115,32 @@ const GUIDELINE_CONFIG = {
       { label: 'Cytology in Last 3 Years', value: result.HasCervicalCytologyInLastThreeYears },
       { label: 'hrHPV in Last 5 Years', value: result.HasHrHPVInLastFiveYears },
       { label: 'Absence of Cervix', value: result.HasAbsenceOfCervix },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  crc: {
+    libraryId: 'ColorectalCancerScreening',
+    title: 'Colorectal Cancer Screening',
+    getAlerts: (result) => {
+      const screeningDue = result.ColorectalScreeningDue
+      return [{
+        key: 'screening',
+        active: screeningDue === true,
+        activeText: 'Colorectal Cancer Screening Due',
+        inactiveText: 'No Colorectal Screening Due',
+        tooltip: result.ScreeningOptions,
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Screening Options', value: result.ScreeningOptions },
+      { label: 'FOBT in Last Year', value: result.HasFOBTInLastYear },
+      { label: 'sDNA-FIT in Last 2 Years', value: result.HasDNAFITInLastTwoYears },
+      { label: 'CT Colonography in Last 5 Years', value: result.HasCTColonographyInLastFiveYears },
+      { label: 'Flex Sig in Last 5 Years', value: result.HasFlexSigInLastFiveYears },
+      { label: 'Colonoscopy in Last 10 Years', value: result.HasColonoscopyInLastTenYears },
+      { label: 'Has Total Colectomy', value: result.HasTotalColectomy },
+      { label: 'Has Colorectal Cancer', value: result.HasColorectalCancer },
       { label: 'Exclusion Reason', value: result.ExclusionReason },
     ],
   },
@@ -279,6 +307,11 @@ function App() {
     // Tobacco Screening: adults 18+
     if (age >= 18) {
       applicable.push(GUIDELINE_CONFIG.tob)
+    }
+
+    // Colorectal Cancer Screening: age 46-75
+    if (age >= 46 && age <= 75) {
+      applicable.push(GUIDELINE_CONFIG.crc)
     }
 
     return applicable

@@ -13,7 +13,8 @@ import { resolve } from 'path';
 
 const HAPI_BASE_URL = process.env.HAPI_BASE_URL || 'http://localhost:8080/fhir';
 const TAG_SYSTEM = 'http://example.org/test-lifecycle';
-const COMMON_TAG_CODE = 'bcs-test';  // Used for --all teardown
+// Common tags for each guideline - used for --all teardown
+const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test'];
 const generatedDir = resolve(process.cwd(), 'tests/generated');
 
 /**
@@ -104,15 +105,18 @@ console.log(`HAPI server: ${HAPI_BASE_URL}\n`);
 let totalDeleted = 0;
 
 if (args[0] === '--all') {
-  // Use common tag to delete all test resources at once
-  console.log(`Tearing down ALL test resources with tag: ${COMMON_TAG_CODE}\n`);
+  // Use common tags to delete all test resources at once
+  console.log(`Tearing down ALL test resources with tags: ${COMMON_TAG_CODES.join(', ')}\n`);
 
   // Resource types that might have test data (order matters: delete dependents before Patient)
   const resourceTypes = ['Observation', 'Procedure', 'Condition', 'Patient'];
 
-  for (const resourceType of resourceTypes) {
-    const deleted = await deleteByTag(resourceType, COMMON_TAG_CODE);
-    totalDeleted += deleted;
+  for (const tagCode of COMMON_TAG_CODES) {
+    console.log(`\n--- Tag: ${tagCode} ---`);
+    for (const resourceType of resourceTypes) {
+      const deleted = await deleteByTag(resourceType, tagCode);
+      totalDeleted += deleted;
+    }
   }
 } else {
   // Single case - use case-specific tag

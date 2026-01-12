@@ -1,0 +1,83 @@
+# Test case: Colonoscopy exactly 10 years ago - should recommend screening
+# Following "interval model" - when 10 years have elapsed, screening is due
+
+id: crc-due-colonoscopy-expired
+description: "Age 60, colonoscopy exactly 10y ago - due (interval elapsed)"
+tags:
+  - colorectal-cancer-screening
+  - positive-case
+  - boundary-case
+  - colonoscopy-expired
+
+expected:
+  ColorectalScreeningDue: true
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: false
+  HasColonoscopyInLastTenYears: false
+  AgeInYears: 60
+
+resources:
+  - resourceType: Patient
+    id: crc-due-colonoscopy-expired
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-due-colonoscopy-expired
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-due-colonoscopy-expired
+    name:
+      - family: TestPatient
+        given:
+          - ColonoscopyExpired
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 60
+
+  - resourceType: Procedure
+    id: crc-due-colonoscopy-expired-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-due-colonoscopy-expired
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "73761001"
+          display: Colonoscopy (procedure)
+    subject:
+      reference: Patient/crc-due-colonoscopy-expired
+    performedDateTime:
+      $fn: yearsAgo
+      years: 10
+      offsetDays: 0

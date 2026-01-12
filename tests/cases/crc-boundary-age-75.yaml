@@ -1,0 +1,60 @@
+# Test case: Age exactly 75, no screening - last day eligible
+# CMS130 specifies ages 46-75, so 75 is the last eligible age
+
+id: crc-boundary-age-75
+description: "Age 75 (last eligible day), no screening - due"
+tags:
+  - colorectal-cancer-screening
+  - positive-case
+  - boundary-case
+  - age-boundary
+
+expected:
+  ColorectalScreeningDue: true
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: false
+  AgeInYears: 75
+
+resources:
+  - resourceType: Patient
+    id: crc-boundary-age-75
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-boundary-age-75
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2054-5"
+              display: Black or African American
+          - url: text
+            valueString: Black or African American
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-boundary-age-75
+    name:
+      - family: TestPatient
+        given:
+          - Age75
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 75
+      offsetDays: 0

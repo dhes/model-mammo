@@ -1615,6 +1615,81 @@ The app falls back to eligibility-based selection for patients without test tags
 
 Client-side execution is more forgiving for real EHR data that may not be QICore-profiled. This is advantageous for point-of-care CDS.
 
+## Target Market and Strategic Context
+
+### Value Proposition
+
+**Enterprise-grade Clinical Decision Support for independent primary care practices.**
+
+Large health systems using Epic or Cerner have built-in CDS (Best Practice Alerts, health maintenance reminders). Independent primary care practices (IPCPs) on lighter-weight EHRs often lack real-time, guideline-driven CDS — they may only have retrospective quality reporting through payer partnerships (NCQA/HEDIS measures).
+
+This project fills that gap: USPSTF guideline-driven recommendations delivered at point of care via SMART on FHIR.
+
+### Target EHRs
+
+| EHR | Market Segment | SMART on FHIR | Notes |
+|-----|----------------|---------------|-------|
+| **Elation** | IPCPs | ✓ FHIR R4 + SMART | Clinical-first design, strong in family medicine |
+| **athenahealth** | Independent/mid-size | ✓ FHIR R4 + SMART | Large marketplace, 100% TEFCA connected |
+| **eClinicalWorks** | Independent/mid-size | ✓ FHIR R4 + SMART | Free API access, ONC certified |
+
+All three serve independent practices, support SMART on FHIR, and lack the enterprise CDS that Epic/Cerner customers receive.
+
+### Deployment Pathway
+
+1. **Technical integration** — SMART on FHIR app works with any compliant EHR
+2. **App registration** — Register with each EHR's developer program/marketplace
+3. **Practice adoption** — Individual practices enable the app
+
+The SMART on FHIR standard means one codebase works across EHRs. The challenge shifts from technical integration to visibility and adoption.
+
+### Adoption Timeline
+
+Evidence-based CDS adoption has been slow despite decades of guideline development. Barriers include:
+- Physician culture (guidelines taught but not systematically implemented)
+- Alert fatigue from poorly designed CDS
+- Workflow disruption from external apps
+- Lack of CDS in smaller EHRs
+
+Expected trajectory: **"Gradually, then suddenly."** Regulatory pressure (ONC, CMS quality measures), payer incentives, and generational change in physicians will eventually tip the market. Timeline uncertain — possibly decades.
+
+### Being Ready
+
+Positioning for eventual market acceleration:
+- **Technical foundation** — Working SMART on FHIR app with multiple guidelines
+- **Open source** — Visible, forkable, builds credibility
+- **Documented methodology** — DMN→CQL→FHIR pipeline is citable/publishable
+- **Real deployments** — Even one or two pilots prove it works in practice
+
+### Remaining Challenges
+
+| Challenge | Nature | Status |
+|-----------|--------|--------|
+| Clinical validation | Has the logic been validated against real cases? | Needed |
+| Regulatory clarity | FDA CDS guidance — likely qualifies for enforcement discretion | Needs confirmation |
+| Liability framework | Who's responsible for wrong recommendations? | Open source disclaimers help; framing matters |
+| Physician adoption | Cultural, not technical | The hardest problem |
+
+### Publication Strategy
+
+**Paper angles:**
+
+1. **Methodology** — "A Reproducible Pipeline from USPSTF Guidelines to SMART on FHIR CDS Using DMN and CQL"
+2. **Implementation** — "USPSTF Grade A Guidelines as a SMART on FHIR Application for Independent Primary Care"
+3. **Gap analysis** — "Enterprise CDS for Practices Without Enterprise EHRs"
+
+**Target journals:**
+
+| Journal | Fit | Notes |
+|---------|-----|-------|
+| JAMIA | High | Premier informatics journal; methodology + implementation |
+| Applied Clinical Informatics | High | Practical focus, CDS implementations welcome |
+| JMIR Medical Informatics | Good | Open access, faster review, good visibility |
+| BMC Medical Informatics | Good | Open access, broad readership |
+| AMIA Annual Symposium | Good | Conference paper, peer-reviewed, establishes priority |
+
+**Recommended approach:** Submit to AMIA Annual Symposium first (shorter format, establishes priority), then expand to a full JAMIA paper with implementation details and evaluation.
+
 ## Notes
 
 - `mammo.bpmn` exists but is not actively used — BPMN adds unnecessary complexity for stateless decision evaluation

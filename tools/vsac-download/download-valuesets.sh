@@ -15,14 +15,26 @@ mkdir -p "$OUTPUT_DIR"
 
 # ValueSet OIDs used in our CQL
 VALUESETS=(
+  # Breast Cancer Screening (CMS125)
   "2.16.840.1.113762.1.4.1116.185|Breast Cancer ICD-10"
   "2.16.840.1.113883.3.1444.3.102|Breast Cancer SNOMED"
-  "2.16.840.1.113883.3.464.1003.111.12.1016|Congenital or Acquired Absence of Cervix"
   "2.16.840.1.113883.3.464.1003.198.12.1068|History of bilateral mastectomy"
+  "2.16.840.1.113883.3.464.1003.108.12.1018|Mammography"
+
+  # Cervical Cancer Screening (CMS124)
+  "2.16.840.1.113883.3.464.1003.111.12.1016|Congenital or Acquired Absence of Cervix"
   "2.16.840.1.113883.3.464.1003.110.12.1059|HPV Test"
   "2.16.840.1.113883.3.464.1003.198.12.1014|Hysterectomy with No Residual Cervix"
-  "2.16.840.1.113883.3.464.1003.108.12.1018|Mammography"
   "2.16.840.1.113883.3.464.1003.108.12.1017|Pap Test"
+
+  # Colorectal Cancer Screening (CMS130)
+  "2.16.840.1.113883.3.464.1003.198.12.1011|Fecal Occult Blood Test"
+  "2.16.840.1.113883.3.464.1003.108.12.1039|Stool DNA with FIT Test"
+  "2.16.840.1.113883.3.464.1003.108.12.1020|Colonoscopy"
+  "2.16.840.1.113883.3.464.1003.198.12.1010|Flexible Sigmoidoscopy"
+  "2.16.840.1.113883.3.464.1003.108.12.1038|CT Colonography"
+  "2.16.840.1.113883.3.464.1003.198.12.1019|Total Colectomy"
+  "2.16.840.1.113883.3.464.1003.108.12.1001|Malignant Neoplasm of Colon"
 )
 
 echo "Downloading ${#VALUESETS[@]} ValueSets from VSAC..."

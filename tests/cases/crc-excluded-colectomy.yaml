@@ -1,0 +1,81 @@
+# Test case: Age 55, total colectomy - should NOT recommend screening
+# Patient has no colon to screen due to total colectomy
+
+id: crc-excluded-colectomy
+description: "Age 55, total colectomy - not due (no colon to screen)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - colectomy-exclusion
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: true
+  HasTotalColectomy: true
+  AgeInYears: 55
+  ExclusionReason: "Patient has had total colectomy"
+
+resources:
+  - resourceType: Patient
+    id: crc-excluded-colectomy
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-excluded-colectomy
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-excluded-colectomy
+    name:
+      - family: TestPatient
+        given:
+          - Colectomy
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 55
+
+  - resourceType: Procedure
+    id: crc-excluded-colectomy-proc
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-excluded-colectomy
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "26390003"
+          display: Total colectomy (procedure)
+    subject:
+      reference: Patient/crc-excluded-colectomy
+    performedDateTime:
+      $fn: yearsAgo
+      years: 10

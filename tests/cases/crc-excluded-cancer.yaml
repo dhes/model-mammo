@@ -1,0 +1,89 @@
+# Test case: Age 55, colorectal cancer diagnosis - should NOT recommend screening
+# Patient with colorectal cancer is excluded (under oncology care)
+
+id: crc-excluded-cancer
+description: "Age 55, colorectal cancer - not due (oncology care)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - cancer-exclusion
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: true
+  IsExcluded: true
+  HasColorectalCancer: true
+  AgeInYears: 55
+  ExclusionReason: "Patient has colorectal cancer diagnosis"
+
+resources:
+  - resourceType: Patient
+    id: crc-excluded-cancer
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-excluded-cancer
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-excluded-cancer
+    name:
+      - family: TestPatient
+        given:
+          - Cancer
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 55
+
+  - resourceType: Condition
+    id: crc-excluded-cancer-cond
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-excluded-cancer
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: active
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+            display: Problem List Item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "109838007"
+          display: Overlapping malignant neoplasm of colon (disorder)
+    subject:
+      reference: Patient/crc-excluded-cancer
+    onsetDateTime:
+      $fn: yearsAgo
+      years: 2

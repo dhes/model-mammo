@@ -89,6 +89,34 @@ const GUIDELINE_CONFIG = {
       { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
     ],
   },
+  crc: {
+    libraryId: 'ColorectalCancerScreening',
+    title: 'Colorectal Cancer Screening',
+    getAlerts: (result, getValue) => {
+      const screeningDue = getValue(result, 'ColorectalScreeningDue')
+      const screeningOptions = getValue(result, 'ScreeningOptions')
+      return [{
+        key: 'screening',
+        active: screeningDue === true,
+        activeText: 'Colorectal Cancer Screening Due',
+        inactiveText: 'No Colorectal Screening Due',
+        tooltip: screeningOptions,
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Eligible Age (46-75)', value: getValue(result, 'IsEligibleAge') },
+      { label: 'Screening Options', value: getValue(result, 'ScreeningOptions') },
+      { label: 'FOBT in Last Year', value: getValue(result, 'HasFOBTInLastYear') },
+      { label: 'sDNA-FIT in Last 2 Years', value: getValue(result, 'HasDNAFITInLastTwoYears') },
+      { label: 'CT Colonography in Last 5 Years', value: getValue(result, 'HasCTColonographyInLastFiveYears') },
+      { label: 'Flex Sig in Last 5 Years', value: getValue(result, 'HasFlexSigInLastFiveYears') },
+      { label: 'Colonoscopy in Last 10 Years', value: getValue(result, 'HasColonoscopyInLastTenYears') },
+      { label: 'Has Total Colectomy', value: getValue(result, 'HasTotalColectomy') },
+      { label: 'Has Colorectal Cancer', value: getValue(result, 'HasColorectalCancer') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
 }
 
 function App() {

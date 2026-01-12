@@ -1,0 +1,58 @@
+# Test case: Age 40 - not eligible (too young)
+# CMS130 specifies ages 46-75, so a 40-year-old is not eligible
+
+id: crc-excluded-too-young
+description: "Age 40 - not eligible for colorectal screening (under 46)"
+tags:
+  - colorectal-cancer-screening
+  - negative-case
+  - age-exclusion
+
+expected:
+  ColorectalScreeningDue: false
+  IsEligibleAge: false
+  IsExcluded: false
+  AgeInYears: 40
+  ExclusionReason: "Patient is under 46 years old"
+
+resources:
+  - resourceType: Patient
+    id: crc-excluded-too-young
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-excluded-too-young
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-excluded-too-young
+    name:
+      - family: TestPatient
+        given:
+          - TooYoung
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 40

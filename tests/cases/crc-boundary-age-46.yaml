@@ -1,0 +1,60 @@
+# Test case: Age exactly 46, no screening - first day eligible
+# CMS130 specifies ages 46-75, so 46 is the first eligible age
+
+id: crc-boundary-age-46
+description: "Age 46 (first eligible day), no screening - due"
+tags:
+  - colorectal-cancer-screening
+  - positive-case
+  - boundary-case
+  - age-boundary
+
+expected:
+  ColorectalScreeningDue: true
+  IsEligibleAge: true
+  IsExcluded: false
+  IsUpToDateOnScreening: false
+  AgeInYears: 46
+
+resources:
+  - resourceType: Patient
+    id: crc-boundary-age-46
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: crc-test
+        - system: http://example.org/test-lifecycle
+          code: crc-boundary-age-46
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: crc-boundary-age-46
+    name:
+      - family: TestPatient
+        given:
+          - Age46
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 46
+      offsetDays: 0
