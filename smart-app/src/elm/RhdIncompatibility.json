@@ -1,0 +1,491 @@
+{
+   "library" : {
+      "annotation" : [ {
+         "translatorVersion" : "3.29.0",
+         "translatorOptions" : "",
+         "signatureLevel" : "None",
+         "type" : "CqlToElmInfo"
+      } ],
+      "identifier" : {
+         "id" : "RhdIncompatibility",
+         "version" : "0.0.1"
+      },
+      "schemaIdentifier" : {
+         "id" : "urn:hl7-org:elm",
+         "version" : "r1"
+      },
+      "usings" : {
+         "def" : [ {
+            "localIdentifier" : "System",
+            "uri" : "urn:hl7-org:elm-types:r1",
+            "annotation" : [ ]
+         }, {
+            "localIdentifier" : "QICore",
+            "uri" : "http://hl7.org/fhir",
+            "annotation" : [ ]
+         } ]
+      },
+      "includes" : {
+         "def" : [ {
+            "localIdentifier" : "FHIRHelpers",
+            "path" : "FHIRHelpers",
+            "version" : "4.4.000",
+            "annotation" : [ ]
+         } ]
+      },
+      "codeSystems" : {
+         "def" : [ {
+            "name" : "LOINC",
+            "id" : "http://loinc.org",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         }, {
+            "name" : "SNOMED",
+            "id" : "http://snomed.info/sct",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         } ]
+      },
+      "codes" : {
+         "def" : [ {
+            "name" : "Rh Type",
+            "id" : "883-9",
+            "display" : "ABO and Rh group [Type] in Blood",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Rh D Antigen",
+            "id" : "10331-7",
+            "display" : "Rh [Type] in Blood",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Antibody Screen",
+            "id" : "890-4",
+            "display" : "Blood group antibodies Screen [Presence] in Serum or Plasma",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Pregnancy",
+            "id" : "77386006",
+            "display" : "Pregnancy (finding)",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "SNOMED",
+               "annotation" : [ ]
+            }
+         } ]
+      },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient",
+            "annotation" : [ ]
+         } ]
+      },
+      "statements" : {
+         "def" : [ {
+            "name" : "Patient",
+            "context" : "Patient",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "SingletonFrom",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "type" : "Retrieve",
+                  "annotation" : [ ],
+                  "include" : [ ],
+                  "codeFilter" : [ ],
+                  "dateFilter" : [ ],
+                  "otherFilter" : [ ]
+               }
+            }
+         }, {
+            "name" : "PregnancyConditions",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "dataType" : "{http://hl7.org/fhir}Condition",
+               "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "annotation" : [ ],
+               "codes" : {
+                  "type" : "ToList",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "Pregnancy",
+                     "type" : "CodeRef",
+                     "annotation" : [ ]
+                  }
+               },
+               "include" : [ ],
+               "codeFilter" : [ ],
+               "dateFilter" : [ ],
+               "otherFilter" : [ ]
+            }
+         }, {
+            "name" : "IsCurrentlyPregnant",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "PregnancyConditions",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "RhTypeTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "type" : "Union",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "annotation" : [ ],
+                        "codes" : {
+                           "type" : "ToList",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "Rh Type",
+                              "type" : "CodeRef",
+                              "annotation" : [ ]
+                           }
+                        },
+                        "include" : [ ],
+                        "codeFilter" : [ ],
+                        "dateFilter" : [ ],
+                        "otherFilter" : [ ]
+                     }, {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "annotation" : [ ],
+                        "codes" : {
+                           "type" : "ToList",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "Rh D Antigen",
+                              "type" : "CodeRef",
+                              "annotation" : [ ]
+                           }
+                        },
+                        "include" : [ ],
+                        "codeFilter" : [ ],
+                        "dateFilter" : [ ],
+                        "otherFilter" : [ ]
+                     } ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "RhTypingDone",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "RhTypeTests",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "AntibodyScreenTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Observation",
+                     "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                     "codeProperty" : "code",
+                     "codeComparator" : "~",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "type" : "ToList",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Antibody Screen",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "AntibodyScreenDone",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "AntibodyScreenTests",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "RhDAndAntibodyScreenDone",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "RhTypingDone",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "name" : "AntibodyScreenDone",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "PerformRhDAndAntibodyTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "IsCurrentlyPregnant",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "RhDAndAntibodyScreenDone",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ]
+            }
+         }, {
+            "name" : "RecommendationText",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "PerformRhDAndAntibodyTests",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order Rh(D) blood typing and antibody screen",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         }, {
+            "name" : "ExclusionReason",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "IsCurrentlyPregnant",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient is not currently pregnant",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "RhDAndAntibodyScreenDone",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Rh(D) typing and antibody screen already performed",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         } ]
+      }
+   }
+}
+

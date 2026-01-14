@@ -1,0 +1,1152 @@
+{
+   "library" : {
+      "annotation" : [ {
+         "translatorVersion" : "3.29.0",
+         "translatorOptions" : "",
+         "signatureLevel" : "None",
+         "type" : "CqlToElmInfo"
+      } ],
+      "identifier" : {
+         "id" : "HIVPreexposureProphylaxis",
+         "version" : "0.0.1"
+      },
+      "schemaIdentifier" : {
+         "id" : "urn:hl7-org:elm",
+         "version" : "r1"
+      },
+      "usings" : {
+         "def" : [ {
+            "localIdentifier" : "System",
+            "uri" : "urn:hl7-org:elm-types:r1",
+            "annotation" : [ ]
+         }, {
+            "localIdentifier" : "QICore",
+            "uri" : "http://hl7.org/fhir",
+            "annotation" : [ ]
+         } ]
+      },
+      "includes" : {
+         "def" : [ {
+            "localIdentifier" : "FHIRHelpers",
+            "path" : "FHIRHelpers",
+            "version" : "4.4.000",
+            "annotation" : [ ]
+         } ]
+      },
+      "codeSystems" : {
+         "def" : [ {
+            "name" : "LOINC",
+            "id" : "http://loinc.org",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         }, {
+            "name" : "SNOMED",
+            "id" : "http://snomed.info/sct",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         } ]
+      },
+      "valueSets" : {
+         "def" : [ {
+            "name" : "HIV Tests",
+            "id" : "http://example.org/fhir/ValueSet/hiv-tests",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : [ ]
+         }, {
+            "name" : "Sexually Transmitted Infections",
+            "id" : "http://example.org/fhir/ValueSet/sexually-transmitted-infections",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : [ ]
+         } ]
+      },
+      "codes" : {
+         "def" : [ {
+            "name" : "Body Weight",
+            "id" : "29463-7",
+            "display" : "Body weight",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Negative SNOMED",
+            "id" : "260385009",
+            "display" : "Negative",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "SNOMED",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Negative LOINC",
+            "id" : "LA6577-6",
+            "display" : "Negative",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         } ]
+      },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient",
+            "annotation" : [ ]
+         } ]
+      },
+      "statements" : {
+         "def" : [ {
+            "name" : "Patient",
+            "context" : "Patient",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "SingletonFrom",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "type" : "Retrieve",
+                  "annotation" : [ ],
+                  "include" : [ ],
+                  "codeFilter" : [ ],
+                  "dateFilter" : [ ],
+                  "otherFilter" : [ ]
+               }
+            }
+         }, {
+            "name" : "AgeInYears",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "precision" : "Year",
+               "type" : "CalculateAge",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "annotation" : [ ],
+                  "source" : {
+                     "path" : "birthDate",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "Patient",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "MeetsAgeRequirement",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "GreaterOrEqual",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "AgeInYears",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "13",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "WeightObservations",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Observation",
+                     "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                     "codeProperty" : "code",
+                     "codeComparator" : "~",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "type" : "ToList",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Body Weight",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "MostRecentWeight",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "First",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "source" : {
+                  "type" : "Query",
+                  "annotation" : [ ],
+                  "source" : [ {
+                     "alias" : "Obs",
+                     "annotation" : [ ],
+                     "expression" : {
+                        "name" : "WeightObservations",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  } ],
+                  "let" : [ ],
+                  "relationship" : [ ],
+                  "sort" : {
+                     "annotation" : [ ],
+                     "by" : [ {
+                        "direction" : "desc",
+                        "type" : "ByExpression",
+                        "annotation" : [ ],
+                        "expression" : {
+                           "name" : "ToValue",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "name" : "effective",
+                              "type" : "IdentifierRef",
+                              "annotation" : [ ]
+                           } ]
+                        }
+                     } ]
+                  }
+               }
+            }
+         }, {
+            "name" : "WeightQuantity",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "strict" : false,
+               "type" : "As",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "ToValue",
+                  "libraryName" : "FHIRHelpers",
+                  "type" : "FunctionRef",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "MostRecentWeight",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  } ]
+               },
+               "asTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}Quantity",
+                  "type" : "NamedTypeSpecifier",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "WeightInKilo",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "IsNull",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "MostRecentWeight",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "asType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                     "type" : "As",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "type" : "Null",
+                        "annotation" : [ ]
+                     }
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Equal",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "unit",
+                        "type" : "Property",
+                        "annotation" : [ ],
+                        "source" : {
+                           "name" : "WeightQuantity",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "kg",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  },
+                  "then" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "WeightQuantity",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Equal",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "unit",
+                        "type" : "Property",
+                        "annotation" : [ ],
+                        "source" : {
+                           "name" : "WeightQuantity",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "[lb_av]",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  },
+                  "then" : {
+                     "type" : "Multiply",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "value",
+                        "type" : "Property",
+                        "annotation" : [ ],
+                        "source" : {
+                           "name" : "WeightQuantity",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Decimal",
+                        "value" : "0.453592",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  }
+               } ],
+               "else" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "annotation" : [ ],
+                  "source" : {
+                     "name" : "WeightQuantity",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         }, {
+            "name" : "MeetsWeightRequirement",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "IsNull",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "WeightInKilo",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  }
+               }, {
+                  "type" : "GreaterOrEqual",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "WeightInKilo",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "type" : "ToDecimal",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "35",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }
+                  } ]
+               } ]
+            }
+         }, {
+            "name" : "HIVTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Observation",
+                     "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab",
+                     "codeProperty" : "code",
+                     "codeComparator" : "in",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "name" : "HIV Tests",
+                        "preserve" : true,
+                        "type" : "ValueSetRef",
+                        "annotation" : [ ]
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "NegativeHIVTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "name" : "HIVTests",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Or",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "type" : "Equivalent",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
+                        "type" : "As",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "ToValue",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "path" : "value",
+                              "scope" : "Obs",
+                              "type" : "Property",
+                              "annotation" : [ ]
+                           } ]
+                        }
+                     }, {
+                        "type" : "ToConcept",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Negative SNOMED",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  }, {
+                     "type" : "Equivalent",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
+                        "type" : "As",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "ToValue",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "path" : "value",
+                              "scope" : "Obs",
+                              "type" : "Property",
+                              "annotation" : [ ]
+                           } ]
+                        }
+                     }, {
+                        "type" : "ToConcept",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Negative LOINC",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HIVNegative",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "NegativeHIVTests",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "CreatinineClearanceAdequate",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "true",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "NoAcuteHIVSymptoms",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "true",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "NoProbableRecentExposure",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "true",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "NoContraindications",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "true",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "RecentSTIConditions",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "C",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Condition",
+                     "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+                     "codeProperty" : "code",
+                     "codeComparator" : "in",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "name" : "Sexually Transmitted Infections",
+                        "preserve" : true,
+                        "type" : "ValueSetRef",
+                        "annotation" : [ ]
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Or",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "strict" : false,
+                        "type" : "As",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "ToValue",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "path" : "onset",
+                              "scope" : "C",
+                              "type" : "Property",
+                              "annotation" : [ ]
+                           } ]
+                        },
+                        "asTypeSpecifier" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}DateTime",
+                           "type" : "NamedTypeSpecifier",
+                           "annotation" : [ ]
+                        }
+                     }, {
+                        "type" : "ToDateTime",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "type" : "Subtract",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "type" : "Today",
+                              "annotation" : [ ],
+                              "signature" : [ ]
+                           }, {
+                              "value" : 6,
+                              "unit" : "months",
+                              "type" : "Quantity",
+                              "annotation" : [ ]
+                           } ]
+                        }
+                     } ]
+                  }, {
+                     "type" : "GreaterOrEqual",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "value",
+                        "type" : "Property",
+                        "annotation" : [ ],
+                        "source" : {
+                           "path" : "recordedDate",
+                           "scope" : "C",
+                           "type" : "Property",
+                           "annotation" : [ ]
+                        }
+                     }, {
+                        "type" : "ToDateTime",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "type" : "Subtract",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "type" : "Today",
+                              "annotation" : [ ],
+                              "signature" : [ ]
+                           }, {
+                              "value" : 6,
+                              "unit" : "months",
+                              "type" : "Quantity",
+                              "annotation" : [ ]
+                           } ]
+                        }
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HasRecentSTI",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "RecentSTIConditions",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "HasPrEPIndication",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "name" : "HasRecentSTI",
+               "type" : "ExpressionRef",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "IsEligible",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "And",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "type" : "And",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "type" : "And",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "type" : "And",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "name" : "MeetsAgeRequirement",
+                                 "type" : "ExpressionRef",
+                                 "annotation" : [ ]
+                              }, {
+                                 "name" : "MeetsWeightRequirement",
+                                 "type" : "ExpressionRef",
+                                 "annotation" : [ ]
+                              } ]
+                           }, {
+                              "name" : "HIVNegative",
+                              "type" : "ExpressionRef",
+                              "annotation" : [ ]
+                           } ]
+                        }, {
+                           "name" : "CreatinineClearanceAdequate",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        } ]
+                     }, {
+                        "name" : "NoAcuteHIVSymptoms",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     } ]
+                  }, {
+                     "name" : "NoProbableRecentExposure",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "name" : "NoContraindications",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "PrescribePrEP",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "IsEligible",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "name" : "HasPrEPIndication",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "RecommendationText",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "PrescribePrEP",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Consider prescribing HIV pre-exposure prophylaxis (PrEP)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "IsEligible",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "HasPrEPIndication",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient is eligible for PrEP but no current indication identified",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         }, {
+            "name" : "ExclusionReason",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "MeetsAgeRequirement",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient is under 13 years old",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "IsNull",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "WeightInKilo",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "No weight documented",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "MeetsWeightRequirement",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient weighs less than 35 kg",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "HIVNegative",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "No documented negative HIV test",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "CreatinineClearanceAdequate",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Inadequate renal function",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "NoAcuteHIVSymptoms",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Acute HIV symptoms present - requires further testing",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "NoProbableRecentExposure",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Recent HIV exposure - consider PEP instead",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "NoContraindications",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Contraindications to PrEP medications",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         } ]
+      }
+   }
+}
+

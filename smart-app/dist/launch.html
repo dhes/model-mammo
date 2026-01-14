@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMART Launch - USPSTF CDS</title>
+  <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+</head>
+<body>
+  <p>Launching SMART app...</p>
+
+  <script>
+    // SMART on FHIR Launch Handler
+    // Supports both EHR Launch and Standalone Launch modes
+    //
+    // EHR Launch: EHR redirects here with ?iss=...&launch=...
+    // Standalone: User navigates here with ?iss=... (no launch param)
+
+    const params = new URLSearchParams(window.location.search);
+    const hasLaunchContext = params.has('launch');
+    const iss = params.get('iss');
+
+    // Choose scopes based on launch mode
+    const scope = hasLaunchContext
+      ? 'launch openid fhirUser patient/*.read'           // EHR Launch: use launch context
+      : 'launch/patient openid fhirUser patient/*.read';  // Standalone: request patient picker
+
+    console.log('[Launch] Mode:', hasLaunchContext ? 'EHR Launch' : 'Standalone Launch');
+    console.log('[Launch] ISS:', iss);
+    console.log('[Launch] Scopes:', scope);
+
+    // Build authorize options
+    const authorizeOptions = {
+      // Client ID - obtained when registering the app with the EHR
+      clientId: 'uspstf-cds-app',
+
+      // Scopes - differ based on launch mode
+      scope: scope,
+
+      // Where to redirect after authorization
+      redirectUri: window.location.origin + '/',
+
+      // Compliant authorization - use PKCE
+      completeInTarget: true
+    };
+
+    // For standalone launch, explicitly set the FHIR server URL
+    if (iss && !hasLaunchContext) {
+      authorizeOptions.iss = iss;
+      console.log('[Launch] Standalone mode - setting iss explicitly');
+    }
+
+    FHIR.oauth2.authorize(authorizeOptions).catch(err => {
+      document.body.innerHTML = `
+        <h2>Launch Error</h2>
+        <p>${err.message}</p>
+        <p>Make sure you're launching from an EHR or the SMART Launcher.</p>
+        <p><a href="/">Go to standalone mode</a></p>
+      `;
+      console.error('SMART launch error:', err);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+{
+   "library" : {
+      "annotation" : [ {
+         "translatorVersion" : "3.29.0",
+         "translatorOptions" : "",
+         "signatureLevel" : "None",
+         "type" : "CqlToElmInfo"
+      } ],
+      "identifier" : {
+         "id" : "HIVScreeningAge",
+         "version" : "0.0.1"
+      },
+      "schemaIdentifier" : {
+         "id" : "urn:hl7-org:elm",
+         "version" : "r1"
+      },
+      "usings" : {
+         "def" : [ {
+            "localIdentifier" : "System",
+            "uri" : "urn:hl7-org:elm-types:r1",
+            "annotation" : [ ]
+         }, {
+            "localIdentifier" : "QICore",
+            "uri" : "http://hl7.org/fhir",
+            "annotation" : [ ]
+         } ]
+      },
+      "includes" : {
+         "def" : [ {
+            "localIdentifier" : "FHIRHelpers",
+            "path" : "FHIRHelpers",
+            "version" : "4.4.000",
+            "annotation" : [ ]
+         } ]
+      },
+      "codeSystems" : {
+         "def" : [ {
+            "name" : "LOINC",
+            "id" : "http://loinc.org",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         } ]
+      },
+      "codes" : {
+         "def" : [ {
+            "name" : "HIV 1+2 Ab",
+            "id" : "75622-1",
+            "display" : "HIV 1 and 2 tests - Meaningful Use set",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "HIV 1+2 Ag+Ab",
+            "id" : "56888-1",
+            "display" : "HIV 1+2 Ab+HIV1 p24 Ag [Presence] in Serum or Plasma by Immunoassay",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "HIV 1 Ab Rapid",
+            "id" : "68961-2",
+            "display" : "HIV 1 Ab [Presence] in Serum, Plasma or Blood by Rapid immunoassay",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         } ]
+      },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient",
+            "annotation" : [ ]
+         } ]
+      },
+      "statements" : {
+         "def" : [ {
+            "name" : "Patient",
+            "context" : "Patient",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "SingletonFrom",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "type" : "Retrieve",
+                  "annotation" : [ ],
+                  "include" : [ ],
+                  "codeFilter" : [ ],
+                  "dateFilter" : [ ],
+                  "otherFilter" : [ ]
+               }
+            }
+         }, {
+            "name" : "AgeInYears",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "precision" : "Year",
+               "type" : "CalculateAge",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "annotation" : [ ],
+                  "source" : {
+                     "path" : "birthDate",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "Patient",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "IsUniversalScreeningAge",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "GreaterOrEqual",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "AgeInYears",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "15",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "type" : "LessOrEqual",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "AgeInYears",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "65",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  } ]
+               } ]
+            }
+         }, {
+            "name" : "IsUnderScreeningAge",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Less",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "AgeInYears",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "15",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "IsOverScreeningAge",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Greater",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "AgeInYears",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "65",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "HIVTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "type" : "Union",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "type" : "Union",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "dataType" : "{http://hl7.org/fhir}Observation",
+                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                           "codeProperty" : "code",
+                           "codeComparator" : "~",
+                           "type" : "Retrieve",
+                           "annotation" : [ ],
+                           "codes" : {
+                              "type" : "ToList",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "HIV 1+2 Ab",
+                                 "type" : "CodeRef",
+                                 "annotation" : [ ]
+                              }
+                           },
+                           "include" : [ ],
+                           "codeFilter" : [ ],
+                           "dateFilter" : [ ],
+                           "otherFilter" : [ ]
+                        }, {
+                           "dataType" : "{http://hl7.org/fhir}Observation",
+                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                           "codeProperty" : "code",
+                           "codeComparator" : "~",
+                           "type" : "Retrieve",
+                           "annotation" : [ ],
+                           "codes" : {
+                              "type" : "ToList",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "HIV 1+2 Ag+Ab",
+                                 "type" : "CodeRef",
+                                 "annotation" : [ ]
+                              }
+                           },
+                           "include" : [ ],
+                           "codeFilter" : [ ],
+                           "dateFilter" : [ ],
+                           "otherFilter" : [ ]
+                        } ]
+                     }, {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "annotation" : [ ],
+                        "codes" : {
+                           "type" : "ToList",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "HIV 1 Ab Rapid",
+                              "type" : "CodeRef",
+                              "annotation" : [ ]
+                           }
+                        },
+                        "include" : [ ],
+                        "codeFilter" : [ ],
+                        "dateFilter" : [ ],
+                        "otherFilter" : [ ]
+                     } ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HasHIVTest",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "HIVTests",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "HasHIVRiskFactors",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "false",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "UniversalScreeningNeeded",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "IsUniversalScreeningAge",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "HasHIVTest",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ]
+            }
+         }, {
+            "name" : "YoungWithRiskNeeded",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "And",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "IsUnderScreeningAge",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "name" : "HasHIVRiskFactors",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "HasHIVTest",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ]
+            }
+         }, {
+            "name" : "OlderWithRiskNeeded",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "And",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "IsOverScreeningAge",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "name" : "HasHIVRiskFactors",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "HasHIVTest",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ]
+            }
+         }, {
+            "name" : "RecommendHIVTesting",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Or",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "Or",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "UniversalScreeningNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "name" : "YoungWithRiskNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "name" : "OlderWithRiskNeeded",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "RecommendationText",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "UniversalScreeningNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order HIV screening test (recommended for ages 15-65)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "YoungWithRiskNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order HIV screening test (risk factors present)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "OlderWithRiskNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order HIV screening test (risk factors present)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         }, {
+            "name" : "ExclusionReason",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "HasHIVTest",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "HIV test already performed",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "IsUnderScreeningAge",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "HasHIVRiskFactors",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Under 15 without risk factors",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "IsOverScreeningAge",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "HasHIVRiskFactors",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Over 65 without risk factors",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         } ]
+      }
+   }
+}
+

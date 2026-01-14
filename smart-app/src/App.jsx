@@ -12,6 +12,14 @@ import TobaccoScreeningELM from './elm/TobaccoScreening.json'
 import CervicalCancerScreeningELM from './elm/CervicalCancerScreening.json'
 import ColorectalCancerScreeningELM from './elm/ColorectalCancerScreening.json'
 import FolicAcidSupplementationELM from './elm/FolicAcidSupplementation.json'
+import OphthalmiaNeonatorumProphylaxisELM from './elm/OphthalmiaNeonatorumProphylaxis.json'
+import HepatitisBScreeningPregnancyELM from './elm/HepatitisBScreeningPregnancy.json'
+import HIVPreexposureProphylaxisELM from './elm/HIVPreexposureProphylaxis.json'
+import HypertensionScreeningAdultELM from './elm/HypertensionScreeningAdult.json'
+import RhdIncompatibilityELM from './elm/RhdIncompatibility.json'
+import SyphilisScreeningELM from './elm/SyphilisScreening.json'
+import HIVScreeningAgeELM from './elm/HIVScreeningAge.json'
+import HIVScreeningPregnancyELM from './elm/HIVScreeningPregnancy.json'
 import FHIRHelpersELM from './elm/FHIRHelpers.json'
 import QICoreCommonELM from './elm/QICoreCommon.json'
 import StatusELM from './elm/Status.json'
@@ -22,6 +30,14 @@ const elmLibraries = {
   CervicalCancerScreening: CervicalCancerScreeningELM,
   ColorectalCancerScreening: ColorectalCancerScreeningELM,
   FolicAcidSupplementation: FolicAcidSupplementationELM,
+  OphthalmiaNeonatorumProphylaxis: OphthalmiaNeonatorumProphylaxisELM,
+  HepatitisBScreeningPregnancy: HepatitisBScreeningPregnancyELM,
+  HIVPreexposureProphylaxis: HIVPreexposureProphylaxisELM,
+  HypertensionScreeningAdult: HypertensionScreeningAdultELM,
+  RhdIncompatibility: RhdIncompatibilityELM,
+  SyphilisScreening: SyphilisScreeningELM,
+  HIVScreeningAge: HIVScreeningAgeELM,
+  HIVScreeningPregnancy: HIVScreeningPregnancyELM,
   FHIRHelpers: FHIRHelpersELM,
   QICoreCommon: QICoreCommonELM,
   Status: StatusELM,
@@ -165,6 +181,170 @@ const GUIDELINE_CONFIG = {
       { label: 'Is Eligible (Female 15-45)', value: result.IsEligible },
       { label: 'Recommend 400mcg', value: result.RecommendFolicAcid400Mcg },
       { label: 'Recommend 4mg', value: result.RecommendFolicAcid4Mg },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  onp: {
+    libraryId: 'OphthalmiaNeonatorumProphylaxis',
+    title: 'Ophthalmia Neonatorum Prophylaxis',
+    getAlerts: (result) => {
+      return [{
+        key: 'prophylaxis',
+        active: result.AdministerOcularProphylaxis === true,
+        activeText: result.RecommendationText || 'Administer Ocular Prophylaxis',
+        inactiveText: 'No Prophylaxis Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Days', value: result.AgeInDays },
+      { label: 'Is Newborn (<=28 days)', value: result.IsNewborn },
+      { label: 'Prophylaxis Administered', value: result.OcularProphylaxisAdministered },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  hbv: {
+    libraryId: 'HepatitisBScreeningPregnancy',
+    title: 'Hepatitis B Screening (Pregnancy)',
+    getAlerts: (result) => {
+      return [{
+        key: 'hbsag',
+        active: result.PerformHBsAgScreening === true,
+        activeText: result.RecommendationText || 'Order HBsAg Screening',
+        inactiveText: 'No HBsAg Screening Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Gender', value: result.Gender },
+      { label: 'Is Female', value: result.IsFemale },
+      { label: 'Is Currently Pregnant', value: result.IsCurrentlyPregnant },
+      { label: 'HBsAg Screening Performed', value: result.HBsAgScreeningPerformed },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  prp: {
+    libraryId: 'HIVPreexposureProphylaxis',
+    title: 'HIV Pre-Exposure Prophylaxis (PrEP)',
+    getAlerts: (result) => {
+      return [{
+        key: 'prep',
+        active: result.PrescribePrEP === true,
+        activeText: result.RecommendationText || 'Consider Prescribing PrEP',
+        inactiveText: 'PrEP Not Indicated',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Meets Age Requirement (>=13)', value: result.MeetsAgeRequirement },
+      { label: 'Weight (kg)', value: result.WeightInKilo },
+      { label: 'Meets Weight Requirement (>=35kg)', value: result.MeetsWeightRequirement },
+      { label: 'HIV Negative', value: result.HIVNegative },
+      { label: 'Is Eligible', value: result.IsEligible },
+      { label: 'Has PrEP Indication', value: result.HasPrEPIndication },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  htn: {
+    libraryId: 'HypertensionScreeningAdult',
+    title: 'Hypertension Screening',
+    getAlerts: (result) => {
+      return [{
+        key: 'bp',
+        active: result.OfficeBloodPressureMeasurement === true,
+        activeText: result.RecommendationText || 'Measure Blood Pressure',
+        inactiveText: 'No BP Measurement Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Is Adult (>=18)', value: result.IsAdult },
+      { label: 'Is Age 40+', value: result.IsAge40Plus },
+      { label: 'Is Age 18-39', value: result.IsAge18To39 },
+      { label: 'Has Hypertension Diagnosis', value: result.DiagnosisOfHypertension },
+      { label: 'BP in Last Year', value: result.OBPMBInTheLastYear },
+      { label: 'BP in Last 4 Years', value: result.OBPMBInTheLast4Years },
+      { label: 'At Increased Risk', value: result.AtIncreasedRisk },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  rhd: {
+    libraryId: 'RhdIncompatibility',
+    title: 'Rh(D) Incompatibility Screening',
+    getAlerts: (result) => {
+      return [{
+        key: 'rhd',
+        active: result.PerformRhDAndAntibodyTests === true,
+        activeText: result.RecommendationText || 'Order Rh(D) Typing and Antibody Screen',
+        inactiveText: 'No Rh(D) Testing Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Is Currently Pregnant', value: result.IsCurrentlyPregnant },
+      { label: 'Rh Typing Done', value: result.RhTypingDone },
+      { label: 'Antibody Screen Done', value: result.AntibodyScreenDone },
+      { label: 'Both Tests Done', value: result.RhDAndAntibodyScreenDone },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  syp: {
+    libraryId: 'SyphilisScreening',
+    title: 'Syphilis Screening',
+    getAlerts: (result) => {
+      return [{
+        key: 'syphilis',
+        active: result.PerformSyphilisTesting === true,
+        activeText: result.RecommendationText || 'Order Syphilis Screening',
+        inactiveText: 'No Syphilis Screening Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Is Adolescent/Adult', value: result.AdolescentOrAdult },
+      { label: 'Is Pregnant', value: result.Pregnant },
+      { label: 'Is Asymptomatic', value: result.Asymptomatic },
+      { label: 'At Increased Risk', value: result.AtIncreasedRisk },
+      { label: 'Pregnancy Screening Done', value: result.PregnancyScreeningDone },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  hiv: {
+    libraryId: 'HIVScreeningAge',
+    title: 'HIV Screening (Age-Based)',
+    getAlerts: (result) => {
+      return [{
+        key: 'hiv',
+        active: result.RecommendHIVTesting === true,
+        activeText: result.RecommendationText || 'Order HIV Screening',
+        inactiveText: 'No HIV Screening Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Is Universal Screening Age (15-65)', value: result.IsUniversalScreeningAge },
+      { label: 'Is Under Screening Age (<15)', value: result.IsUnderScreeningAge },
+      { label: 'Is Over Screening Age (>65)', value: result.IsOverScreeningAge },
+      { label: 'Has HIV Test', value: result.HasHIVTest },
+      { label: 'Has HIV Risk Factors', value: result.HasHIVRiskFactors },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  hvp: {
+    libraryId: 'HIVScreeningPregnancy',
+    title: 'HIV Screening (Pregnancy)',
+    getAlerts: (result) => {
+      return [{
+        key: 'hivpreg',
+        active: result.PerformHIVTest === true,
+        activeText: result.RecommendationText || 'Order HIV Screening (Prenatal)',
+        inactiveText: 'No HIV Screening Needed',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Is Pregnant', value: result.IsPregnant },
+      { label: 'HIV Status', value: result.HIVStatus },
+      { label: 'Has HIV Test This Pregnancy', value: result.HasHIVTestThisPregnancy },
+      { label: 'Is First Prenatal Visit', value: result.IsFirstPrenatalVisit },
+      { label: 'Is Third Trimester', value: result.IsThirdTrimester },
+      { label: 'Has HIV Risk Factors', value: result.HasHIVRiskFactors },
       { label: 'Exclusion Reason', value: result.ExclusionReason },
     ],
   },
@@ -342,6 +522,38 @@ function App() {
     if (gender === 'female' && age >= 15 && age <= 45) {
       applicable.push(GUIDELINE_CONFIG.fol)
     }
+
+    // Ophthalmia Neonatorum Prophylaxis: newborns (age <= 28 days)
+    // Age in days: if birthDate is within last 28 days
+    if (age === 0) {
+      applicable.push(GUIDELINE_CONFIG.onp)
+    }
+
+    // Hypertension Screening: adults 18+
+    if (age >= 18) {
+      applicable.push(GUIDELINE_CONFIG.htn)
+    }
+
+    // HIV Screening (Age-Based): ages 15-65 universal, or any age with risk factors
+    if (age >= 15 && age <= 65) {
+      applicable.push(GUIDELINE_CONFIG.hiv)
+    }
+
+    // HIV PrEP: age >= 13 (adolescents and adults)
+    if (age >= 13) {
+      applicable.push(GUIDELINE_CONFIG.prp)
+    }
+
+    // Syphilis Screening: adolescents/adults (age >= 12) with risk factors
+    // For real patients, always include - CQL will determine if at-risk
+    if (age >= 12) {
+      applicable.push(GUIDELINE_CONFIG.syp)
+    }
+
+    // Pregnancy-specific guidelines (hbv, rhd, hvp) require pregnancy status
+    // which we can't determine from demographics alone. These will only
+    // appear for tagged test patients or if we add pregnancy detection logic.
+    // For now, they are available via test tags only.
 
     return applicable
   }

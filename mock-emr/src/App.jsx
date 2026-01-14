@@ -160,6 +160,166 @@ const GUIDELINE_CONFIG = {
       { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
     ],
   },
+  hbv: {
+    libraryId: 'HepatitisBScreeningPregnancy',
+    title: 'Hepatitis B Screening (Pregnancy)',
+    getAlerts: (result, getValue) => {
+      const performScreening = getValue(result, 'PerformHBsAgScreening')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'hbsag',
+        active: performScreening === true,
+        activeText: recommendationText || 'Order HBsAg Screening',
+        inactiveText: 'No HBsAg Screening Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Gender', value: getValue(result, 'Gender') },
+      { label: 'Is Female', value: getValue(result, 'IsFemale') },
+      { label: 'Is Currently Pregnant', value: getValue(result, 'IsCurrentlyPregnant') },
+      { label: 'HBsAg Screening Performed', value: getValue(result, 'HBsAgScreeningPerformed') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  prp: {
+    libraryId: 'HIVPreexposureProphylaxis',
+    title: 'HIV Pre-Exposure Prophylaxis (PrEP)',
+    getAlerts: (result, getValue) => {
+      const prescribePrEP = getValue(result, 'PrescribePrEP')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'prep',
+        active: prescribePrEP === true,
+        activeText: recommendationText || 'Consider Prescribing PrEP',
+        inactiveText: 'PrEP Not Indicated',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Meets Age Requirement (>=13)', value: getValue(result, 'MeetsAgeRequirement') },
+      { label: 'Weight (kg)', value: getValue(result, 'WeightInKilo') },
+      { label: 'Meets Weight Requirement (>=35kg)', value: getValue(result, 'MeetsWeightRequirement') },
+      { label: 'HIV Negative', value: getValue(result, 'HIVNegative') },
+      { label: 'Is Eligible', value: getValue(result, 'IsEligible') },
+      { label: 'Has PrEP Indication', value: getValue(result, 'HasPrEPIndication') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  htn: {
+    libraryId: 'HypertensionScreeningAdult',
+    title: 'Hypertension Screening',
+    getAlerts: (result, getValue) => {
+      const measureBP = getValue(result, 'OfficeBloodPressureMeasurement')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'bp',
+        active: measureBP === true,
+        activeText: recommendationText || 'Measure Blood Pressure',
+        inactiveText: 'No BP Measurement Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Is Adult (>=18)', value: getValue(result, 'IsAdult') },
+      { label: 'Is Age 40+', value: getValue(result, 'IsAge40Plus') },
+      { label: 'Is Age 18-39', value: getValue(result, 'IsAge18To39') },
+      { label: 'Has Hypertension Diagnosis', value: getValue(result, 'DiagnosisOfHypertension') },
+      { label: 'BP in Last Year', value: getValue(result, 'OBPMBInTheLastYear') },
+      { label: 'BP in Last 4 Years', value: getValue(result, 'OBPMBInTheLast4Years') },
+      { label: 'At Increased Risk', value: getValue(result, 'AtIncreasedRisk') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  rhd: {
+    libraryId: 'RhdIncompatibility',
+    title: 'Rh(D) Incompatibility Screening',
+    getAlerts: (result, getValue) => {
+      const performTests = getValue(result, 'PerformRhDAndAntibodyTests')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'rhd',
+        active: performTests === true,
+        activeText: recommendationText || 'Order Rh(D) Typing and Antibody Screen',
+        inactiveText: 'No Rh(D) Testing Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Is Currently Pregnant', value: getValue(result, 'IsCurrentlyPregnant') },
+      { label: 'Rh Typing Done', value: getValue(result, 'RhTypingDone') },
+      { label: 'Antibody Screen Done', value: getValue(result, 'AntibodyScreenDone') },
+      { label: 'Both Tests Done', value: getValue(result, 'RhDAndAntibodyScreenDone') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  syp: {
+    libraryId: 'SyphilisScreening',
+    title: 'Syphilis Screening',
+    getAlerts: (result, getValue) => {
+      const performTesting = getValue(result, 'PerformSyphilisTesting')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'syphilis',
+        active: performTesting === true,
+        activeText: recommendationText || 'Order Syphilis Screening',
+        inactiveText: 'No Syphilis Screening Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Is Adolescent/Adult', value: getValue(result, 'AdolescentOrAdult') },
+      { label: 'Is Pregnant', value: getValue(result, 'Pregnant') },
+      { label: 'Is Asymptomatic', value: getValue(result, 'Asymptomatic') },
+      { label: 'At Increased Risk', value: getValue(result, 'AtIncreasedRisk') },
+      { label: 'Pregnancy Screening Done', value: getValue(result, 'PregnancyScreeningDone') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  hiv: {
+    libraryId: 'HIVScreeningAge',
+    title: 'HIV Screening (Age-Based)',
+    getAlerts: (result, getValue) => {
+      const recommendTesting = getValue(result, 'RecommendHIVTesting')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'hiv',
+        active: recommendTesting === true,
+        activeText: recommendationText || 'Order HIV Screening',
+        inactiveText: 'No HIV Screening Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Is Universal Screening Age (15-65)', value: getValue(result, 'IsUniversalScreeningAge') },
+      { label: 'Is Under Screening Age (<15)', value: getValue(result, 'IsUnderScreeningAge') },
+      { label: 'Is Over Screening Age (>65)', value: getValue(result, 'IsOverScreeningAge') },
+      { label: 'Has HIV Test', value: getValue(result, 'HasHIVTest') },
+      { label: 'Has HIV Risk Factors', value: getValue(result, 'HasHIVRiskFactors') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  hvp: {
+    libraryId: 'HIVScreeningPregnancy',
+    title: 'HIV Screening (Pregnancy)',
+    getAlerts: (result, getValue) => {
+      const performTest = getValue(result, 'PerformHIVTest')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'hivpreg',
+        active: performTest === true,
+        activeText: recommendationText || 'Order HIV Screening (Prenatal)',
+        inactiveText: 'No HIV Screening Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Is Pregnant', value: getValue(result, 'IsPregnant') },
+      { label: 'HIV Status', value: getValue(result, 'HIVStatus') },
+      { label: 'Has HIV Test This Pregnancy', value: getValue(result, 'HasHIVTestThisPregnancy') },
+      { label: 'Is First Prenatal Visit', value: getValue(result, 'IsFirstPrenatalVisit') },
+      { label: 'Is Third Trimester', value: getValue(result, 'IsThirdTrimester') },
+      { label: 'Has HIV Risk Factors', value: getValue(result, 'HasHIVRiskFactors') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
 }
 
 function App() {

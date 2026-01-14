@@ -1,0 +1,706 @@
+{
+   "library" : {
+      "annotation" : [ {
+         "translatorVersion" : "3.29.0",
+         "translatorOptions" : "",
+         "signatureLevel" : "None",
+         "type" : "CqlToElmInfo"
+      } ],
+      "identifier" : {
+         "id" : "HIVScreeningPregnancy",
+         "version" : "0.0.1"
+      },
+      "schemaIdentifier" : {
+         "id" : "urn:hl7-org:elm",
+         "version" : "r1"
+      },
+      "usings" : {
+         "def" : [ {
+            "localIdentifier" : "System",
+            "uri" : "urn:hl7-org:elm-types:r1",
+            "annotation" : [ ]
+         }, {
+            "localIdentifier" : "QICore",
+            "uri" : "http://hl7.org/fhir",
+            "annotation" : [ ]
+         } ]
+      },
+      "includes" : {
+         "def" : [ {
+            "localIdentifier" : "FHIRHelpers",
+            "path" : "FHIRHelpers",
+            "version" : "4.4.000",
+            "annotation" : [ ]
+         } ]
+      },
+      "codeSystems" : {
+         "def" : [ {
+            "name" : "LOINC",
+            "id" : "http://loinc.org",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         }, {
+            "name" : "SNOMED",
+            "id" : "http://snomed.info/sct",
+            "accessLevel" : "Public",
+            "annotation" : [ ]
+         } ]
+      },
+      "codes" : {
+         "def" : [ {
+            "name" : "HIV 1+2 Ab",
+            "id" : "75622-1",
+            "display" : "HIV 1 and 2 tests - Meaningful Use set",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "HIV 1+2 Ag+Ab",
+            "id" : "56888-1",
+            "display" : "HIV 1+2 Ab+HIV1 p24 Ag [Presence] in Serum or Plasma by Immunoassay",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "LOINC",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "Pregnancy",
+            "id" : "77386006",
+            "display" : "Pregnancy (finding)",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "SNOMED",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "HIV Positive",
+            "id" : "86406008",
+            "display" : "Human immunodeficiency virus infection",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "codeSystem" : {
+               "name" : "SNOMED",
+               "annotation" : [ ]
+            }
+         } ]
+      },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient",
+            "annotation" : [ ]
+         } ]
+      },
+      "statements" : {
+         "def" : [ {
+            "name" : "Patient",
+            "context" : "Patient",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "SingletonFrom",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "type" : "Retrieve",
+                  "annotation" : [ ],
+                  "include" : [ ],
+                  "codeFilter" : [ ],
+                  "dateFilter" : [ ],
+                  "otherFilter" : [ ]
+               }
+            }
+         }, {
+            "name" : "PregnancyConditions",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "dataType" : "{http://hl7.org/fhir}Condition",
+               "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "annotation" : [ ],
+               "codes" : {
+                  "type" : "ToList",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "Pregnancy",
+                     "type" : "CodeRef",
+                     "annotation" : [ ]
+                  }
+               },
+               "include" : [ ],
+               "codeFilter" : [ ],
+               "dateFilter" : [ ],
+               "otherFilter" : [ ]
+            }
+         }, {
+            "name" : "IsPregnant",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "PregnancyConditions",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "HIVPositiveConditions",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "dataType" : "{http://hl7.org/fhir}Condition",
+               "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+               "codeProperty" : "code",
+               "codeComparator" : "~",
+               "type" : "Retrieve",
+               "annotation" : [ ],
+               "codes" : {
+                  "type" : "ToList",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "HIV Positive",
+                     "type" : "CodeRef",
+                     "annotation" : [ ]
+                  }
+               },
+               "include" : [ ],
+               "codeFilter" : [ ],
+               "dateFilter" : [ ],
+               "otherFilter" : [ ]
+            }
+         }, {
+            "name" : "IsHIVPositive",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "HIVPositiveConditions",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "HIVTests",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Query",
+               "annotation" : [ ],
+               "source" : [ {
+                  "alias" : "Obs",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "type" : "Union",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "annotation" : [ ],
+                        "codes" : {
+                           "type" : "ToList",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "HIV 1+2 Ab",
+                              "type" : "CodeRef",
+                              "annotation" : [ ]
+                           }
+                        },
+                        "include" : [ ],
+                        "codeFilter" : [ ],
+                        "dateFilter" : [ ],
+                        "otherFilter" : [ ]
+                     }, {
+                        "dataType" : "{http://hl7.org/fhir}Observation",
+                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "codeProperty" : "code",
+                        "codeComparator" : "~",
+                        "type" : "Retrieve",
+                        "annotation" : [ ],
+                        "codes" : {
+                           "type" : "ToList",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "HIV 1+2 Ag+Ab",
+                              "type" : "CodeRef",
+                              "annotation" : [ ]
+                           }
+                        },
+                        "include" : [ ],
+                        "codeFilter" : [ ],
+                        "dateFilter" : [ ],
+                        "otherFilter" : [ ]
+                     } ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HasHIVTestThisPregnancy",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Exists",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "HIVTests",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "HIVStatus",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "IsHIVPositive",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "positive",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "HasHIVTestThisPregnancy",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "negative",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                  "value" : "unknown",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
+            "name" : "IsFirstPrenatalVisit",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "IsPregnant",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "type" : "Not",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "name" : "HasHIVTestThisPregnancy",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               } ]
+            }
+         }, {
+            "name" : "GestationalAgeInWeeks",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+               "value" : "20",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "IsThirdTrimester",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "GreaterOrEqual",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "GestationalAgeInWeeks",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "29",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "HasHIVRiskFactors",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "false",
+               "type" : "Literal",
+               "annotation" : [ ]
+            }
+         }, {
+            "name" : "ExcludedHIVPositive",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Equal",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "HIVStatus",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                  "value" : "positive",
+                  "type" : "Literal",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "FirstVisitScreeningNeeded",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "And",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "IsPregnant",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }, {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "ExcludedHIVPositive",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  } ]
+               }, {
+                  "name" : "IsFirstPrenatalVisit",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "ThirdTrimesterRepeatNeeded",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "And",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "type" : "And",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "type" : "And",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "name" : "IsPregnant",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }, {
+                           "type" : "Not",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "ExcludedHIVPositive",
+                              "type" : "ExpressionRef",
+                              "annotation" : [ ]
+                           }
+                        } ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "IsFirstPrenatalVisit",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  }, {
+                     "name" : "IsThirdTrimester",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
+               }, {
+                  "name" : "HasHIVRiskFactors",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "PerformHIVTest",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Or",
+               "annotation" : [ ],
+               "signature" : [ ],
+               "operand" : [ {
+                  "name" : "FirstVisitScreeningNeeded",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }, {
+                  "name" : "ThirdTrimesterRepeatNeeded",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               } ]
+            }
+         }, {
+            "name" : "RecommendationText",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "FirstVisitScreeningNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order HIV screening (prenatal care - first visit)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "ThirdTrimesterRepeatNeeded",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Order HIV screening (third trimester repeat - risk factors)",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         }, {
+            "name" : "ExclusionReason",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "type" : "Case",
+               "annotation" : [ ],
+               "caseItem" : [ {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "Not",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "name" : "IsPregnant",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient is not pregnant",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "name" : "ExcludedHIVPositive",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Patient is HIV positive - managed under treatment protocol",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "HasHIVTestThisPregnancy",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "IsThirdTrimester",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "HIV screening done this pregnancy",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               }, {
+                  "annotation" : [ ],
+                  "when" : {
+                     "type" : "And",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "IsThirdTrimester",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }, {
+                        "type" : "Not",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "HasHIVRiskFactors",
+                           "type" : "ExpressionRef",
+                           "annotation" : [ ]
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Third trimester without risk factors - repeat not indicated",
+                     "type" : "Literal",
+                     "annotation" : [ ]
+                  }
+               } ],
+               "else" : {
+                  "asType" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "As",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : {
+                     "type" : "Null",
+                     "annotation" : [ ]
+                  }
+               }
+            }
+         } ]
+      }
+   }
+}
+
