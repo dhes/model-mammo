@@ -1,0 +1,22 @@
+id: hbv-excluded-not-pregnant
+description: "Non-pregnant woman - screening not applicable"
+expected:
+  PerformHBsAgScreening: false
+  IsCurrentlyPregnant: false
+  HBsAgScreeningPerformed: false
+
+resources:
+  - resourceType: Patient
+    id: hbv-excluded-not-pregnant
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hbv-test
+        - system: http://example.org/test-lifecycle
+          code: hbv-excluded-not-pregnant
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 35

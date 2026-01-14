@@ -1559,6 +1559,31 @@ define QualifyingCervicalCytology:
 
 **Lesson learned:** When observation retrieves fail, check profile alignment before trying workarounds like direct codes or different observation types.
 
+### CQL Library Includes: Always Use Aliases
+
+**Critical:** When including CQL libraries, **always use an alias** with the `called` keyword. Without an alias, the included library's definitions merge directly into your namespace and can conflict with other included libraries.
+
+**Correct:**
+```cql
+include FHIRHelpers version '4.4.000' called FHIRHelpers
+include QICoreCommon version '4.0.000' called QC
+include Status version '1.13.000' called Status
+```
+
+**Wrong (causes namespace conflicts):**
+```cql
+include Status version '1.13.000'   // No alias!
+```
+
+**Symptoms of missing alias:**
+- HAPI `$evaluate` returns: "Could not resolve model with namespace http://hl7.org/fhir"
+- Error mentions: "An operand identifier references is hiding another identifier of the same name"
+- Libraries that don't use the conflicting include work fine; libraries that use it fail
+
+**Why this happens:** Libraries like `Status` and `QICoreCommon` define fluent functions (`.isActive()`, `.toInterval()`, etc.) with common names. When included without an alias, these definitions enter the local namespace and can shadow or conflict with definitions from other includes.
+
+**Lesson learned:** Always follow the eCQM convention — every `include` should have a `called <alias>` clause.
+
 ## Two Web Apps: Server-Side vs Client-Side CQL
 
 This project includes two React/Vite applications demonstrating different CQL execution approaches:

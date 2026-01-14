@@ -1,0 +1,22 @@
+id: hbv-excluded-male
+description: "Male patient - pregnancy screening not applicable"
+expected:
+  PerformHBsAgScreening: false
+  IsCurrentlyPregnant: false
+  IsFemale: false
+
+resources:
+  - resourceType: Patient
+    id: hbv-excluded-male
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hbv-test
+        - system: http://example.org/test-lifecycle
+          code: hbv-excluded-male
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 30

@@ -24,6 +24,7 @@ const PREFIX_TO_LIBRARY = {
   crc: 'ColorectalCancerScreening',
   fol: 'FolicAcidSupplementation',
   onp: 'OphthalmiaNeonatorumProphylaxis',
+  hbv: 'HepatitisBScreeningPregnancy',
 };
 
 /**

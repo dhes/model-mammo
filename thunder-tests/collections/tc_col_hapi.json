@@ -101,6 +101,13 @@
             "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "created": "2026-01-14T00:01:12.532Z",
             "sortNum": 49687.5
+        },
+        {
+            "_id": "6b99d940-ae97-4b16-ae2d-bbe025065881",
+            "name": "hepatitis B screening pregnancy",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "created": "2026-01-14T01:21:30.388Z",
+            "sortNum": 49843.8
         }
     ],
     "requests": [
@@ -139,11 +146,11 @@
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "21e3aef7-c623-4236-b74a-110f0addce97",
             "name": "inspect main Library",
-            "url": "Library/BreastCancerScreening",
+            "url": "Library/BreastCancerScreening/_history",
             "method": "GET",
             "sortNum": 10000,
             "created": "2025-12-22T21:07:13.901Z",
-            "modified": "2025-12-22T21:33:50.394Z",
+            "modified": "2026-01-14T03:39:49.621Z",
             "headers": []
         },
         {
@@ -182,11 +189,11 @@
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "1f62f8e3-cfe5-472a-8c9c-69900c379275",
             "name": "inspect QICoreCommon",
-            "url": "Library/QICoreCommon",
+            "url": "Library/QICoreCommon/_history",
             "method": "GET",
             "sortNum": 90000,
             "created": "2025-12-22T21:21:22.238Z",
-            "modified": "2025-12-22T21:21:45.474Z",
+            "modified": "2026-01-14T01:26:30.166Z",
             "headers": []
         },
         {
@@ -513,16 +520,16 @@
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "",
             "name": "misc",
-            "url": "Patient?_tag=http://example.org/test-lifecycle|onp-test",
+            "url": "Library/CMS138FHIRPreventiveTobaccoCessation/$evaluate?subject=Patient/0d221636-5f14-4074-9337-eb4b0868fb3e",
             "method": "GET",
             "sortNum": 180000,
             "created": "2025-12-24T19:11:23.551Z",
-            "modified": "2026-01-14T00:53:05.866Z",
+            "modified": "2026-01-14T01:42:55.662Z",
             "headers": [],
             "params": [
                 {
-                    "name": "_tag",
-                    "value": "http://example.org/test-lifecycle|onp-test",
+                    "name": "subject",
+                    "value": "Patient/0d221636-5f14-4074-9337-eb4b0868fb3e",
                     "isPath": false
                 }
             ]
@@ -1080,6 +1087,65 @@
                 "raw": "",
                 "form": [],
                 "binary": "../input/resources/library/Library-OphthalmiaNeonatorumProphylaxis.json"
+            }
+        },
+        {
+            "_id": "51400059-9299-444f-b636-e045967f7e17",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "6b99d940-ae97-4b16-ae2d-bbe025065881",
+            "name": "inspect main Library",
+            "url": "Library/HepatitisBScreeningPregnancy/_history",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-01-14T01:21:30.388Z",
+            "modified": "2026-01-14T01:21:52.424Z",
+            "headers": []
+        },
+        {
+            "_id": "8a1df987-a31d-4b0c-8153-8b4d8b094f22",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "6b99d940-ae97-4b16-ae2d-bbe025065881",
+            "name": "delete main library",
+            "url": "Library/HepatitisBScreeningPregnancy",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2026-01-14T01:21:30.389Z",
+            "modified": "2026-01-14T01:22:04.567Z",
+            "headers": []
+        },
+        {
+            "_id": "3940d6ff-15c1-4b58-83fe-8a03f11d1cbd",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "6b99d940-ae97-4b16-ae2d-bbe025065881",
+            "name": "expunge main library",
+            "url": "Library/HepatitisBScreeningPregnancy/$expunge",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2026-01-14T01:21:30.390Z",
+            "modified": "2026-01-14T01:22:10.279Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"resourceType\": \"Parameters\",\n  \"parameter\": [\n    {\n      \"name\": \"limit\",\n      \"valueInteger\": 1000\n    },\n    {\n      \"name\": \"expungeDeletedResources\",\n      \"valueBoolean\": true\n    },\n    {\n      \"name\": \"expungePreviousVersions\",\n      \"valueBoolean\": true\n    }\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "dd7f5ae3-4a2c-41a8-8c45-80792953556e",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "6b99d940-ae97-4b16-ae2d-bbe025065881",
+            "name": "deploy main library",
+            "url": "Library/HepatitisBScreeningPregnancy",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2026-01-14T01:21:30.391Z",
+            "modified": "2026-01-14T01:22:32.837Z",
+            "headers": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "../input/resources/library/Library-HepatitisBScreeningPregnancy.json"
             }
         }
     ],

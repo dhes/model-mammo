@@ -1,0 +1,86 @@
+id: hbv-no-recommend-tested
+description: "Pregnant woman with HBsAg test already done - no recommendation needed"
+expected:
+  PerformHBsAgScreening: false
+  IsCurrentlyPregnant: true
+  HBsAgScreeningPerformed: true
+
+resources:
+  - resourceType: Patient
+    id: hbv-no-recommend-tested
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hbv-test
+        - system: http://example.org/test-lifecycle
+          code: hbv-no-recommend-tested
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 32
+
+  - resourceType: Condition
+    id: hbv-no-recommend-tested-pregnancy
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hbv-test
+        - system: http://example.org/test-lifecycle
+          code: hbv-no-recommend-tested
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: active
+    verificationStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-ver-status
+          code: confirmed
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "77386006"
+          display: "Pregnancy (finding)"
+    subject:
+      reference: Patient/hbv-no-recommend-tested
+    onsetDateTime:
+      $fn: monthsAgo
+      months: 3
+
+  - resourceType: Observation
+    id: hbv-no-recommend-tested-hbsag
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hbv-test
+        - system: http://example.org/test-lifecycle
+          code: hbv-no-recommend-tested
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: laboratory
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "5196-1"
+          display: "Hepatitis B virus surface Ag [Presence] in Serum or Plasma by Immunoassay"
+    subject:
+      reference: Patient/hbv-no-recommend-tested
+    effectiveDateTime:
+      $fn: monthsAgo
+      months: 2
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "260385009"
+          display: "Negative"
