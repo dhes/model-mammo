@@ -1,0 +1,55 @@
+id: prp-excluded-underweight
+description: "Adult with weight under 35 kg - should not recommend PrEP"
+expected:
+  PrescribePrEP: false
+  MeetsAgeRequirement: true
+  MeetsWeightRequirement: false
+
+resources:
+  - resourceType: Patient
+    id: prp-excluded-underweight
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-excluded-underweight
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 18
+
+  # Body weight observation (30 kg - under threshold)
+  - resourceType: Observation
+    id: prp-excluded-underweight-weight
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-excluded-underweight
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: vital-signs
+            display: Vital Signs
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "29463-7"
+          display: "Body weight"
+    subject:
+      reference: Patient/prp-excluded-underweight
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 7
+    valueQuantity:
+      value: 30
+      unit: kg
+      system: http://unitsofmeasure.org
+      code: kg

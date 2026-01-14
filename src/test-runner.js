@@ -25,6 +25,7 @@ const PREFIX_TO_LIBRARY = {
   fol: 'FolicAcidSupplementation',
   onp: 'OphthalmiaNeonatorumProphylaxis',
   hbv: 'HepatitisBScreeningPregnancy',
+  prp: 'HIVPreexposureProphylaxis',
 };
 
 /**

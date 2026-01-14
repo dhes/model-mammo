@@ -1,0 +1,56 @@
+id: prp-excluded-no-hiv-test
+description: "Adult with adequate weight but no negative HIV test documented - should not recommend PrEP"
+expected:
+  PrescribePrEP: false
+  MeetsAgeRequirement: true
+  MeetsWeightRequirement: true
+  HIVNegative: false
+
+resources:
+  - resourceType: Patient
+    id: prp-excluded-no-hiv-test
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-excluded-no-hiv-test
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 25
+
+  # Body weight observation (70 kg)
+  - resourceType: Observation
+    id: prp-excluded-no-hiv-test-weight
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-excluded-no-hiv-test
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: vital-signs
+            display: Vital Signs
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "29463-7"
+          display: "Body weight"
+    subject:
+      reference: Patient/prp-excluded-no-hiv-test
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 7
+    valueQuantity:
+      value: 70
+      unit: kg
+      system: http://unitsofmeasure.org
+      code: kg

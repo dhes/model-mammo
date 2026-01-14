@@ -1,0 +1,125 @@
+id: prp-recommend-eligible
+description: "Adult with negative HIV test, adequate weight, and recent STI - should recommend PrEP"
+expected:
+  PrescribePrEP: true
+  IsEligible: true
+  HasPrEPIndication: true
+  MeetsAgeRequirement: true
+  MeetsWeightRequirement: true
+  HIVNegative: true
+
+resources:
+  - resourceType: Patient
+    id: prp-recommend-eligible
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-recommend-eligible
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 32
+
+  # Body weight observation (75 kg)
+  - resourceType: Observation
+    id: prp-recommend-eligible-weight
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-recommend-eligible
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: vital-signs
+            display: Vital Signs
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "29463-7"
+          display: "Body weight"
+    subject:
+      reference: Patient/prp-recommend-eligible
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 30
+    valueQuantity:
+      value: 75
+      unit: kg
+      system: http://unitsofmeasure.org
+      code: kg
+
+  # Negative HIV test
+  - resourceType: Observation
+    id: prp-recommend-eligible-hiv
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-recommend-eligible
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: laboratory
+            display: Laboratory
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "75622-1"
+          display: "HIV 1 and 2 tests - Meaningful Use set"
+    subject:
+      reference: Patient/prp-recommend-eligible
+    effectiveDateTime:
+      $fn: daysAgo
+      days: 14
+    valueCodeableConcept:
+      coding:
+        - system: http://snomed.info/sct
+          code: "260385009"
+          display: "Negative"
+
+  # Recent STI (gonorrhea) - indicates PrEP candidacy
+  - resourceType: Condition
+    id: prp-recommend-eligible-sti
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-recommend-eligible
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: resolved
+    verificationStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-ver-status
+          code: confirmed
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "15628003"
+          display: "Gonorrhea"
+    subject:
+      reference: Patient/prp-recommend-eligible
+    recordedDate:
+      $fn: monthsAgo
+      months: 2

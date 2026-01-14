@@ -108,6 +108,13 @@
             "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
             "created": "2026-01-14T01:21:30.388Z",
             "sortNum": 49843.8
+        },
+        {
+            "_id": "dba725ff-e0eb-4623-a3c2-d42fe73bf2dd",
+            "name": "HIV preexposure prophylaxis",
+            "containerId": "cd9492e8-e408-42cb-a830-99d3b6708cb0",
+            "created": "2026-01-14T04:26:47.636Z",
+            "sortNum": 49921.9
         }
     ],
     "requests": [
@@ -150,7 +157,7 @@
             "method": "GET",
             "sortNum": 10000,
             "created": "2025-12-22T21:07:13.901Z",
-            "modified": "2026-01-14T03:39:49.621Z",
+            "modified": "2026-01-14T04:03:35.952Z",
             "headers": []
         },
         {
@@ -520,16 +527,16 @@
             "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
             "containerId": "",
             "name": "misc",
-            "url": "Library/CMS138FHIRPreventiveTobaccoCessation/$evaluate?subject=Patient/0d221636-5f14-4074-9337-eb4b0868fb3e",
+            "url": "Patient?_tag=http://example.org/test-lifecycle|prp-test",
             "method": "GET",
             "sortNum": 180000,
             "created": "2025-12-24T19:11:23.551Z",
-            "modified": "2026-01-14T01:42:55.662Z",
+            "modified": "2026-01-14T04:33:39.332Z",
             "headers": [],
             "params": [
                 {
-                    "name": "subject",
-                    "value": "Patient/0d221636-5f14-4074-9337-eb4b0868fb3e",
+                    "name": "_tag",
+                    "value": "http://example.org/test-lifecycle|prp-test",
                     "isPath": false
                 }
             ]
@@ -1147,6 +1154,89 @@
                 "form": [],
                 "binary": "../input/resources/library/Library-HepatitisBScreeningPregnancy.json"
             }
+        },
+        {
+            "_id": "211d3241-6e2e-423a-9255-c3d23714fa2d",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "dba725ff-e0eb-4623-a3c2-d42fe73bf2dd",
+            "name": "inspect main Library",
+            "url": "Library/HIVPreexposureProphylaxis/_history",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-01-14T04:26:47.637Z",
+            "modified": "2026-01-14T04:27:16.947Z",
+            "headers": []
+        },
+        {
+            "_id": "01bc962f-4720-4b3c-9cc2-e5289b4c959e",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "dba725ff-e0eb-4623-a3c2-d42fe73bf2dd",
+            "name": "delete main library",
+            "url": "Library/HIVPreexposureProphylaxis",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2026-01-14T04:26:47.638Z",
+            "modified": "2026-01-14T04:27:21.812Z",
+            "headers": []
+        },
+        {
+            "_id": "c2ecfb14-2510-4e7a-811e-dfb827099416",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "dba725ff-e0eb-4623-a3c2-d42fe73bf2dd",
+            "name": "expunge main library",
+            "url": "Library/HIVPreexposureProphylaxis/$expunge",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2026-01-14T04:26:47.639Z",
+            "modified": "2026-01-14T04:27:26.160Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"resourceType\": \"Parameters\",\n  \"parameter\": [\n    {\n      \"name\": \"limit\",\n      \"valueInteger\": 1000\n    },\n    {\n      \"name\": \"expungeDeletedResources\",\n      \"valueBoolean\": true\n    },\n    {\n      \"name\": \"expungePreviousVersions\",\n      \"valueBoolean\": true\n    }\n  ]\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "deef53e5-3180-4610-9845-33a64cf9e94e",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "dba725ff-e0eb-4623-a3c2-d42fe73bf2dd",
+            "name": "deploy main library",
+            "url": "Library/HIVPreexposureProphylaxis",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2026-01-14T04:26:47.640Z",
+            "modified": "2026-01-14T04:28:00.466Z",
+            "headers": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "../input/resources/library/Library-HIVPreexposureProphylaxis.json"
+            }
+        },
+        {
+            "_id": "fcf543f3-884f-4155-b211-efb0bf39b61d",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "a1f197e8-0d18-4e8b-afa5-c7ab8be773de",
+            "name": "inspect valueset hiv test",
+            "url": "ValueSet/hiv-tests",
+            "method": "GET",
+            "sortNum": 222500,
+            "created": "2026-01-14T04:41:11.442Z",
+            "modified": "2026-01-14T04:42:15.475Z",
+            "headers": []
+        },
+        {
+            "_id": "a8efb92d-dccd-4f5e-a46f-afe4fbee5eb3",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "a1f197e8-0d18-4e8b-afa5-c7ab8be773de",
+            "name": "inspect valueset sexually-transmitted-infections",
+            "url": "ValueSet/sexually-transmitted-infections",
+            "method": "GET",
+            "sortNum": 232500,
+            "created": "2026-01-14T04:42:24.251Z",
+            "modified": "2026-01-14T04:42:58.892Z",
+            "headers": []
         }
     ],
     "settings": {

@@ -1,0 +1,64 @@
+{
+  "resourceType": "ValueSet",
+  "id": "sexually-transmitted-infections",
+  "url": "http://example.org/fhir/ValueSet/sexually-transmitted-infections",
+  "name": "SexuallyTransmittedInfections",
+  "title": "Sexually Transmitted Infections",
+  "status": "active",
+  "description": "STIs that indicate PrEP candidacy: syphilis, gonorrhea, chlamydia (per USPSTF)",
+  "expansion": {
+    "timestamp": "2026-01-13T00:00:00Z",
+    "contains": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "76272004",
+        "display": "Syphilis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "15628003",
+        "display": "Gonorrhea"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "240589008",
+        "display": "Chlamydia trachomatis infection"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "186946009",
+        "display": "Secondary syphilis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "266138003",
+        "display": "Acquired syphilis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "186943001",
+        "display": "Primary syphilis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "9091006",
+        "display": "Gonococcal urethritis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "236687003",
+        "display": "Gonococcal cervicitis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "237091009",
+        "display": "Urethritis caused by Chlamydia trachomatis"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "236776000",
+        "display": "Chlamydial cervicitis"
+      }
+    ]
+  }
+}

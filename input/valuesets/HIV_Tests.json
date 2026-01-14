@@ -1,0 +1,44 @@
+{
+  "resourceType": "ValueSet",
+  "id": "hiv-tests",
+  "url": "http://example.org/fhir/ValueSet/hiv-tests",
+  "name": "HIVTests",
+  "title": "HIV Tests",
+  "status": "active",
+  "description": "HIV antibody and antigen tests for PrEP eligibility screening",
+  "expansion": {
+    "timestamp": "2026-01-13T00:00:00Z",
+    "contains": [
+      {
+        "system": "http://loinc.org",
+        "code": "75622-1",
+        "display": "HIV 1 and 2 tests - Meaningful Use set"
+      },
+      {
+        "system": "http://loinc.org",
+        "code": "56888-1",
+        "display": "HIV 1+2 Ab+HIV1 p24 Ag [Presence] in Serum or Plasma by Immunoassay"
+      },
+      {
+        "system": "http://loinc.org",
+        "code": "68961-2",
+        "display": "HIV 1 Ab [Presence] in Serum, Plasma or Blood by Rapid immunoassay"
+      },
+      {
+        "system": "http://loinc.org",
+        "code": "5221-7",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma by Immunoblot"
+      },
+      {
+        "system": "http://loinc.org",
+        "code": "7917-8",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma"
+      },
+      {
+        "system": "http://loinc.org",
+        "code": "29893-5",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma by Immunoassay"
+      }
+    ]
+  }
+}

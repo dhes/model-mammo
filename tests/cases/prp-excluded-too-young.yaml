@@ -1,0 +1,22 @@
+id: prp-excluded-too-young
+description: "Child under 13 years - should not recommend PrEP"
+expected:
+  PrescribePrEP: false
+  MeetsAgeRequirement: false
+  AgeInYears: 11
+
+resources:
+  - resourceType: Patient
+    id: prp-excluded-too-young
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: prp-test
+        - system: http://example.org/test-lifecycle
+          code: prp-excluded-too-young
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 11
