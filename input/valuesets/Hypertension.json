@@ -1,0 +1,54 @@
+{
+  "resourceType": "ValueSet",
+  "id": "hypertension",
+  "url": "http://example.org/fhir/ValueSet/hypertension",
+  "name": "Hypertension",
+  "title": "Hypertension Diagnosis Codes",
+  "status": "active",
+  "description": "Hypertension diagnosis codes for screening exclusion",
+  "expansion": {
+    "timestamp": "2026-01-14T00:00:00Z",
+    "contains": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "38341003",
+        "display": "Hypertensive disorder, systemic arterial"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "59621000",
+        "display": "Essential hypertension"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "1201005",
+        "display": "Benign essential hypertension"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "78975002",
+        "display": "Malignant essential hypertension"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "I10",
+        "display": "Essential (primary) hypertension"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "I11",
+        "display": "Hypertensive heart disease"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "I12",
+        "display": "Hypertensive chronic kidney disease"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "I13",
+        "display": "Hypertensive heart and chronic kidney disease"
+      }
+    ]
+  }
+}

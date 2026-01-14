@@ -1,0 +1,22 @@
+id: htn-excluded-under-18
+description: "Adolescent 16 years old - excluded from adult screening"
+expected:
+  OfficeBloodPressureMeasurement: false
+  ExcludedUnder18: true
+  IsAdult: false
+
+resources:
+  - resourceType: Patient
+    id: htn-excluded-under-18
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-excluded-under-18
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 16

@@ -1,0 +1,56 @@
+id: htn-excluded-hypertension
+description: "Adult with existing hypertension diagnosis - excluded from screening"
+expected:
+  OfficeBloodPressureMeasurement: false
+  DiagnosisOfHypertension: true
+  ExcludedHypertensionDiagnosis: true
+
+resources:
+  - resourceType: Patient
+    id: htn-excluded-hypertension
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-excluded-hypertension
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 55
+
+  # Active hypertension diagnosis
+  - resourceType: Condition
+    id: htn-excluded-hypertension-dx
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-excluded-hypertension
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: active
+    verificationStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-ver-status
+          code: confirmed
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "59621000"
+          display: "Essential hypertension"
+    subject:
+      reference: Patient/htn-excluded-hypertension
+    onsetDateTime:
+      $fn: yearsAgo
+      years: 3

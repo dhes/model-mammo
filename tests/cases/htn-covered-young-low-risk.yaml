@@ -1,0 +1,57 @@
+id: htn-covered-young-low-risk
+description: "Adult 32 years old, low risk, has BP from 2 years ago - screening not due"
+expected:
+  OfficeBloodPressureMeasurement: false
+  DiagnosisOfHypertension: false
+  OBPMBInTheLast4Years: true
+  IsAge18To39: true
+  AtIncreasedRisk: false
+
+resources:
+  - resourceType: Patient
+    id: htn-covered-young-low-risk
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-covered-young-low-risk
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 32
+
+  # Blood pressure observation from 2 years ago (within 4 year window)
+  - resourceType: Observation
+    id: htn-covered-young-low-risk-obs
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-covered-young-low-risk
+    status: final
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/observation-category
+            code: vital-signs
+            display: Vital Signs
+    code:
+      coding:
+        - system: http://loinc.org
+          code: "8480-6"
+          display: "Systolic blood pressure"
+    subject:
+      reference: Patient/htn-covered-young-low-risk
+    effectiveDateTime:
+      $fn: yearsAgo
+      years: 2
+    valueQuantity:
+      value: 118
+      unit: mmHg
+      system: http://unitsofmeasure.org
+      code: mm[Hg]

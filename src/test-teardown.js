@@ -14,7 +14,7 @@ import { resolve } from 'path';
 const HAPI_BASE_URL = process.env.HAPI_BASE_URL || 'http://localhost:8080/fhir';
 const TAG_SYSTEM = 'http://example.org/test-lifecycle';
 // Common tags for each guideline - used for --all teardown
-const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test', 'fol-test', 'onp-test', 'hbv-test', 'prp-test'];
+const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test', 'fol-test', 'onp-test', 'hbv-test', 'prp-test', 'htn-test', 'rhd-test', 'syp-test', 'hiv-test', 'hvp-test'];
 const generatedDir = resolve(process.cwd(), 'tests/generated');
 
 /**
@@ -100,6 +100,11 @@ const PREFIX_TO_TAG = {
   onp: 'onp-test',
   hbv: 'hbv-test',
   prp: 'prp-test',
+  htn: 'htn-test',
+  rhd: 'rhd-test',
+  syp: 'syp-test',
+  hiv: 'hiv-test',
+  hvp: 'hvp-test',
 };
 
 // Main

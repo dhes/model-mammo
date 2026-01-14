@@ -1,0 +1,24 @@
+id: syp-no-recommend-low-risk
+description: "Non-pregnant adult, not at increased risk - no recommendation"
+expected:
+  PerformSyphilisTesting: false
+  Pregnant: false
+  AdolescentOrAdult: true
+  AtIncreasedRisk: false
+  Asymptomatic: true
+
+resources:
+  - resourceType: Patient
+    id: syp-no-recommend-low-risk
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: syp-test
+        - system: http://example.org/test-lifecycle
+          code: syp-no-recommend-low-risk
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 35

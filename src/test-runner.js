@@ -26,6 +26,11 @@ const PREFIX_TO_LIBRARY = {
   onp: 'OphthalmiaNeonatorumProphylaxis',
   hbv: 'HepatitisBScreeningPregnancy',
   prp: 'HIVPreexposureProphylaxis',
+  htn: 'HypertensionScreeningAdult',
+  rhd: 'RhdIncompatibility',
+  syp: 'SyphilisScreening',
+  hiv: 'HIVScreeningAge',
+  hvp: 'HIVScreeningPregnancy',
 };
 
 /**

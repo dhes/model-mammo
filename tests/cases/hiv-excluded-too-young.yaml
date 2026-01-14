@@ -1,0 +1,22 @@
+id: hiv-excluded-too-young
+description: "Child age 12 without risk factors - no recommendation"
+expected:
+  RecommendHIVTesting: false
+  IsUnderScreeningAge: true
+  HasHIVRiskFactors: false
+
+resources:
+  - resourceType: Patient
+    id: hiv-excluded-too-young
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hiv-test
+        - system: http://example.org/test-lifecycle
+          code: hiv-excluded-too-young
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 12

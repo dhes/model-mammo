@@ -1,0 +1,22 @@
+id: hiv-excluded-too-old
+description: "Adult age 70 without risk factors - no recommendation"
+expected:
+  RecommendHIVTesting: false
+  IsOverScreeningAge: true
+  HasHIVRiskFactors: false
+
+resources:
+  - resourceType: Patient
+    id: hiv-excluded-too-old
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hiv-test
+        - system: http://example.org/test-lifecycle
+          code: hiv-excluded-too-old
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 70

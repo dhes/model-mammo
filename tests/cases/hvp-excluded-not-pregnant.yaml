@@ -1,0 +1,21 @@
+id: hvp-excluded-not-pregnant
+description: "Non-pregnant woman - pregnancy HIV screening not applicable"
+expected:
+  PerformHIVTest: false
+  IsPregnant: false
+
+resources:
+  - resourceType: Patient
+    id: hvp-excluded-not-pregnant
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hvp-test
+        - system: http://example.org/test-lifecycle
+          code: hvp-excluded-not-pregnant
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 25

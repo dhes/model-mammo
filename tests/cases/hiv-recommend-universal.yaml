@@ -1,0 +1,22 @@
+id: hiv-recommend-universal
+description: "Adult age 30 without prior HIV test - should recommend (universal 15-65)"
+expected:
+  RecommendHIVTesting: true
+  IsUniversalScreeningAge: true
+  HasHIVTest: false
+
+resources:
+  - resourceType: Patient
+    id: hiv-recommend-universal
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: hiv-test
+        - system: http://example.org/test-lifecycle
+          code: hiv-recommend-universal
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 30

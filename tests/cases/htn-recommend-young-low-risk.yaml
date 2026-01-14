@@ -1,0 +1,24 @@
+id: htn-recommend-young-low-risk
+description: "Adult 28 years old, low risk, no BP in 4 years - should recommend screening"
+expected:
+  OfficeBloodPressureMeasurement: true
+  DiagnosisOfHypertension: false
+  OBPMBInTheLast4Years: false
+  IsAge18To39: true
+  AtIncreasedRisk: false
+
+resources:
+  - resourceType: Patient
+    id: htn-recommend-young-low-risk
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-recommend-young-low-risk
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 28

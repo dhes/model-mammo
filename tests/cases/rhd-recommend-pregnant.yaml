@@ -1,0 +1,55 @@
+id: rhd-recommend-pregnant
+description: "Pregnant woman without Rh(D) typing or antibody screen - should recommend testing"
+expected:
+  PerformRhDAndAntibodyTests: true
+  IsCurrentlyPregnant: true
+  RhDAndAntibodyScreenDone: false
+
+resources:
+  - resourceType: Patient
+    id: rhd-recommend-pregnant
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: rhd-test
+        - system: http://example.org/test-lifecycle
+          code: rhd-recommend-pregnant
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 29
+
+  - resourceType: Condition
+    id: rhd-recommend-pregnant-pregnancy
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: rhd-test
+        - system: http://example.org/test-lifecycle
+          code: rhd-recommend-pregnant
+    clinicalStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-clinical
+          code: active
+    verificationStatus:
+      coding:
+        - system: http://terminology.hl7.org/CodeSystem/condition-ver-status
+          code: confirmed
+    category:
+      - coding:
+          - system: http://terminology.hl7.org/CodeSystem/condition-category
+            code: problem-list-item
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "77386006"
+          display: "Pregnancy (finding)"
+    subject:
+      reference: Patient/rhd-recommend-pregnant
+    onsetDateTime:
+      $fn: monthsAgo
+      months: 2

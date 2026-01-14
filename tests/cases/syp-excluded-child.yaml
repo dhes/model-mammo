@@ -1,0 +1,22 @@
+id: syp-excluded-child
+description: "Child (age 10) - excluded from syphilis screening"
+expected:
+  PerformSyphilisTesting: false
+  AdolescentOrAdult: false
+  Pregnant: false
+
+resources:
+  - resourceType: Patient
+    id: syp-excluded-child
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: syp-test
+        - system: http://example.org/test-lifecycle
+          code: syp-excluded-child
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 10

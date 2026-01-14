@@ -1,0 +1,23 @@
+id: htn-recommend-40plus-no-bp
+description: "Adult 45 years old, no hypertension, no BP in last year - should recommend screening"
+expected:
+  OfficeBloodPressureMeasurement: true
+  DiagnosisOfHypertension: false
+  OBPMBInTheLastYear: false
+  IsAge40Plus: true
+
+resources:
+  - resourceType: Patient
+    id: htn-recommend-40plus-no-bp
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: htn-test
+        - system: http://example.org/test-lifecycle
+          code: htn-recommend-40plus-no-bp
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 45
