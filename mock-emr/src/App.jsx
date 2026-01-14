@@ -117,6 +117,49 @@ const GUIDELINE_CONFIG = {
       { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
     ],
   },
+  fol: {
+    libraryId: 'FolicAcidSupplementation',
+    title: 'Folic Acid Supplementation',
+    getAlerts: (result, getValue) => {
+      const recommend400 = getValue(result, 'RecommendFolicAcid400Mcg')
+      const recommend4mg = getValue(result, 'RecommendFolicAcid4Mg')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'folicacid',
+        active: recommend400 === true || recommend4mg === true,
+        activeText: recommendationText || 'Folic Acid Supplementation Recommended',
+        inactiveText: 'No Folic Acid Recommendation',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Gender', value: getValue(result, 'Gender') },
+      { label: 'Age in Years', value: getValue(result, 'AgeInYears') },
+      { label: 'Is Eligible (Female 15-45)', value: getValue(result, 'IsEligible') },
+      { label: 'Recommend 400mcg', value: getValue(result, 'RecommendFolicAcid400Mcg') },
+      { label: 'Recommend 4mg', value: getValue(result, 'RecommendFolicAcid4Mg') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
+  onp: {
+    libraryId: 'OphthalmiaNeonatorumProphylaxis',
+    title: 'Ophthalmia Neonatorum Prophylaxis',
+    getAlerts: (result, getValue) => {
+      const administerProphylaxis = getValue(result, 'AdministerOcularProphylaxis')
+      const recommendationText = getValue(result, 'RecommendationText')
+      return [{
+        key: 'prophylaxis',
+        active: administerProphylaxis === true,
+        activeText: recommendationText || 'Administer Ocular Prophylaxis',
+        inactiveText: 'No Prophylaxis Needed',
+      }]
+    },
+    getDetails: (result, getValue) => [
+      { label: 'Age in Days', value: getValue(result, 'AgeInDays') },
+      { label: 'Is Newborn (<=28 days)', value: getValue(result, 'IsNewborn') },
+      { label: 'Prophylaxis Administered', value: getValue(result, 'OcularProphylaxisAdministered') },
+      { label: 'Exclusion Reason', value: getValue(result, 'ExclusionReason') },
+    ],
+  },
 }
 
 function App() {

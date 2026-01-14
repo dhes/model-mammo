@@ -72,6 +72,7 @@ const args = process.argv.slice(2);
 
 if (args.length === 0) {
   console.error('Usage: node src/test-deployer.js <case-id>');
+  console.error('       node src/test-deployer.js <prefix>   (e.g., onp, bcs, crc)');
   console.error('       node src/test-deployer.js --all');
   console.error(`\nHAPI server: ${HAPI_BASE_URL}`);
   process.exit(1);
@@ -82,10 +83,32 @@ console.log(`HAPI server: ${HAPI_BASE_URL}\n`);
 let casesToDeploy = [];
 
 if (args[0] === '--all') {
+  // Deploy all generated cases
   casesToDeploy = readdirSync(generatedDir)
     .filter(f => existsSync(resolve(generatedDir, f, '_metadata.json')));
 } else {
-  casesToDeploy = [args[0]];
+  // Could be a case ID or a prefix - check if exact match exists first
+  const allCases = readdirSync(generatedDir)
+    .filter(f => existsSync(resolve(generatedDir, f, '_metadata.json')));
+
+  if (allCases.includes(args[0])) {
+    // Exact case ID match
+    casesToDeploy = [args[0]];
+  } else {
+    // Treat as prefix - find all cases starting with prefix-
+    const prefix = args[0];
+    const matchingCases = allCases.filter(f => f.startsWith(`${prefix}-`));
+
+    if (matchingCases.length === 0) {
+      console.error(`No generated test cases found for prefix '${prefix}' or case ID '${args[0]}'`);
+      console.error(`Looking for: ${generatedDir}/${prefix}-*`);
+      console.error(`\nHave you run 'npm run test:generate ${prefix}' first?`);
+      process.exit(1);
+    }
+
+    console.log(`Found ${matchingCases.length} test case(s) with prefix '${prefix}':\n`);
+    casesToDeploy = matchingCases;
+  }
 }
 
 for (const caseId of casesToDeploy) {

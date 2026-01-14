@@ -1,0 +1,22 @@
+id: onp-boundary-28-days
+description: "Exactly 28 days old - still considered newborn, should recommend"
+expected:
+  AdministerOcularProphylaxis: true
+  IsNewborn: true
+  OcularProphylaxisAdministered: false
+
+resources:
+  - resourceType: Patient
+    id: onp-boundary-28-days
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: onp-test
+        - system: http://example.org/test-lifecycle
+          code: onp-boundary-28-days
+    gender: male
+    birthDate:
+      $fn: daysAgo
+      days: 28

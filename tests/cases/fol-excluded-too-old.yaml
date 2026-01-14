@@ -1,0 +1,61 @@
+# Test case: Female 50 - no recommendation (too old)
+# ACOG specifies reproductive age as 15-45 years
+
+id: fol-excluded-too-old
+description: "Female 50 - no recommendation (over 45)"
+tags:
+  - folic-acid-supplementation
+  - negative-case
+  - age-exclusion
+
+expected:
+  RecommendFolicAcid: false
+  RecommendFolicAcid400Mcg: false
+  RecommendFolicAcid4Mg: false
+  IsEligible: false
+  IsReproductiveAge: false
+  AgeInYears: 50
+  Gender: female
+  ExclusionReason: "Patient is over 45 years old"
+
+resources:
+  - resourceType: Patient
+    id: fol-excluded-too-old
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: fol-test
+        - system: http://example.org/test-lifecycle
+          code: fol-excluded-too-old
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2028-9"
+              display: Asian
+          - url: text
+            valueString: Asian
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: fol-excluded-too-old
+    name:
+      - family: TestPatient
+        given:
+          - TooOld
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 50

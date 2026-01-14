@@ -1,0 +1,61 @@
+# Test case: Female exactly 45 - last day eligible
+# ACOG specifies reproductive age as 15-45 years
+
+id: fol-boundary-age-45
+description: "Female 45 (last eligible day) - recommend 400mcg"
+tags:
+  - folic-acid-supplementation
+  - positive-case
+  - boundary-case
+
+expected:
+  RecommendFolicAcid: true
+  RecommendFolicAcid400Mcg: true
+  RecommendFolicAcid4Mg: false
+  IsEligible: true
+  IsReproductiveAge: true
+  AgeInYears: 45
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: fol-boundary-age-45
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: fol-test
+        - system: http://example.org/test-lifecycle
+          code: fol-boundary-age-45
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: fol-boundary-age-45
+    name:
+      - family: TestPatient
+        given:
+          - Age45
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 45
+      offsetDays: 0

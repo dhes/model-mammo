@@ -143,7 +143,8 @@ function processTestCase(yamlPath) {
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error('Usage: node src/test-generator.js <yaml-file>');
+  console.error('Usage: node src/test-generator.js <case-id>');
+  console.error('       node src/test-generator.js <prefix>   (e.g., onp, bcs, crc)');
   console.error('       node src/test-generator.js --all');
   process.exit(1);
 }
@@ -153,19 +154,38 @@ mkdirSync(outputDir, { recursive: true });
 let filesToProcess = [];
 
 if (args[0] === '--all') {
+  // Process all YAML files
   filesToProcess = readdirSync(casesDir)
     .filter(f => f.endsWith('.yaml') || f.endsWith('.yml'))
     .map(f => resolve(casesDir, f));
+} else if (args[0].endsWith('.yaml') || args[0].endsWith('.yml')) {
+  // Full path to a YAML file
+  filesToProcess = [resolve(args[0])];
 } else {
-  // Accept either a full path or just a case ID
-  let inputPath = args[0];
-  if (!inputPath.endsWith('.yaml') && !inputPath.endsWith('.yml')) {
-    // Assume it's a case ID, look in cases directory
-    inputPath = resolve(casesDir, `${inputPath}.yaml`);
+  // Could be a case ID or a prefix - check if exact match exists first
+  const exactPath = resolve(casesDir, `${args[0]}.yaml`);
+  const allYamlFiles = readdirSync(casesDir)
+    .filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
+
+  if (allYamlFiles.includes(`${args[0]}.yaml`)) {
+    // Exact case ID match
+    filesToProcess = [exactPath];
   } else {
-    inputPath = resolve(inputPath);
+    // Treat as prefix - find all files starting with prefix-
+    const prefix = args[0];
+    const matchingFiles = allYamlFiles
+      .filter(f => f.startsWith(`${prefix}-`))
+      .map(f => resolve(casesDir, f));
+
+    if (matchingFiles.length === 0) {
+      console.error(`No test cases found for prefix '${prefix}' or case ID '${args[0]}'`);
+      console.error(`Looking for: ${casesDir}/${prefix}-*.yaml`);
+      process.exit(1);
+    }
+
+    console.log(`Found ${matchingFiles.length} test case(s) with prefix '${prefix}':\n`);
+    filesToProcess = matchingFiles;
   }
-  filesToProcess = [inputPath];
 }
 
 for (const yamlPath of filesToProcess) {

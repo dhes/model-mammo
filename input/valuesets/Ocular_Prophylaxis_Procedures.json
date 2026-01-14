@@ -1,0 +1,29 @@
+{
+  "resourceType": "ValueSet",
+  "id": "ocular-prophylaxis-procedures",
+  "url": "http://example.org/fhir/ValueSet/ocular-prophylaxis-procedures",
+  "version": "0.0.1",
+  "name": "OcularProphylaxisProcedures",
+  "title": "Ocular Prophylaxis Procedures",
+  "status": "active",
+  "experimental": true,
+  "date": "2026-01-13",
+  "description": "Value set for neonatal ocular prophylaxis procedures (e.g., erythromycin ophthalmic ointment administration) to prevent gonococcal ophthalmia neonatorum. Used by OphthalmiaNeonatorumProphylaxis CQL library.",
+  "expansion": {
+    "identifier": "urn:uuid:ocular-prophylaxis-procedures",
+    "timestamp": "2026-01-13T00:00:00-05:00",
+    "total": 2,
+    "contains": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "438998000",
+        "display": "Administration of prophylactic ophthalmic medication to newborn"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "787421009",
+        "display": "Topical application of ophthalmic ointment"
+      }
+    ]
+  }
+}

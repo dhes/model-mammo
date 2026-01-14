@@ -1,0 +1,22 @@
+id: onp-boundary-29-days
+description: "29 days old - no longer a newborn, not applicable"
+expected:
+  AdministerOcularProphylaxis: false
+  IsNewborn: false
+  ExclusionReason: "Patient is not a newborn (> 28 days old)"
+
+resources:
+  - resourceType: Patient
+    id: onp-boundary-29-days
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: onp-test
+        - system: http://example.org/test-lifecycle
+          code: onp-boundary-29-days
+    gender: female
+    birthDate:
+      $fn: daysAgo
+      days: 29

@@ -1,0 +1,60 @@
+# Test case: Female 25, average risk - should recommend 400mcg folic acid
+# USPSTF Grade A: All women of reproductive age (15-45)
+
+id: fol-recommend-400mcg
+description: "Female 25, average risk - recommend 400mcg folic acid"
+tags:
+  - folic-acid-supplementation
+  - positive-case
+  - average-risk
+
+expected:
+  RecommendFolicAcid: true
+  RecommendFolicAcid400Mcg: true
+  RecommendFolicAcid4Mg: false
+  IsEligible: true
+  HighRiskForNTD: false
+  AgeInYears: 25
+  Gender: female
+
+resources:
+  - resourceType: Patient
+    id: fol-recommend-400mcg
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: fol-test
+        - system: http://example.org/test-lifecycle
+          code: fol-recommend-400mcg
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: fol-recommend-400mcg
+    name:
+      - family: TestPatient
+        given:
+          - AverageRisk
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 25

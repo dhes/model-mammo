@@ -10,16 +10,21 @@
             "colId": "f13c8796-6d83-437e-9adc-3ef5866e0270",
             "containerId": "",
             "name": "Patient (any)",
-            "url": "Procedure?patient=Patient/618b2992-eec7-45c9-8544-12c9f586b78c",
+            "url": "Library?_elements=id,name&_count=1000",
             "method": "GET",
             "sortNum": 10000,
             "created": "2026-01-12T15:53:33.808Z",
-            "modified": "2026-01-12T16:11:27.310Z",
+            "modified": "2026-01-13T23:58:58.420Z",
             "headers": [],
             "params": [
                 {
-                    "name": "patient",
-                    "value": "Patient/618b2992-eec7-45c9-8544-12c9f586b78c",
+                    "name": "_elements",
+                    "value": "id,name",
+                    "isPath": false
+                },
+                {
+                    "name": "_count",
+                    "value": "1000",
                     "isPath": false
                 }
             ]

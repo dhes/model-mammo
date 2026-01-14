@@ -1,0 +1,44 @@
+id: onp-no-recommend-administered
+description: "Newborn with prophylaxis already administered - no recommendation needed"
+expected:
+  AdministerOcularProphylaxis: false
+  IsNewborn: true
+  OcularProphylaxisAdministered: true
+
+resources:
+  - resourceType: Patient
+    id: onp-no-recommend-administered
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: onp-test
+        - system: http://example.org/test-lifecycle
+          code: onp-no-recommend-administered
+    gender: female
+    birthDate:
+      $fn: daysAgo
+      days: 0
+
+  - resourceType: Procedure
+    id: onp-no-recommend-administered-prophylaxis
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: onp-test
+        - system: http://example.org/test-lifecycle
+          code: onp-no-recommend-administered
+    status: completed
+    code:
+      coding:
+        - system: http://snomed.info/sct
+          code: "438998000"
+          display: "Administration of prophylactic ophthalmic medication to newborn"
+    subject:
+      reference: Patient/onp-no-recommend-administered
+    performedDateTime:
+      $fn: daysAgo
+      days: 0

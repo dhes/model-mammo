@@ -135,23 +135,44 @@ npm run generate:library # Generate FHIR Library from CQL
 
 ## HAPI Test Lifecycle
 
-```bash
-npm run test:generate    # YAML → FHIR JSON (all cases)
-npm run test:deploy      # POST to HAPI (all cases)
-npm run test:evaluate    # Run $evaluate, compare results
-npm run test:teardown    # DELETE from HAPI by tag
-npm run test:cycle       # All four in sequence
+All test scripts support three modes: **prefix** (recommended), **single case**, or **all**.
 
-# Single case variants
-npm run test:generate:one <case-id>
-npm run test:deploy:one <case-id>
-npm run test:evaluate:one <case-id>
-npm run test:teardown:one <case-id>
+```bash
+# By prefix (recommended for iterative development)
+npm run test:generate -- onp      # Generate all onp-* cases
+npm run test:deploy -- onp        # Deploy all onp-* cases to HAPI
+npm run test:evaluate -- onp      # Run $evaluate for onp-* cases
+npm run test:teardown -- onp      # Delete onp-test tagged resources
+
+# Single case (exact case ID)
+npm run test:generate -- onp-recommend-newborn
+npm run test:deploy -- onp-recommend-newborn
+npm run test:evaluate -- onp-recommend-newborn
+npm run test:teardown -- onp-recommend-newborn
+
+# All cases
+npm run test:generate -- --all
+npm run test:deploy -- --all
+npm run test:evaluate -- --all
+npm run test:teardown -- --all
+
+# Full cycle (all cases)
+npm run test:cycle
 ```
+
+**Why prefix filtering matters:**
+
+Every `PUT` to HAPI creates a new `_history` entry, even if content is unchanged. Redeploying all test cases when working on one guideline:
+- Bloats the database with unnecessary version entries
+- Slows down searches
+- Obscures meaningful audit trails
+
+Use prefix filtering to touch only the resources you're actively developing.
+
+**Supported prefixes:** `bcs`, `tob`, `ccs`, `crc`, `fol`, `onp`
 
 **Environment variables:**
 - `HAPI_BASE_URL` (default: `http://localhost:8080/fhir`)
-- `LIBRARY_ID` (default: `BreastCancerScreening`)
 
 ## DMN Testing
 
@@ -1299,6 +1320,134 @@ The Grade A recommendation covers only the initial screening. USPSTF does not ma
 2. Run `npm test` to validate DMN logic
 3. Translate to CQL when decision logic is stable (`input/cql/`)
 4. Integrate with FHIR server and web app
+
+## Implementing a New Guideline (Step-by-Step)
+
+When adding a new USPSTF guideline, follow this checklist:
+
+### 1. Create CQL Library
+
+Write the CQL file in `input/cql/<LibraryName>.cql`. Use existing libraries as templates.
+
+### 2. Create ValueSet (if needed)
+
+If the guideline references procedures/observations not already in `input/valuesets/`, create a new ValueSet JSON file.
+
+### 3. Generate FHIR Library
+
+```bash
+node src/generate-library.js input/cql/<LibraryName>.cql
+```
+
+This creates `input/resources/library/Library-<LibraryName>.json`.
+
+### 4. Compile CQL to ELM (for smart-app)
+
+**IMPORTANT:** Run from the `tools/cql-translator` directory:
+
+```bash
+cd tools/cql-translator
+mvn exec:java -q -Dexec.args="--input ../../input/cql/<LibraryName>.cql --output ../../smart-app/src/elm --format JSON"
+```
+
+This compiles CQL to ELM JSON and places it in `smart-app/src/elm/`.
+
+**Common errors:**
+- "Cannot find symbol" — missing valueset or dependency
+- Profile/type mismatch — ensure QICore types match (see "QICore Profile-to-CQL Type Mapping")
+
+### 5. Create Test Cases
+
+Create YAML test cases in `tests/cases/` using a 3-letter prefix (e.g., `onp-` for Ophthalmia Neonatorum Prophylaxis):
+
+```yaml
+id: onp-recommend-newborn
+description: "Newborn without prophylaxis - should recommend"
+expected:
+  AdministerOcularProphylaxis: true
+  IsNewborn: true
+
+resources:
+  - resourceType: Patient
+    id: onp-recommend-newborn
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: onp-test
+        - system: http://example.org/test-lifecycle
+          code: onp-recommend-newborn
+    gender: male
+    birthDate:
+      $fn: daysAgo
+      days: 1
+```
+
+### 6. Update Test Infrastructure
+
+**`src/test-runner.js`** — Add prefix-to-library mapping:
+
+```javascript
+const PREFIX_TO_LIBRARY = {
+  // existing entries...
+  onp: 'OphthalmiaNeonatorumProphylaxis',
+};
+```
+
+**`src/test-teardown.js`** — Add tag to `COMMON_TAG_CODES`:
+
+```javascript
+const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test', 'fol-test', 'onp-test'];
+```
+
+### 7. Update mock-emr
+
+Add guideline configuration to `mock-emr/src/App.jsx`:
+
+```javascript
+const GUIDELINE_CONFIG = {
+  // existing entries...
+  onp: {
+    libraryId: 'OphthalmiaNeonatorumProphylaxis',
+    title: 'Ophthalmia Neonatorum Prophylaxis',
+    getAlerts: (result, getValue) => { /* ... */ },
+    getDetails: (result, getValue) => [ /* ... */ ],
+  },
+};
+```
+
+### 8. Update smart-app (if using client-side CQL)
+
+**`smart-app/src/App.jsx`:**
+1. Import the ELM: `import LibraryELM from './elm/LibraryName.json'`
+2. Add to `elmLibraries` object
+3. Add guideline config and eligibility check
+
+### 9. Deploy and Test
+
+```bash
+npm run test:generate -- --all    # Generate FHIR resources
+npm run test:deploy -- --all      # Deploy to HAPI
+npm run test:evaluate -- --all    # Run tests
+```
+
+### Prefix Convention
+
+| Prefix | Guideline |
+|--------|-----------|
+| bcs | Breast Cancer Screening |
+| tob | Tobacco Screening |
+| ccs | Cervical Cancer Screening |
+| crc | Colorectal Cancer Screening |
+| fol | Folic Acid Supplementation |
+| onp | Ophthalmia Neonatorum Prophylaxis |
+| rhd | Rh(D) Incompatibility |
+| htn | Hypertension Screening |
+| hiv | HIV Screening (Age-based) |
+| hvp | HIV Screening (Pregnancy) |
+| syp | Syphilis Screening |
+| prp | HIV Pre-Exposure Prophylaxis |
 
 ## CQL Deployment Approach
 

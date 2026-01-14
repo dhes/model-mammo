@@ -1,0 +1,61 @@
+# Test case: Female 12 - no recommendation (too young)
+# ACOG specifies reproductive age as 15-45 years
+
+id: fol-excluded-too-young
+description: "Female 12 - no recommendation (under 15)"
+tags:
+  - folic-acid-supplementation
+  - negative-case
+  - age-exclusion
+
+expected:
+  RecommendFolicAcid: false
+  RecommendFolicAcid400Mcg: false
+  RecommendFolicAcid4Mg: false
+  IsEligible: false
+  IsReproductiveAge: false
+  AgeInYears: 12
+  Gender: female
+  ExclusionReason: "Patient is under 15 years old"
+
+resources:
+  - resourceType: Patient
+    id: fol-excluded-too-young
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: fol-test
+        - system: http://example.org/test-lifecycle
+          code: fol-excluded-too-young
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2106-3"
+              display: White
+          - url: text
+            valueString: White
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2135-2"
+              display: Hispanic or Latino
+          - url: text
+            valueString: Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: fol-excluded-too-young
+    name:
+      - family: TestPatient
+        given:
+          - TooYoung
+    gender: female
+    birthDate:
+      $fn: yearsAgo
+      years: 12

@@ -1,0 +1,61 @@
+# Test case: Male 25 - no recommendation (male patient)
+# Folic acid supplementation is for persons who could become pregnant
+
+id: fol-excluded-male
+description: "Male 25 - no recommendation (male patient)"
+tags:
+  - folic-acid-supplementation
+  - negative-case
+  - gender-exclusion
+
+expected:
+  RecommendFolicAcid: false
+  RecommendFolicAcid400Mcg: false
+  RecommendFolicAcid4Mg: false
+  IsEligible: false
+  IsFemale: false
+  AgeInYears: 25
+  Gender: male
+  ExclusionReason: "Male patient"
+
+resources:
+  - resourceType: Patient
+    id: fol-excluded-male
+    meta:
+      profile:
+        - http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient
+      tag:
+        - system: http://example.org/test-lifecycle
+          code: fol-test
+        - system: http://example.org/test-lifecycle
+          code: fol-excluded-male
+    extension:
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-race
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2054-5"
+              display: Black or African American
+          - url: text
+            valueString: Black or African American
+      - url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity
+        extension:
+          - url: ombCategory
+            valueCoding:
+              system: urn:oid:2.16.840.1.113883.6.238
+              code: "2186-5"
+              display: Not Hispanic or Latino
+          - url: text
+            valueString: Not Hispanic or Latino
+    identifier:
+      - system: http://hospital.smarthealthit.org
+        value: fol-excluded-male
+    name:
+      - family: TestPatient
+        given:
+          - Male
+    gender: male
+    birthDate:
+      $fn: yearsAgo
+      years: 25

@@ -14,7 +14,7 @@ import { resolve } from 'path';
 const HAPI_BASE_URL = process.env.HAPI_BASE_URL || 'http://localhost:8080/fhir';
 const TAG_SYSTEM = 'http://example.org/test-lifecycle';
 // Common tags for each guideline - used for --all teardown
-const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test'];
+const COMMON_TAG_CODES = ['bcs-test', 'tob-test', 'ccs-test', 'crc-test', 'fol-test', 'onp-test'];
 const generatedDir = resolve(process.cwd(), 'tests/generated');
 
 /**
@@ -90,13 +90,25 @@ async function teardownTestCase(caseId) {
   return { caseId, deleted: totalDeleted };
 }
 
+// Map prefixes to their common tag codes
+const PREFIX_TO_TAG = {
+  bcs: 'bcs-test',
+  tob: 'tob-test',
+  ccs: 'ccs-test',
+  crc: 'crc-test',
+  fol: 'fol-test',
+  onp: 'onp-test',
+};
+
 // Main
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
   console.error('Usage: node src/test-teardown.js <case-id>');
+  console.error('       node src/test-teardown.js <prefix>   (e.g., onp, bcs, crc)');
   console.error('       node src/test-teardown.js --all');
   console.error(`\nHAPI server: ${HAPI_BASE_URL}`);
+  console.error(`Prefixes: ${Object.keys(PREFIX_TO_TAG).join(', ')}`);
   process.exit(1);
 }
 
@@ -104,12 +116,12 @@ console.log(`HAPI server: ${HAPI_BASE_URL}\n`);
 
 let totalDeleted = 0;
 
+// Resource types that might have test data (order matters: delete dependents before Patient)
+const resourceTypes = ['Observation', 'Procedure', 'Condition', 'Patient'];
+
 if (args[0] === '--all') {
   // Use common tags to delete all test resources at once
   console.log(`Tearing down ALL test resources with tags: ${COMMON_TAG_CODES.join(', ')}\n`);
-
-  // Resource types that might have test data (order matters: delete dependents before Patient)
-  const resourceTypes = ['Observation', 'Procedure', 'Condition', 'Patient'];
 
   for (const tagCode of COMMON_TAG_CODES) {
     console.log(`\n--- Tag: ${tagCode} ---`);
@@ -117,6 +129,16 @@ if (args[0] === '--all') {
       const deleted = await deleteByTag(resourceType, tagCode);
       totalDeleted += deleted;
     }
+  }
+} else if (PREFIX_TO_TAG[args[0]]) {
+  // Prefix - use prefix-specific common tag (e.g., onp -> onp-test)
+  const prefix = args[0];
+  const tagCode = PREFIX_TO_TAG[prefix];
+  console.log(`Tearing down resources with tag: ${tagCode}\n`);
+
+  for (const resourceType of resourceTypes) {
+    const deleted = await deleteByTag(resourceType, tagCode);
+    totalDeleted += deleted;
   }
 } else {
   // Single case - use case-specific tag

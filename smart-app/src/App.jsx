@@ -11,6 +11,7 @@ import BreastCancerScreeningELM from './elm/BreastCancerScreening.json'
 import TobaccoScreeningELM from './elm/TobaccoScreening.json'
 import CervicalCancerScreeningELM from './elm/CervicalCancerScreening.json'
 import ColorectalCancerScreeningELM from './elm/ColorectalCancerScreening.json'
+import FolicAcidSupplementationELM from './elm/FolicAcidSupplementation.json'
 import FHIRHelpersELM from './elm/FHIRHelpers.json'
 import QICoreCommonELM from './elm/QICoreCommon.json'
 import StatusELM from './elm/Status.json'
@@ -20,6 +21,7 @@ const elmLibraries = {
   TobaccoScreening: TobaccoScreeningELM,
   CervicalCancerScreening: CervicalCancerScreeningELM,
   ColorectalCancerScreening: ColorectalCancerScreeningELM,
+  FolicAcidSupplementation: FolicAcidSupplementationELM,
   FHIRHelpers: FHIRHelpersELM,
   QICoreCommon: QICoreCommonELM,
   Status: StatusELM,
@@ -141,6 +143,28 @@ const GUIDELINE_CONFIG = {
       { label: 'Colonoscopy in Last 10 Years', value: result.HasColonoscopyInLastTenYears },
       { label: 'Has Total Colectomy', value: result.HasTotalColectomy },
       { label: 'Has Colorectal Cancer', value: result.HasColorectalCancer },
+      { label: 'Exclusion Reason', value: result.ExclusionReason },
+    ],
+  },
+  fol: {
+    libraryId: 'FolicAcidSupplementation',
+    title: 'Folic Acid Supplementation',
+    getAlerts: (result) => {
+      const recommend400 = result.RecommendFolicAcid400Mcg
+      const recommend4mg = result.RecommendFolicAcid4Mg
+      return [{
+        key: 'folicacid',
+        active: recommend400 === true || recommend4mg === true,
+        activeText: result.RecommendationText || 'Folic Acid Supplementation Recommended',
+        inactiveText: 'No Folic Acid Recommendation',
+      }]
+    },
+    getDetails: (result) => [
+      { label: 'Gender', value: result.Gender },
+      { label: 'Age in Years', value: result.AgeInYears },
+      { label: 'Is Eligible (Female 15-45)', value: result.IsEligible },
+      { label: 'Recommend 400mcg', value: result.RecommendFolicAcid400Mcg },
+      { label: 'Recommend 4mg', value: result.RecommendFolicAcid4Mg },
       { label: 'Exclusion Reason', value: result.ExclusionReason },
     ],
   },
@@ -312,6 +336,11 @@ function App() {
     // Colorectal Cancer Screening: age 46-75
     if (age >= 46 && age <= 75) {
       applicable.push(GUIDELINE_CONFIG.crc)
+    }
+
+    // Folic Acid Supplementation: female, age 15-45
+    if (gender === 'female' && age >= 15 && age <= 45) {
+      applicable.push(GUIDELINE_CONFIG.fol)
     }
 
     return applicable

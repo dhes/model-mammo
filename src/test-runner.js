@@ -22,6 +22,8 @@ const PREFIX_TO_LIBRARY = {
   tob: 'TobaccoScreening',
   ccs: 'CervicalCancerScreening',
   crc: 'ColorectalCancerScreening',
+  fol: 'FolicAcidSupplementation',
+  onp: 'OphthalmiaNeonatorumProphylaxis',
 };
 
 /**
@@ -139,6 +141,7 @@ const args = process.argv.slice(2);
 
 if (args.length === 0) {
   console.error('Usage: node src/test-runner.js <case-id>');
+  console.error('       node src/test-runner.js <prefix>   (e.g., onp, bcs, crc)');
   console.error('       node src/test-runner.js --all');
   console.error(`\nHAPI server: ${HAPI_BASE_URL}`);
   console.error(`Prefixes: ${Object.keys(PREFIX_TO_LIBRARY).join(', ')}`);
@@ -151,10 +154,32 @@ console.log(`Libraries: ${Object.values(PREFIX_TO_LIBRARY).join(', ')}\n`);
 let casesToRun = [];
 
 if (args[0] === '--all') {
+  // Run all generated cases
   casesToRun = readdirSync(generatedDir)
     .filter(f => existsSync(resolve(generatedDir, f, '_metadata.json')));
 } else {
-  casesToRun = [args[0]];
+  // Could be a case ID or a prefix - check if exact match exists first
+  const allCases = readdirSync(generatedDir)
+    .filter(f => existsSync(resolve(generatedDir, f, '_metadata.json')));
+
+  if (allCases.includes(args[0])) {
+    // Exact case ID match
+    casesToRun = [args[0]];
+  } else {
+    // Treat as prefix - find all cases starting with prefix-
+    const prefix = args[0];
+    const matchingCases = allCases.filter(f => f.startsWith(`${prefix}-`));
+
+    if (matchingCases.length === 0) {
+      console.error(`No generated test cases found for prefix '${prefix}' or case ID '${args[0]}'`);
+      console.error(`Looking for: ${generatedDir}/${prefix}-*`);
+      console.error(`\nHave you run 'npm run test:deploy -- ${prefix}' first?`);
+      process.exit(1);
+    }
+
+    console.log(`Found ${matchingCases.length} test case(s) with prefix '${prefix}':\n`);
+    casesToRun = matchingCases;
+  }
 }
 
 let passed = 0;
