@@ -29,10 +29,25 @@
     console.log('[Launch] ISS:', iss);
     console.log('[Launch] Scopes:', scope);
 
+    // Client ID mapping - different EHRs require different registered client IDs
+    const CLIENT_IDS = {
+      epic: '20ac7a40-88a7-4923-8ede-0124a5e483c0',  // Epic Non-Production (Sandbox)
+      default: 'uspstf-cds-app'                      // SMART Launcher and others
+    };
+
+    // Detect which client ID to use based on the ISS
+    function getClientId(iss) {
+      if (iss && iss.includes('epic.com')) {
+        console.log('[Launch] Using Epic client ID');
+        return CLIENT_IDS.epic;
+      }
+      return CLIENT_IDS.default;
+    }
+
     // Build authorize options
     const authorizeOptions = {
-      // Client ID - obtained when registering the app with the EHR
-      clientId: 'uspstf-cds-app',
+      // Client ID - selected based on the EHR
+      clientId: getClientId(iss),
 
       // Scopes - differ based on launch mode
       scope: scope,
