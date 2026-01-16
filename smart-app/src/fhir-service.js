@@ -119,17 +119,41 @@ class FhirService {
 
   /**
    * Fetch resources related to a patient
+   *
+   * Note: Epic requires 'category' or 'code' for Observation queries.
+   * We query Observations by category to ensure compatibility.
    */
   async fetchPatientResources(patientId, resourceTypes = ['Observation', 'Condition', 'Procedure']) {
     const resources = []
 
     for (const type of resourceTypes) {
       try {
-        const bundle = await this.client.request(
-          `${type}?patient=${patientId}&_count=100`
-        )
-        const entries = bundle.entry?.map(e => e.resource) || []
-        resources.push(...entries)
+        if (type === 'Observation') {
+          // Epic requires category or code for Observation queries
+          // Query each relevant category separately
+          const categories = ['vital-signs', 'social-history', 'laboratory']
+          for (const category of categories) {
+            try {
+              const bundle = await this.client.request(
+                `Observation?patient=${patientId}&category=${category}&_count=100`
+              )
+              const entries = bundle.entry?.map(e => e.resource) || []
+              resources.push(...entries)
+              console.log(`[FhirService] Fetched ${entries.length} ${category} observations`)
+            } catch (err) {
+              // Category might not exist or not be supported - continue
+              console.warn(`[FhirService] Error fetching Observation/${category}:`, err.message)
+            }
+          }
+        } else {
+          // Other resource types can be queried directly
+          const bundle = await this.client.request(
+            `${type}?patient=${patientId}&_count=100`
+          )
+          const entries = bundle.entry?.map(e => e.resource) || []
+          resources.push(...entries)
+          console.log(`[FhirService] Fetched ${entries.length} ${type} resources`)
+        }
       } catch (err) {
         console.warn(`[FhirService] Error fetching ${type}:`, err.message)
       }

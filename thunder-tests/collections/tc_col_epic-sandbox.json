@@ -1,0 +1,53 @@
+{
+    "_id": "daaf2c17-ee69-4062-a9b2-48d97fc06931",
+    "colName": "Epic Sandbox",
+    "created": "2026-01-15T16:35:55.756Z",
+    "sortNum": 30000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "fc056917-4cf1-4fec-8ca5-207b546fbf53",
+            "colId": "daaf2c17-ee69-4062-a9b2-48d97fc06931",
+            "containerId": "",
+            "name": "misc GET",
+            "url": "Patient?gender=female&birthdate=le1986-01-01&birthdate=ge1952-01-01",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-01-15T16:49:56.101Z",
+            "modified": "2026-01-16T01:46:54.121Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "gender",
+                    "value": "female",
+                    "isPath": false
+                },
+                {
+                    "name": "birthdate",
+                    "value": "le1986-01-01",
+                    "isPath": false
+                },
+                {
+                    "name": "birthdate",
+                    "value": "ge1952-01-01",
+                    "isPath": false
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "headers": [
+            {
+                "name": "Content-Type",
+                "value": "application/fhir+json"
+            }
+        ],
+        "auth": {
+            "type": "bearer",
+            "bearer": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1cm46b2lkOjEuMi44NDAuMTE0MzUwLjEuMTMuMC4xLjcuMy42ODg4ODQuMTAwIiwiY2xpZW50X2lkIjoiMjBhYzdhNDAtODhhNy00OTIzLThlZGUtMDEyNGE1ZTQ4M2MwIiwiZXBpYy5lY2kiOiJ1cm46ZXBpYzpPcGVuLkVwaWMtY3VycmVudCIsImVwaWMubWV0YWRhdGEiOiJjU0hXMTF0dmFlY3llcGlybUl0bjNiQWs4QzJNenhhWFR5RW9PVXZwVTBKSkZOUGlZbWEyQnJJdWs5cFVkZzFEOEpfR2Fwam5YVTUzelFfaVZzNHlTbURBRm5jeDFQSjl1NzVjZXdCdzdtb0UwSnhLSnZpY1B2N0kzbkpxbmJQSiIsImVwaWMudG9rZW50eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NTMxNDA3LCJpYXQiOjE3Njg1Mjc4MDcsImlzcyI6InVybjpvaWQ6MS4yLjg0MC4xMTQzNTAuMS4xMy4wLjEuNy4zLjY4ODg4NC4xMDAiLCJqdGkiOiIwZWYxMGQ1Ni0yZTg1LTQ1NTAtYTkwMi02ODE1YjMwNmNjNWQiLCJuYmYiOjE3Njg1Mjc4MDcsInN1YiI6ImV2TnAtS2hZd09PcUFabjFwWjJlbnVBMyJ9.hplW9jdGF3NcHkgtFkerRoZc3H2rD40atwNE5DF_LSlhGWTxnowatBOr2TlWxoVlgAuIAHd69K0ztDPXWQ1YO6h6RrANtRV2GHBjxICpKyhCa0-_6-HgKwSQchZUHo7es__mcYjLUHttiNWPUhbZtMExMnfxyQFABpuOKHZ92nE33ybxbYlh9cthLkcEO3xctHPM5aL8Chh9n6QjwYEPT7Iul60hdhRLYsKqnmRmynmUNDuOEuoBUy2DEa1vq8EN9SBjhkO2d5IW34eD6ibCBxvn8cWLQlhO36Zd9ASOTGhPXqnnIN_7BxlkJ7kCX0jYO9ZnK8ToVLSb70whmxzn2Q"
+        },
+        "options": {
+            "baseUrl": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/"
+        }
+    }
+}
