@@ -1,8 +1,11 @@
-library ColorectalCancerScreening version '0.0.1'
+library ColorectalCancerScreening version '0.0.2'
 
 // Colorectal Cancer: Screening
 // Implements USPSTF Grade A Recommendation (ages 50-75) and Grade B (ages 45-49)
 // Per CMS130, ages 46-75 are included in the measure
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Seven screening strategies with different intervals:
 // - HSgFOBT or FIT: every 1 year
@@ -12,11 +15,9 @@ library ColorectalCancerScreening version '0.0.1'
 // - Flexible Sigmoidoscopy + annual FIT: flex sig every 10 years + FIT every year
 // - Colonoscopy: every 10 years
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
-include QICoreCommon version '4.0.000' called QC
-include Status version '1.13.000'
 
 // ValueSets from CMS130
 valueset "Fecal Occult Blood Test": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1011'
@@ -60,10 +61,12 @@ define HasTotalColectomy:
   )
 
 // Patient has colorectal cancer diagnosis
+// Using FHIR Condition instead of ConditionProblemsHealthConcerns
 define HasColorectalCancer:
   exists(
-    [ConditionProblemsHealthConcerns: "Malignant Neoplasm of Colon"] C
-      where C.isActive()
+    [Condition: "Malignant Neoplasm of Colon"] C
+      where C.clinicalStatus.coding[0].code = 'active'
+        or C.clinicalStatus is null
   )
 
 // Combined exclusion check
@@ -75,19 +78,20 @@ define IsExcluded:
 // ============================================================================
 
 // FOBT or FIT in last 1 year (includes both HSgFOBT and FIT)
+// Using FHIR Observation instead of LaboratoryResultObservation
 define HasFOBTInLastYear:
   exists(
-    [LaboratoryResultObservation: "Fecal Occult Blood Test"] Obs
+    [Observation: "Fecal Occult Blood Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and Obs.effective.toInterval() ends after (Today() - 1 year)
+        and (Obs.effective as dateTime) >= Today() - 1 year
   )
 
 // sDNA-FIT (Cologuard) in last 2 years
 define HasDNAFITInLastTwoYears:
   exists(
-    [LaboratoryResultObservation: "Stool DNA with FIT Test"] Obs
+    [Observation: "Stool DNA with FIT Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and Obs.effective.toInterval() ends after (Today() - 2 years)
+        and (Obs.effective as dateTime) >= Today() - 2 years
   )
 
 // CT Colonography in last 5 years
@@ -95,7 +99,7 @@ define HasCTColonographyInLastFiveYears:
   exists(
     [Procedure: "CT Colonography"] P
       where P.status = 'completed'
-        and P.performed.toInterval() ends after (Today() - 5 years)
+        and (P.performed as dateTime) >= Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 5 years
@@ -103,7 +107,7 @@ define HasFlexSigInLastFiveYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and P.performed.toInterval() ends after (Today() - 5 years)
+        and (P.performed as dateTime) >= Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 10 years (for combo strategy)
@@ -111,7 +115,7 @@ define HasFlexSigInLastTenYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and P.performed.toInterval() ends after (Today() - 10 years)
+        and (P.performed as dateTime) >= Today() - 10 years
   )
 
 // Colonoscopy in last 10 years
@@ -119,7 +123,7 @@ define HasColonoscopyInLastTenYears:
   exists(
     [Procedure: "Colonoscopy"] P
       where P.status = 'completed'
-        and P.performed.toInterval() ends after (Today() - 10 years)
+        and (P.performed as dateTime) >= Today() - 10 years
   )
 
 // ============================================================================

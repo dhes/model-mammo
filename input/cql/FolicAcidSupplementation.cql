@@ -1,7 +1,10 @@
-library FolicAcidSupplementation version '0.0.1'
+library FolicAcidSupplementation version '0.0.2'
 
 // Folic Acid Supplementation to Prevent Neural Tube Defects
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: Persons who plan to or could become pregnant
 // Recommendation: Take daily supplement containing 0.4 to 0.8 mg (400-800 mcg) folic acid
@@ -17,7 +20,7 @@ library FolicAcidSupplementation version '0.0.1'
 // - MTHFR mutations
 // - Bariatric surgery
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 

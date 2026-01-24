@@ -5,10 +5,50 @@
          "translatorOptions" : "",
          "signatureLevel" : "None",
          "type" : "CqlToElmInfo"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "TobaccoScreening",
-         "version" : "0.0.1"
+         "version" : "0.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -20,8 +60,9 @@
             "uri" : "urn:hl7-org:elm-types:r1",
             "annotation" : [ ]
          }, {
-            "localIdentifier" : "QICore",
+            "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -30,16 +71,6 @@
             "localIdentifier" : "FHIRHelpers",
             "path" : "FHIRHelpers",
             "version" : "4.4.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "QC",
-            "path" : "QICoreCommon",
-            "version" : "4.0.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "Status",
-            "path" : "Status",
-            "version" : "1.13.000",
             "annotation" : [ ]
          } ]
       },
@@ -178,7 +209,7 @@
                "signature" : [ ],
                "operand" : {
                   "dataType" : "{http://hl7.org/fhir}Patient",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve",
                   "annotation" : [ ],
                   "include" : [ ],
@@ -201,58 +232,45 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "type" : "Indexer",
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "type" : "Query",
+                        "type" : "Indexer",
                         "annotation" : [ ],
-                        "source" : [ {
-                           "alias" : "$this",
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "path" : "given",
+                           "type" : "Property",
                            "annotation" : [ ],
-                           "expression" : {
-                              "path" : "given",
-                              "type" : "Property",
+                           "source" : {
+                              "type" : "Indexer",
                               "annotation" : [ ],
-                              "source" : {
-                                 "type" : "Indexer",
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "name",
+                                 "type" : "Property",
                                  "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "path" : "name",
-                                    "type" : "Property",
-                                    "annotation" : [ ],
-                                    "source" : {
-                                       "name" : "Patient",
-                                       "type" : "ExpressionRef",
-                                       "annotation" : [ ]
-                                    }
-                                 }, {
-                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                                    "value" : "0",
-                                    "type" : "Literal",
+                                 "source" : {
+                                    "name" : "Patient",
+                                    "type" : "ExpressionRef",
                                     "annotation" : [ ]
-                                 } ]
-                              }
+                                 }
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "0",
+                                 "type" : "Literal",
+                                 "annotation" : [ ]
+                              } ]
                            }
-                        } ],
-                        "let" : [ ],
-                        "relationship" : [ ],
-                        "return" : {
-                           "distinct" : false,
-                           "annotation" : [ ],
-                           "expression" : {
-                              "path" : "value",
-                              "scope" : "$this",
-                              "type" : "Property",
-                              "annotation" : [ ]
-                           }
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "0",
-                        "type" : "Literal",
-                        "annotation" : [ ]
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal",
+                           "annotation" : [ ]
+                        } ]
                      } ]
                   }, {
                      "valueType" : "{urn:hl7-org:elm-types:r1}String",
@@ -261,10 +279,12 @@
                      "annotation" : [ ]
                   } ]
                }, {
-                  "path" : "value",
-                  "type" : "Property",
+                  "name" : "ToString",
+                  "libraryName" : "FHIRHelpers",
+                  "type" : "FunctionRef",
                   "annotation" : [ ],
-                  "source" : {
+                  "signature" : [ ],
+                  "operand" : [ {
                      "path" : "family",
                      "type" : "Property",
                      "annotation" : [ ],
@@ -288,7 +308,7 @@
                            "annotation" : [ ]
                         } ]
                      }
-                  }
+                  } ]
                } ]
             }
          }, {
@@ -297,18 +317,13 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "path" : "value",
+               "path" : "id",
                "type" : "Property",
                "annotation" : [ ],
                "source" : {
-                  "path" : "id",
-                  "type" : "Property",
-                  "annotation" : [ ],
-                  "source" : {
-                     "name" : "Patient",
-                     "type" : "ExpressionRef",
-                     "annotation" : [ ]
-                  }
+                  "name" : "Patient",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
                }
             }
          }, {
@@ -322,18 +337,13 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : {
-                  "path" : "value",
+                  "path" : "birthDate.value",
                   "type" : "Property",
                   "annotation" : [ ],
                   "source" : {
-                     "path" : "birthDate",
-                     "type" : "Property",
-                     "annotation" : [ ],
-                     "source" : {
-                        "name" : "Patient",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
+                     "name" : "Patient",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }
                }
             }
@@ -343,21 +353,73 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "name" : "isObservationSmokingStatus",
-               "libraryName" : "Status",
-               "type" : "FunctionRef",
+               "type" : "Query",
                "annotation" : [ ],
-               "signature" : [ ],
-               "operand" : [ {
-                  "dataType" : "{http://hl7.org/fhir}Observation",
-                  "templateId" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus",
-                  "type" : "Retrieve",
+               "source" : [ {
+                  "alias" : "Obs",
                   "annotation" : [ ],
-                  "include" : [ ],
-                  "codeFilter" : [ ],
-                  "dateFilter" : [ ],
-                  "otherFilter" : [ ]
-               } ]
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Observation",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                     "codeProperty" : "code",
+                     "codeComparator" : "~",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "type" : "ToList",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Tobacco smoking status LOINC",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     } ]
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
             }
          }, {
             "name" : "MostRecentSmokingStatus",
@@ -389,63 +451,19 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "path" : "low",
-                           "type" : "Property",
+                           "strict" : false,
+                           "type" : "As",
                            "annotation" : [ ],
-                           "source" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
-                              "annotation" : [ ],
-                              "signature" : [ ],
-                              "operand" : [ {
-                                 "type" : "As",
-                                 "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "annotation" : [ ],
-                                    "source" : {
-                                       "name" : "effective",
-                                       "type" : "IdentifierRef",
-                                       "annotation" : [ ]
-                                    }
-                                 },
-                                 "asTypeSpecifier" : {
-                                    "type" : "ChoiceTypeSpecifier",
-                                    "annotation" : [ ],
-                                    "choice" : [ {
-                                       "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                       "type" : "NamedTypeSpecifier",
-                                       "annotation" : [ ]
-                                    }, {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                       "type" : "NamedTypeSpecifier",
-                                       "annotation" : [ ]
-                                    }, {
-                                       "type" : "IntervalTypeSpecifier",
-                                       "annotation" : [ ],
-                                       "pointType" : {
-                                          "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                          "type" : "NamedTypeSpecifier",
-                                          "annotation" : [ ]
-                                       }
-                                    }, {
-                                       "type" : "IntervalTypeSpecifier",
-                                       "annotation" : [ ],
-                                       "pointType" : {
-                                          "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                          "type" : "NamedTypeSpecifier",
-                                          "annotation" : [ ]
-                                       }
-                                    }, {
-                                       "name" : "{http://hl7.org/fhir}Timing",
-                                       "type" : "NamedTypeSpecifier",
-                                       "annotation" : [ ]
-                                    } ]
-                                 }
-                              } ]
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "effective",
+                              "type" : "IdentifierRef",
+                              "annotation" : [ ]
+                           },
+                           "asTypeSpecifier" : {
+                              "name" : "{http://hl7.org/fhir}dateTime",
+                              "type" : "NamedTypeSpecifier",
+                              "annotation" : [ ]
                            }
                         }
                      } ]
@@ -478,17 +496,17 @@
                            "annotation" : [ ],
                            "signature" : [ ],
                            "operand" : [ {
-                              "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                              "type" : "As",
+                              "name" : "ToConcept",
+                              "libraryName" : "FHIRHelpers",
+                              "type" : "FunctionRef",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
+                              "operand" : [ {
+                                 "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                                 "type" : "As",
                                  "annotation" : [ ],
                                  "signature" : [ ],
-                                 "operand" : [ {
+                                 "operand" : {
                                     "path" : "value",
                                     "type" : "Property",
                                     "annotation" : [ ],
@@ -497,8 +515,8 @@
                                        "type" : "ExpressionRef",
                                        "annotation" : [ ]
                                     }
-                                 } ]
-                              }
+                                 }
+                              } ]
                            }, {
                               "type" : "ToConcept",
                               "annotation" : [ ],
@@ -514,17 +532,17 @@
                            "annotation" : [ ],
                            "signature" : [ ],
                            "operand" : [ {
-                              "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                              "type" : "As",
+                              "name" : "ToConcept",
+                              "libraryName" : "FHIRHelpers",
+                              "type" : "FunctionRef",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
+                              "operand" : [ {
+                                 "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                                 "type" : "As",
                                  "annotation" : [ ],
                                  "signature" : [ ],
-                                 "operand" : [ {
+                                 "operand" : {
                                     "path" : "value",
                                     "type" : "Property",
                                     "annotation" : [ ],
@@ -533,8 +551,8 @@
                                        "type" : "ExpressionRef",
                                        "annotation" : [ ]
                                     }
-                                 } ]
-                              }
+                                 }
+                              } ]
                            }, {
                               "type" : "ToConcept",
                               "annotation" : [ ],
@@ -551,17 +569,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                           "type" : "As",
+                           "name" : "ToConcept",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "ToValue",
-                              "libraryName" : "FHIRHelpers",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
+                              "operand" : {
                                  "path" : "value",
                                  "type" : "Property",
                                  "annotation" : [ ],
@@ -570,8 +588,8 @@
                                     "type" : "ExpressionRef",
                                     "annotation" : [ ]
                                  }
-                              } ]
-                           }
+                              }
+                           } ]
                         }, {
                            "type" : "ToConcept",
                            "annotation" : [ ],
@@ -588,17 +606,17 @@
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                        "type" : "As",
+                        "name" : "ToConcept",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : {
-                           "name" : "ToValue",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
+                        "operand" : [ {
+                           "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                           "type" : "As",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : [ {
+                           "operand" : {
                               "path" : "value",
                               "type" : "Property",
                               "annotation" : [ ],
@@ -607,8 +625,8 @@
                                  "type" : "ExpressionRef",
                                  "annotation" : [ ]
                               }
-                           } ]
-                        }
+                           }
+                        } ]
                      }, {
                         "type" : "ToConcept",
                         "annotation" : [ ],
@@ -625,17 +643,17 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                     "type" : "As",
+                     "name" : "ToConcept",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
                      "signature" : [ ],
-                     "operand" : {
-                        "name" : "ToValue",
-                        "libraryName" : "FHIRHelpers",
-                        "type" : "FunctionRef",
+                     "operand" : [ {
+                        "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                        "type" : "As",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : [ {
+                        "operand" : {
                            "path" : "value",
                            "type" : "Property",
                            "annotation" : [ ],
@@ -644,8 +662,8 @@
                               "type" : "ExpressionRef",
                               "annotation" : [ ]
                            }
-                        } ]
-                     }
+                        }
+                     } ]
                   }, {
                      "type" : "ToConcept",
                      "annotation" : [ ],
@@ -676,17 +694,17 @@
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                        "type" : "As",
+                        "name" : "ToConcept",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : {
-                           "name" : "ToValue",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
+                        "operand" : [ {
+                           "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                           "type" : "As",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : [ {
+                           "operand" : {
                               "path" : "value",
                               "type" : "Property",
                               "annotation" : [ ],
@@ -695,8 +713,8 @@
                                  "type" : "ExpressionRef",
                                  "annotation" : [ ]
                               }
-                           } ]
-                        }
+                           }
+                        } ]
                      }, {
                         "type" : "ToConcept",
                         "annotation" : [ ],
@@ -712,17 +730,17 @@
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                        "type" : "As",
+                        "name" : "ToConcept",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : {
-                           "name" : "ToValue",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
+                        "operand" : [ {
+                           "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                           "type" : "As",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : [ {
+                           "operand" : {
                               "path" : "value",
                               "type" : "Property",
                               "annotation" : [ ],
@@ -731,8 +749,8 @@
                                  "type" : "ExpressionRef",
                                  "annotation" : [ ]
                               }
-                           } ]
-                        }
+                           }
+                        } ]
                      }, {
                         "type" : "ToConcept",
                         "annotation" : [ ],
@@ -749,17 +767,17 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                     "type" : "As",
+                     "name" : "ToConcept",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
                      "signature" : [ ],
-                     "operand" : {
-                        "name" : "ToValue",
-                        "libraryName" : "FHIRHelpers",
-                        "type" : "FunctionRef",
+                     "operand" : [ {
+                        "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                        "type" : "As",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : [ {
+                        "operand" : {
                            "path" : "value",
                            "type" : "Property",
                            "annotation" : [ ],
@@ -768,8 +786,8 @@
                               "type" : "ExpressionRef",
                               "annotation" : [ ]
                            }
-                        } ]
-                     }
+                        }
+                     } ]
                   }, {
                      "type" : "ToConcept",
                      "annotation" : [ ],
@@ -863,7 +881,7 @@
                   "annotation" : [ ],
                   "expression" : {
                      "dataType" : "{http://hl7.org/fhir}Observation",
-                     "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                      "codeProperty" : "code",
                      "codeComparator" : "~",
                      "type" : "Retrieve",
@@ -891,15 +909,17 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "path" : "value",
-                     "type" : "Property",
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
-                     "source" : {
+                     "signature" : [ ],
+                     "operand" : [ {
                         "path" : "status",
                         "scope" : "Obs",
                         "type" : "Property",
                         "annotation" : [ ]
-                     }
+                     } ]
                   }, {
                      "type" : "List",
                      "annotation" : [ ],
@@ -952,27 +972,19 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "path" : "low",
-                           "type" : "Property",
+                           "strict" : false,
+                           "type" : "As",
                            "annotation" : [ ],
-                           "source" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
-                              "annotation" : [ ],
-                              "signature" : [ ],
-                              "operand" : [ {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
-                                 "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "name" : "effective",
-                                    "type" : "IdentifierRef",
-                                    "annotation" : [ ]
-                                 } ]
-                              } ]
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "effective",
+                              "type" : "IdentifierRef",
+                              "annotation" : [ ]
+                           },
+                           "asTypeSpecifier" : {
+                              "name" : "{http://hl7.org/fhir}dateTime",
+                              "type" : "NamedTypeSpecifier",
+                              "annotation" : [ ]
                            }
                         }
                      } ]
@@ -1012,17 +1024,17 @@
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Concept",
-                        "type" : "As",
+                        "name" : "ToConcept",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
                         "annotation" : [ ],
                         "signature" : [ ],
-                        "operand" : {
-                           "name" : "ToValue",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
+                        "operand" : [ {
+                           "asType" : "{http://hl7.org/fhir}CodeableConcept",
+                           "type" : "As",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : [ {
+                           "operand" : {
                               "path" : "value",
                               "type" : "Property",
                               "annotation" : [ ],
@@ -1031,8 +1043,8 @@
                                  "type" : "ExpressionRef",
                                  "annotation" : [ ]
                               }
-                           } ]
-                        }
+                           }
+                        } ]
                      }, {
                         "type" : "ToConcept",
                         "annotation" : [ ],

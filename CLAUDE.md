@@ -1809,6 +1809,162 @@ This project fills that gap: USPSTF guideline-driven recommendations delivered a
 
 All three serve independent practices, support SMART on FHIR, and lack the enterprise CDS that Epic/Cerner customers receive.
 
+### EHR Vendor Sandbox Testing (January 2026)
+
+Sandbox accessibility varies dramatically across vendors. This documents our experience attempting to test the SMART on FHIR app against various vendor sandboxes.
+
+| Vendor | Sandbox Access | Barrier | Status |
+|--------|----------------|---------|--------|
+| **Epic** | Open, self-service | None | ✓ Working |
+| **SMART Health IT Launcher** | Open, self-service | None | ✓ Working |
+| **athenahealth** | Gated | Business relationship required | Parked |
+| **Elation** | Unknown | Awaiting FHIR API credentials | Pending |
+
+#### Epic (Open Sandbox — Gold Standard)
+
+Epic provides the most developer-friendly experience:
+
+1. Register at [fhir.epic.com](https://fhir.epic.com)
+2. Create app, receive client ID immediately
+3. Launch against their sandbox with test patients (e.g., Anna Cadence)
+4. No approval process, no business relationship required
+
+**Key learnings from Epic testing:**
+
+- Epic requires `category` parameter for Observation queries — queries without it silently return empty bundles
+- We updated `fhir-service.js` to query Observations by category (`vital-signs`, `social-history`, `laboratory`)
+- Epic's sandbox resets periodically; test data may need to be re-uploaded
+
+**Client ID (Epic Non-Production):** `20ac7a40-88a7-4923-8ede-0124a5e483c0`
+
+#### Epic Patient-Facing App ("Preventive Health Companion")
+
+In addition to the provider-facing app, we registered a patient-facing app to enable testing against MyChart and eventually real patient data.
+
+**Why patient-facing?**
+- Provider-facing apps require EHR integration (launching from within the EHR)
+- Patient-facing apps can be launched from MyChart or standalone with patient login
+- Enables testing against real patient data (your own MyChart account) once production-approved
+
+**Registration steps:**
+
+1. Go to [fhir.epic.com](https://fhir.epic.com) → Build Apps → Create
+2. Select **Patients** (not Clinicians) as the audience
+3. App name: "Preventive Health Companion"
+4. Configure incoming APIs (FHIR R4):
+   - `Patient.Read`, `Patient.Search`
+   - `Observation.Read`, `Observation.Search` (all categories: vital-signs, social-history, laboratory, survey)
+   - `Condition.Read`, `Condition.Search` (problem-list-item, encounter-diagnosis)
+   - `Procedure.Read`, `Procedure.Search`
+5. Select **SMART on FHIR version**: SMART v2
+6. Select **FHIR ID format**: Unconstrained FHIR IDs (recommended for interoperability)
+7. Configure OAuth:
+   - Application type: **Browser** (enables PKCE)
+   - Redirect URI: Your app's callback URL (e.g., `https://enhanced.hopena.info/`)
+8. Complete the **Data Use Questionnaire** (both 2021 and 2018 versions)
+   - This questionnaire is shown to patients during consent — answer honestly
+9. Provide **Terms of Use URL** (required for patient apps)
+   - We created `public/terms.html` with standard disclaimers
+
+**Key configuration files:**
+
+- `smart-app/public/launch-patient.html` — Separate launch handler for patient apps with different client IDs
+- `smart-app/public/terms.html` — Terms of Use page (required by Epic)
+
+**Client IDs:**
+
+| Environment | Client ID |
+|-------------|-----------|
+| Non-Production (Sandbox) | `e6bfdad8-8074-4f0e-b4b0-63b378036a7f` |
+| Production | `38ffe69c-838d-4149-82dd-e1c01429b88b` |
+
+**Testing with SMART Health IT Launcher:**
+
+1. Go to [launch.smarthealthit.org](https://launch.smarthealthit.org)
+2. Configure:
+   - Launch Type: **Provider EHR Launch** (works for testing patient apps too)
+   - FHIR Version: **R4**
+   - App Launch URL: `https://your-app.com/launch-patient.html`
+3. Launch and authenticate as test patient (e.g., fhircamila / epicepic1)
+
+**Testing with Epic Sandbox directly:**
+
+1. Go to [fhir.epic.com/Documentation](https://fhir.epic.com/Documentation) → Launching Your App → Try It
+2. Select your patient-facing app
+3. Authenticate as a test patient
+4. App receives OAuth token and can access patient's FHIR data
+
+**Lessons learned:**
+
+1. **Scope registration matters** — If you don't select `Patient.Read` during app registration, Epic won't grant `patient/Patient.read` scope even if you request it. We initially missed this and got 403 Forbidden on Patient resource.
+
+2. **SMART v1 vs v2 scopes** — Epic sandbox works with v1 syntax (`.read`) better than v2 (`.rs`). Use `patient/Patient.read` not `patient/Patient.rs`.
+
+3. **Granular consent** — Patient-facing apps show patients exactly what data categories will be accessed. The Data Use Questionnaire answers appear on this consent screen.
+
+4. **Client-side CQL works** — Successfully executed 7 USPSTF guidelines in 323ms client-side against Epic sandbox patient (Camila Lopez, 38yo female).
+
+**Verified working (January 2026):**
+
+- OAuth2 flow with PKCE ✓
+- Patient demographics (Patient.Read) ✓
+- Observations by category ✓
+- Conditions ✓
+- Procedures ✓
+- Client-side CQL execution ✓
+
+**Next step for production:** Mark app as "Ready for Production" in Epic App Orchard, which triggers Epic's review process.
+
+#### athenahealth (Gated — Business Relationship Required)
+
+athenahealth's sandbox appeared straightforward initially but revealed significant barriers:
+
+**What we did:**
+1. Registered at [developer.athenahealth.com](https://developer.athenahealth.com)
+2. Created app with "Certified APIs ONLY", 3-Legged OAuth for Providers, Browser/PKCE
+3. Configured FHIR R4 SMART V2 scopes (Patient, Condition, Observation, Procedure, etc.)
+4. Attempted launch against `https://api.preview.platform.athenahealth.com/fhir/r4`
+
+**The blocker:** Error message "Invalid client for support service. This client is not configured to use fuzzy."
+
+"Fuzzy" is athenahealth's internal name for their Preview/sandbox environment. Despite the FHIR metadata endpoint being publicly accessible, OAuth authorization is gated.
+
+**Root cause (from their documentation):**
+
+> "If your app is a **provider-facing app**, you will need access to a Preview athenaOne tablespace in which to test:
+> - If you're a **third-party Vendor**, you can gain Preview access either by entering into a **business associate agreement with an athenahealth Client** who is willing to test your solution in their Preview tablespace, or by signing up for our **Marketplace Partner Program**."
+
+**Key insight:** athenahealth has open FHIR read access (metadata works) but gated OAuth. Patient-facing (PHR) apps get automatic sandbox access; provider-facing apps do not.
+
+**Options to proceed:**
+1. Sign up for Marketplace Partner Program (likely involves paperwork/approval)
+2. Find an athenahealth customer willing to grant Preview access
+3. Skip athenahealth for initial pilots
+
+**Client ID (athenahealth Preview, not yet working):** `0oa10mlovm0Ok5xAU298`
+
+**FHIR base URL:** `https://api.preview.platform.athenahealth.com/fhir/r4`
+
+**Test practice ID:** `195900` (Ambulatory sandbox)
+
+#### Elation (Pending FHIR Access)
+
+Elation has separate V2 REST API and FHIR API credentials. We successfully accessed the V2 API but FHIR requires a separate access request.
+
+**V2 API (working):**
+- Token endpoint: `https://sandbox.elationemr.com/api/2.0/oauth2/token/`
+- Created test patient "Test Guideline" (46yo female) with vitals
+
+**FHIR API:** Access request submitted, awaiting response.
+
+#### Cerner/Oracle Health
+
+Not yet attempted. May explore if other vendors remain blocked.
+
+#### eClinicalWorks
+
+Not yet attempted. Documentation suggests free API access with ONC certification.
+
 ### Deployment Pathway
 
 1. **Technical integration** — SMART on FHIR app works with any compliant EHR

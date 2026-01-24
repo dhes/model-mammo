@@ -21,8 +21,7 @@ import SyphilisScreeningELM from './elm/SyphilisScreening.json'
 import HIVScreeningAgeELM from './elm/HIVScreeningAge.json'
 import HIVScreeningPregnancyELM from './elm/HIVScreeningPregnancy.json'
 import FHIRHelpersELM from './elm/FHIRHelpers.json'
-import QICoreCommonELM from './elm/QICoreCommon.json'
-import StatusELM from './elm/Status.json'
+// Note: QICoreCommon and Status are no longer needed after refactoring to FHIR R4 base types
 
 const elmLibraries = {
   BreastCancerScreening: BreastCancerScreeningELM,
@@ -39,8 +38,6 @@ const elmLibraries = {
   HIVScreeningAge: HIVScreeningAgeELM,
   HIVScreeningPregnancy: HIVScreeningPregnancyELM,
   FHIRHelpers: FHIRHelpersELM,
-  QICoreCommon: QICoreCommonELM,
-  Status: StatusELM,
 }
 
 // =============================================================================

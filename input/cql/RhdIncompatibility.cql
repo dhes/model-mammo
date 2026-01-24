@@ -1,7 +1,10 @@
-library RhdIncompatibility version '0.0.1'
+library RhdIncompatibility version '0.0.2'
 
 // Rh(D) Incompatibility Screening (First Prenatal Visit)
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: All pregnant women at first pregnancy-related care visit
 // Recommendation: Rh(D) blood typing and antibody testing
@@ -14,7 +17,7 @@ library RhdIncompatibility version '0.0.1'
 //
 // Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/rh-d-incompatibility-screening
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -38,7 +41,9 @@ context Patient
 // ============================================================================
 
 define PregnancyConditions:
-  [ConditionProblemsHealthConcerns: "Pregnancy"]
+  [Condition: "Pregnancy"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 define IsCurrentlyPregnant:
   exists(PregnancyConditions)
@@ -48,7 +53,7 @@ define IsCurrentlyPregnant:
 // ============================================================================
 
 define RhTypeTests:
-  ([SimpleObservation: "Rh Type"] union [SimpleObservation: "Rh D Antigen"]) Obs
+  ([Observation: "Rh Type"] union [Observation: "Rh D Antigen"]) Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define RhTypingDone:
@@ -59,7 +64,7 @@ define RhTypingDone:
 // ============================================================================
 
 define AntibodyScreenTests:
-  [SimpleObservation: "Antibody Screen"] Obs
+  [Observation: "Antibody Screen"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define AntibodyScreenDone:

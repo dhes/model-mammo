@@ -1,0 +1,50 @@
+{
+    "_id": "bb35438a-d234-4254-8f8f-80b48d778984",
+    "colName": "Elation API Sandbox get bearer token",
+    "created": "2026-01-17T19:59:51.128Z",
+    "sortNum": 40000,
+    "folders": [],
+    "requests": [
+        {
+            "_id": "a1d55d5e-444d-49cf-abf1-cf7c5fd2aab9",
+            "colId": "bb35438a-d234-4254-8f8f-80b48d778984",
+            "containerId": "",
+            "name": "POST for Bearer token",
+            "url": "oauth2/token/",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2026-01-18T01:21:26.168Z",
+            "modified": "2026-01-18T01:37:55.915Z",
+            "headers": [],
+            "body": {
+                "type": "formencoded",
+                "raw": "",
+                "form": [
+                    {
+                        "name": "grant_type",
+                        "value": "client_credentials"
+                    },
+                    {
+                        "name": "client_id",
+                        "value": "etaBnmsi9LEbkRVEU0el5NI6XnPmiCcZVuBZ4e7b"
+                    },
+                    {
+                        "name": "client_secret",
+                        "value": "Vw0ot0E9socxy5YLbwml7mQHyiGnkzKASyp7uZdF3O9eRoPM6ivpLu2W4nt00Ei7NcMGjCKiFcVUSHQBKnfvQFTN7QaE6fXve1qQ"
+                    }
+                ]
+            }
+        }
+    ],
+    "settings": {
+        "headers": [
+            {
+                "name": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+            }
+        ],
+        "options": {
+            "baseUrl": "https://sandbox.elationemr.com/api/2.0/"
+        }
+    }
+}

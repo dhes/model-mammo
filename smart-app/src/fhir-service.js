@@ -37,6 +37,10 @@ class FhirService {
       console.log('[FhirService] SMART launch successful!')
       console.log('[FhirService] Server URL:', this.client.state.serverUrl)
       console.log('[FhirService] Patient ID:', this.client.patient?.id)
+      // Debug: log the granted scopes and token info
+      console.log('[FhirService] Granted scopes:', this.client.state.scope)
+      console.log('[FhirService] Token response:', this.client.state.tokenResponse)
+      console.log('[FhirService] Full state:', JSON.stringify(this.client.state, null, 2))
       return this
     } catch (err) {
       console.warn('[FhirService] SMART launch failed:', err.message)
@@ -81,10 +85,43 @@ class FhirService {
     if (this.mode !== 'smart' || !this.client) return null
 
     try {
+      // Debug: check what scopes we have
+      const grantedScopes = this.client.state.scope || ''
+      console.log('[FhirService] Checking patient context with scopes:', grantedScopes)
+
+      // Check if we have patient scope
+      const hasPatientScope = grantedScopes.includes('patient/Patient')
+      console.log('[FhirService] Has patient/Patient scope:', hasPatientScope)
+
       const patient = await this.client.patient.read()
       return patient
     } catch (err) {
-      console.warn('[FhirService] No patient in context:', err.message)
+      console.warn('[FhirService] Failed to read patient:', err.message)
+      // Try to get more error details
+      if (err.response) {
+        console.warn('[FhirService] Response status:', err.response.status)
+        console.warn('[FhirService] Response headers:', err.response.headers)
+        try {
+          const body = await err.response.text()
+          console.warn('[FhirService] Response body:', body)
+        } catch (e) {
+          // Ignore
+        }
+      }
+
+      // Fallback: Try to construct minimal patient from token context
+      // Epic and some EHRs include patient info in token response
+      const patientId = this.client.patient?.id
+      if (patientId) {
+        console.log('[FhirService] Attempting fallback with patient ID from context:', patientId)
+        // Return a minimal patient object so the app can still try to fetch other data
+        return {
+          resourceType: 'Patient',
+          id: patientId,
+          // Mark that we couldn't fetch full demographics
+          _fallback: true
+        }
+      }
       return null
     }
   }
@@ -130,23 +167,50 @@ class FhirService {
       try {
         if (type === 'Observation') {
           // Epic requires category or code for Observation queries
-          // Query each relevant category separately
-          const categories = ['vital-signs', 'social-history', 'laboratory']
+          // Using full system|code format for explicitness (short-form also works)
+          const categories = [
+            'http://terminology.hl7.org/CodeSystem/observation-category|vital-signs',
+            'http://terminology.hl7.org/CodeSystem/observation-category|social-history',
+            'http://terminology.hl7.org/CodeSystem/observation-category|laboratory',
+            'http://terminology.hl7.org/CodeSystem/observation-category|survey',
+          ]
           for (const category of categories) {
             try {
               const bundle = await this.client.request(
-                `Observation?patient=${patientId}&category=${category}&_count=100`
+                `Observation?patient=${patientId}&category=${encodeURIComponent(category)}&_count=100`
               )
               const entries = bundle.entry?.map(e => e.resource) || []
               resources.push(...entries)
-              console.log(`[FhirService] Fetched ${entries.length} ${category} observations`)
+              const shortName = category.split('|')[1]
+              console.log(`[FhirService] Fetched ${entries.length} ${shortName} observations`)
             } catch (err) {
               // Category might not exist or not be supported - continue
-              console.warn(`[FhirService] Error fetching Observation/${category}:`, err.message)
+              const shortName = category.split('|')[1]
+              console.warn(`[FhirService] Error fetching Observation/${shortName}:`, err.message)
+            }
+          }
+        } else if (type === 'Condition') {
+          // Using full system|code format for explicitness (short-form also works)
+          const categories = [
+            'http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item',
+            'http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis',
+          ]
+          for (const category of categories) {
+            try {
+              const bundle = await this.client.request(
+                `Condition?patient=${patientId}&category=${encodeURIComponent(category)}&_count=100`
+              )
+              const entries = bundle.entry?.map(e => e.resource) || []
+              resources.push(...entries)
+              const shortName = category.split('|')[1]
+              console.log(`[FhirService] Fetched ${entries.length} ${shortName} conditions`)
+            } catch (err) {
+              const shortName = category.split('|')[1]
+              console.warn(`[FhirService] Error fetching Condition/${shortName}:`, err.message)
             }
           }
         } else {
-          // Other resource types can be queried directly
+          // Other resource types (Procedure, etc.) can be queried directly
           const bundle = await this.client.request(
             `${type}?patient=${patientId}&_count=100`
           )

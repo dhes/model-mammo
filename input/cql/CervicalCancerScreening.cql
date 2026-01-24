@@ -1,19 +1,20 @@
-library CervicalCancerScreening version '1.0.0'
+library CervicalCancerScreening version '1.0.1'
 
 // Cervical Cancer Screening
 // Implements USPSTF Grade A Recommendations:
 // - Ages 21-29: Cervical cytology alone every 3 years
 // - Ages 30-65: Cytology every 3 years, OR hrHPV every 5 years, OR cotesting every 5 years
 //
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
+//
 // Exclusions:
 // - Women with hysterectomy with removal of cervix
 // - Congenital or acquired absence of cervix
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
-include QICoreCommon version '4.0.000' called QC
-include Status version '1.13.000'
 
 // Valuesets from CMS124 (Cervical Cancer Screening eCQM)
 valueset "Pap Test": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1017'
@@ -39,19 +40,19 @@ define Gender:
 // Cervical Cytology (Pap Test)
 // ============================================================================
 
-// Use LaboratoryResultObservation for qicore-observation-lab profile
+// Using FHIR Observation instead of LaboratoryResultObservation
 define QualifyingCervicalCytology:
-  [LaboratoryResultObservation: "Pap Test"] Obs
+  [Observation: "Pap Test"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentCervicalCytology:
   Last(
     QualifyingCervicalCytology Obs
-      sort by effective.toInterval().low
+      sort by (effective as dateTime)
   )
 
 define DateOfMostRecentCervicalCytology:
-  MostRecentCervicalCytology.effective.toInterval().low
+  MostRecentCervicalCytology.effective as dateTime
 
 define HasCervicalCytologyInLastThreeYears:
   Coalesce(DateOfMostRecentCervicalCytology after (Today() - 3 years), false)
@@ -61,17 +62,17 @@ define HasCervicalCytologyInLastThreeYears:
 // ============================================================================
 
 define QualifyingHPVTests:
-  [LaboratoryResultObservation: "HPV Test"] Obs
+  [Observation: "HPV Test"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentHPVTest:
   Last(
     QualifyingHPVTests Obs
-      sort by effective.toInterval().low
+      sort by (effective as dateTime)
   )
 
 define DateOfMostRecentHPVTest:
-  MostRecentHPVTest.effective.toInterval().low
+  MostRecentHPVTest.effective as dateTime
 
 define HasHrHPVInLastFiveYears:
   Coalesce(DateOfMostRecentHPVTest after (Today() - 5 years), false)
@@ -85,14 +86,15 @@ define HysterectomyProcedure:
   exists (
     [Procedure: "Hysterectomy with No Residual Cervix"] P
       where P.status = 'completed'
-        and P.performed.toInterval() ends on or before Today()
   )
 
 // Congenital or acquired absence of cervix (condition)
+// Using FHIR Condition instead of ConditionProblemsHealthConcerns
 define AbsenceOfCervixCondition:
   exists (
-    [ConditionProblemsHealthConcerns: "Congenital or Acquired Absence of Cervix"] C
-      where C.isActive()
+    [Condition: "Congenital or Acquired Absence of Cervix"] C
+      where C.clinicalStatus.coding[0].code = 'active'
+        or C.clinicalStatus is null
   )
 
 define HasAbsenceOfCervix:
@@ -180,4 +182,3 @@ define ExclusionReason:
     when AgeInYears > 65 then 'Over 65 years'
     else null
   end
-

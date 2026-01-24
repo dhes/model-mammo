@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMART Launch - Preventive Health Companion</title>
+  <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+</head>
+<body>
+  <p>Launching Preventive Health Companion...</p>
+
+  <script>
+    // SMART on FHIR Launch Handler - Patient-Facing App
+    // Supports both EHR Launch (from MyChart) and Standalone Launch modes
+    //
+    // EHR Launch: MyChart redirects here with ?iss=...&launch=...
+    // Standalone: User navigates here with ?iss=... (no launch param)
+
+    const params = new URLSearchParams(window.location.search);
+    const hasLaunchContext = params.has('launch');
+    const iss = params.get('iss');
+
+    // Choose scopes based on launch mode
+    // Patient apps use patient/ scopes - the patient IS the user
+    // Epic requires both .read and .search for queries with parameters
+    const scope = hasLaunchContext
+      ? 'launch openid fhirUser patient/Patient.read patient/Patient.search patient/Observation.read patient/Observation.search patient/Condition.read patient/Condition.search patient/Procedure.read patient/Procedure.search'
+      : 'launch/patient openid fhirUser patient/Patient.read patient/Patient.search patient/Observation.read patient/Observation.search patient/Condition.read patient/Condition.search patient/Procedure.read patient/Procedure.search';
+
+    console.log('[Launch-Patient] Mode:', hasLaunchContext ? 'EHR Launch' : 'Standalone Launch');
+    console.log('[Launch-Patient] ISS:', iss);
+    console.log('[Launch-Patient] Scopes:', scope);
+
+    // Client ID mapping for patient-facing apps
+    const CLIENT_IDS = {
+      epic_production: '38ffe69c-838d-4149-82dd-e1c01429b88b',    // Epic Production
+      epic_sandbox: 'e6bfdad8-8074-4f0e-b4b0-63b378036a7f',       // Epic Non-Production (Sandbox)
+      default: 'preventive-health-companion'                       // SMART Launcher and others
+    };
+
+    // Known Epic production endpoints (not on epic.com domain)
+    const EPIC_PRODUCTION_HOSTS = [
+      'queens.org',           // Queen's Health Systems, Hawaii
+      // Add other known Epic health systems here as discovered
+    ];
+
+    // Detect which client ID to use based on the ISS
+    function getClientId(iss) {
+      if (!iss) return CLIENT_IDS.default;
+
+      // Check for Epic sandbox
+      if (iss.includes('fhir.epic.com') || iss.includes('vendorservices.epic.com')) {
+        console.log('[Launch-Patient] Using Epic sandbox client ID');
+        return CLIENT_IDS.epic_sandbox;
+      }
+
+      // Check for known Epic production systems
+      for (const host of EPIC_PRODUCTION_HOSTS) {
+        if (iss.includes(host)) {
+          console.log('[Launch-Patient] Using Epic production client ID for', host);
+          return CLIENT_IDS.epic_production;
+        }
+      }
+
+      // Generic epic.com check (fallback)
+      if (iss.includes('epic.com')) {
+        console.log('[Launch-Patient] Using Epic sandbox client ID (generic)');
+        return CLIENT_IDS.epic_sandbox;
+      }
+
+      return CLIENT_IDS.default;
+    }
+
+    // Build authorize options
+    const authorizeOptions = {
+      // Client ID - selected based on the EHR
+      clientId: getClientId(iss),
+
+      // Scopes - patient-level access
+      scope: scope,
+
+      // Where to redirect after authorization
+      redirectUri: window.location.origin + '/',
+
+      // Compliant authorization - use PKCE
+      completeInTarget: true
+    };
+
+    // For standalone launch, explicitly set the FHIR server URL
+    if (iss && !hasLaunchContext) {
+      authorizeOptions.iss = iss;
+      console.log('[Launch-Patient] Standalone mode - setting iss explicitly');
+    }
+
+    FHIR.oauth2.authorize(authorizeOptions).catch(err => {
+      document.body.innerHTML = `
+        <h2>Launch Error</h2>
+        <p>${err.message}</p>
+        <p>Make sure you're launching from MyChart or the SMART Launcher.</p>
+        <p><a href="/">Go to standalone mode</a></p>
+      `;
+      console.error('SMART launch error:', err);
+    });
+  </script>
+</body>
+</html>

@@ -31,8 +31,9 @@
 
     // Client ID mapping - different EHRs require different registered client IDs
     const CLIENT_IDS = {
-      epic: '20ac7a40-88a7-4923-8ede-0124a5e483c0',  // Epic Non-Production (Sandbox)
-      default: 'uspstf-cds-app'                      // SMART Launcher and others
+      epic: '20ac7a40-88a7-4923-8ede-0124a5e483c0',       // Epic Non-Production (Sandbox)
+      athenahealth: '0oa10mlovm0Ok5xAU298',               // athenahealth Preview (Certified APIs)
+      default: 'uspstf-cds-app'                           // SMART Launcher and others
     };
 
     // Detect which client ID to use based on the ISS
@@ -40,6 +41,10 @@
       if (iss && iss.includes('epic.com')) {
         console.log('[Launch] Using Epic client ID');
         return CLIENT_IDS.epic;
+      }
+      if (iss && iss.includes('athenahealth.com')) {
+        console.log('[Launch] Using athenahealth client ID');
+        return CLIENT_IDS.athenahealth;
       }
       return CLIENT_IDS.default;
     }

@@ -1,7 +1,10 @@
-library HIVScreeningPregnancy version '0.0.1'
+library HIVScreeningPregnancy version '0.0.2'
 
 // HIV Screening in Pregnant Persons
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // "Recommends screening for HIV infection in all pregnant persons, including
 // those who present in labor or at delivery whose HIV status is unknown."
@@ -16,7 +19,7 @@ library HIVScreeningPregnancy version '0.0.1'
 //
 // Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/human-immunodeficiency-virus-hiv-infection-screening
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -38,7 +41,9 @@ context Patient
 // ============================================================================
 
 define PregnancyConditions:
-  [ConditionProblemsHealthConcerns: "Pregnancy"]
+  [Condition: "Pregnancy"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 define IsPregnant:
   exists(PregnancyConditions)
@@ -49,15 +54,17 @@ define IsPregnant:
 
 // Check for known HIV positive diagnosis
 define HIVPositiveConditions:
-  [ConditionProblemsHealthConcerns: "HIV Positive"]
+  [Condition: "HIV Positive"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 define IsHIVPositive:
   exists(HIVPositiveConditions)
 
 // HIV tests performed during this pregnancy (simplified: any HIV test)
 define HIVTests:
-  ([SimpleObservation: "HIV 1+2 Ab"]
-    union [SimpleObservation: "HIV 1+2 Ag+Ab"]) Obs
+  ([Observation: "HIV 1+2 Ab"]
+    union [Observation: "HIV 1+2 Ag+Ab"]) Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define HasHIVTestThisPregnancy:

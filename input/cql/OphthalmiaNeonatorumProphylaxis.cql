@@ -1,7 +1,10 @@
-library OphthalmiaNeonatorumProphylaxis version '0.0.1'
+library OphthalmiaNeonatorumProphylaxis version '0.0.2'
 
 // Ocular Prophylaxis for Gonococcal Ophthalmia Neonatorum
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: All newborns
 // Recommendation: Prophylactic ocular topical medication (0.5% erythromycin)
@@ -10,7 +13,7 @@ library OphthalmiaNeonatorumProphylaxis version '0.0.1'
 // This is a persistent reminder pattern: the alert fires until prophylaxis is documented.
 // Ensures prophylaxis is not forgotten in complicated deliveries or unit transfers.
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -47,7 +50,7 @@ define IsNewborn:
 // In practice, this would be coded as a procedure with erythromycin administration
 define OcularProphylaxisProcedures:
   [Procedure: "Ocular Prophylaxis Procedures"] P
-    where P.status in { 'completed' }
+    where P.status = 'completed'
 
 define OcularProphylaxisAdministered:
   exists(OcularProphylaxisProcedures)

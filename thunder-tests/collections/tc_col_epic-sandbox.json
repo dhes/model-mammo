@@ -9,27 +9,75 @@
             "_id": "fc056917-4cf1-4fec-8ca5-207b546fbf53",
             "colId": "daaf2c17-ee69-4062-a9b2-48d97fc06931",
             "containerId": "",
-            "name": "misc GET",
-            "url": "Patient?gender=female&birthdate=le1986-01-01&birthdate=ge1952-01-01",
+            "name": "GET Test Patient Camila",
+            "url": "Patient/erXuFYUfucBZaryVksYEcMg3?_format=json",
             "method": "GET",
             "sortNum": 10000,
             "created": "2026-01-15T16:49:56.101Z",
-            "modified": "2026-01-16T01:46:54.121Z",
+            "modified": "2026-01-22T02:46:20.457Z",
             "headers": [],
             "params": [
                 {
-                    "name": "gender",
-                    "value": "female",
+                    "name": "_format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "53f9c44d-8ecc-458b-87cf-f686acd2d1d8",
+            "colId": "daaf2c17-ee69-4062-a9b2-48d97fc06931",
+            "containerId": "",
+            "name": "GET Camila's vital signs Observations",
+            "url": "Observation?patient=erXuFYUfucBZaryVksYEcMg3&category=vital-signs&_format=json",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2026-01-22T01:35:28.470Z",
+            "modified": "2026-01-22T05:02:49.862Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "patient",
+                    "value": "erXuFYUfucBZaryVksYEcMg3",
                     "isPath": false
                 },
                 {
-                    "name": "birthdate",
-                    "value": "le1986-01-01",
+                    "name": "category",
+                    "value": "vital-signs",
                     "isPath": false
                 },
                 {
-                    "name": "birthdate",
-                    "value": "ge1952-01-01",
+                    "name": "_format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "b3a8ea62-6134-495c-80fb-1a69df8c8018",
+            "colId": "daaf2c17-ee69-4062-a9b2-48d97fc06931",
+            "containerId": "",
+            "name": "GET Camila's social history Observations",
+            "url": "Observation?patient=erXuFYUfucBZaryVksYEcMg3&category=social-history&_format=json",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-01-22T01:38:47.027Z",
+            "modified": "2026-01-22T02:46:26.149Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "patient",
+                    "value": "erXuFYUfucBZaryVksYEcMg3",
+                    "isPath": false
+                },
+                {
+                    "name": "category",
+                    "value": "social-history",
+                    "isPath": false
+                },
+                {
+                    "name": "_format",
+                    "value": "json",
                     "isPath": false
                 }
             ]
@@ -44,7 +92,7 @@
         ],
         "auth": {
             "type": "bearer",
-            "bearer": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1cm46b2lkOjEuMi44NDAuMTE0MzUwLjEuMTMuMC4xLjcuMy42ODg4ODQuMTAwIiwiY2xpZW50X2lkIjoiMjBhYzdhNDAtODhhNy00OTIzLThlZGUtMDEyNGE1ZTQ4M2MwIiwiZXBpYy5lY2kiOiJ1cm46ZXBpYzpPcGVuLkVwaWMtY3VycmVudCIsImVwaWMubWV0YWRhdGEiOiJjU0hXMTF0dmFlY3llcGlybUl0bjNiQWs4QzJNenhhWFR5RW9PVXZwVTBKSkZOUGlZbWEyQnJJdWs5cFVkZzFEOEpfR2Fwam5YVTUzelFfaVZzNHlTbURBRm5jeDFQSjl1NzVjZXdCdzdtb0UwSnhLSnZpY1B2N0kzbkpxbmJQSiIsImVwaWMudG9rZW50eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY4NTMxNDA3LCJpYXQiOjE3Njg1Mjc4MDcsImlzcyI6InVybjpvaWQ6MS4yLjg0MC4xMTQzNTAuMS4xMy4wLjEuNy4zLjY4ODg4NC4xMDAiLCJqdGkiOiIwZWYxMGQ1Ni0yZTg1LTQ1NTAtYTkwMi02ODE1YjMwNmNjNWQiLCJuYmYiOjE3Njg1Mjc4MDcsInN1YiI6ImV2TnAtS2hZd09PcUFabjFwWjJlbnVBMyJ9.hplW9jdGF3NcHkgtFkerRoZc3H2rD40atwNE5DF_LSlhGWTxnowatBOr2TlWxoVlgAuIAHd69K0ztDPXWQ1YO6h6RrANtRV2GHBjxICpKyhCa0-_6-HgKwSQchZUHo7es__mcYjLUHttiNWPUhbZtMExMnfxyQFABpuOKHZ92nE33ybxbYlh9cthLkcEO3xctHPM5aL8Chh9n6QjwYEPT7Iul60hdhRLYsKqnmRmynmUNDuOEuoBUy2DEa1vq8EN9SBjhkO2d5IW34eD6ibCBxvn8cWLQlhO36Zd9ASOTGhPXqnnIN_7BxlkJ7kCX0jYO9ZnK8ToVLSb70whmxzn2Q"
+            "bearer": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJ1cm46b2lkOjEuMi44NDAuMTE0MzUwLjEuMTMuMC4xLjcuMy42ODg4ODQuMTAwIiwiY2xpZW50X2lkIjoiZTZiZmRhZDgtODA3NC00ZjBlLWI0YjAtNjNiMzc4MDM2YTdmIiwiZXBpYy5lY2kiOiJ1cm46ZXBpYzpPcGVuLkVwaWMtY3VycmVudCIsImVwaWMubWV0YWRhdGEiOiJnelI1RXZ1MTljTG9IMXU2dEJNa29STTdmajNETjUxSEUxVV9JR0RDV0pLb2NzNTBrT2JzZDlwblF6RzUwcnlQZzl6eTZucWUxMkYxN1I1Z1lxZWhiUVltVjdfcXdjY0NpMzI0dGNRUmlSSGNONmtid2pYYW5kOVRVbmR6QVE1UCIsImVwaWMudG9rZW50eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY5MDYwNjc3LCJpYXQiOjE3NjkwNTcwNzcsImlzcyI6InVybjpvaWQ6MS4yLjg0MC4xMTQzNTAuMS4xMy4wLjEuNy4zLjY4ODg4NC4xMDAiLCJqdGkiOiI2NjIxNjM3Mi1hOWE0LTQxYWItOTg2My1mNGQzNWQ2ZTg2NDkiLCJuYmYiOjE3NjkwNTcwNzcsInN1YiI6ImViNEdpYTdGeWlqdFBtWGtydGpScFB3MyJ9.RdUaX8Qfhcw0jNxWJddl4BTpYfrj5RZaK3qUhJ3BA3kOqLitAX14JYE3GzO4ATVOHyWzYVe1x4ppdxUDvmmKhh4-0A4pfEOcAZwnp-vCCvUdnr4LK9It39woxtMuCzzGCMNzfx92cv79GROOAC9dX6ejlewfrm2MM6lNyzNBHGf3knbLqVM5rN5C_LO19Ea0enKbpT3ztGynvVjD2U0rCAQcBbHc3KxwKPGKkEKsh9mrcrVy82XcBy68vI6pBLQFJnQRLrhWfY0RxXnaDMr2kv819U9IrxEtcqm0kGzC-_Py7qg067-q5ht9qs_1hlFJh1RH4dO11gxtWWNMamRU_Q"
         },
         "options": {
             "baseUrl": "https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/"

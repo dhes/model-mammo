@@ -5,10 +5,15 @@
          "translatorOptions" : "",
          "signatureLevel" : "None",
          "type" : "CqlToElmInfo"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "FolicAcidSupplementation",
-         "version" : "0.0.1"
+         "version" : "0.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -20,8 +25,9 @@
             "uri" : "urn:hl7-org:elm-types:r1",
             "annotation" : [ ]
          }, {
-            "localIdentifier" : "QICore",
+            "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -50,7 +56,7 @@
                "signature" : [ ],
                "operand" : {
                   "dataType" : "{http://hl7.org/fhir}Patient",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve",
                   "annotation" : [ ],
                   "include" : [ ],
@@ -70,18 +76,13 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : {
-                  "path" : "value",
+                  "path" : "birthDate.value",
                   "type" : "Property",
                   "annotation" : [ ],
                   "source" : {
-                     "path" : "birthDate",
-                     "type" : "Property",
-                     "annotation" : [ ],
-                     "source" : {
-                        "name" : "Patient",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
+                     "name" : "Patient",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }
                }
             }
@@ -91,18 +92,13 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "path" : "value",
+               "path" : "gender",
                "type" : "Property",
                "annotation" : [ ],
                "source" : {
-                  "path" : "gender",
-                  "type" : "Property",
-                  "annotation" : [ ],
-                  "source" : {
-                     "name" : "Patient",
-                     "type" : "ExpressionRef",
-                     "annotation" : [ ]
-                  }
+                  "name" : "Patient",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
                }
             }
          }, {
@@ -154,9 +150,16 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : [ {
-                  "name" : "Gender",
-                  "type" : "ExpressionRef",
-                  "annotation" : [ ]
+                  "name" : "ToString",
+                  "libraryName" : "FHIRHelpers",
+                  "type" : "FunctionRef",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "Gender",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  } ]
                }, {
                   "valueType" : "{urn:hl7-org:elm-types:r1}String",
                   "value" : "female",

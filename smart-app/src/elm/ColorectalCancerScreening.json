@@ -5,10 +5,80 @@
          "translatorOptions" : "",
          "signatureLevel" : "None",
          "type" : "CqlToElmInfo"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "ColorectalCancerScreening",
-         "version" : "0.0.1"
+         "version" : "0.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -20,8 +90,9 @@
             "uri" : "urn:hl7-org:elm-types:r1",
             "annotation" : [ ]
          }, {
-            "localIdentifier" : "QICore",
+            "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -30,16 +101,6 @@
             "localIdentifier" : "FHIRHelpers",
             "path" : "FHIRHelpers",
             "version" : "4.4.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "QC",
-            "path" : "QICoreCommon",
-            "version" : "4.0.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "Status",
-            "path" : "Status",
-            "version" : "1.13.000",
             "annotation" : [ ]
          } ]
       },
@@ -105,7 +166,7 @@
                "signature" : [ ],
                "operand" : {
                   "dataType" : "{http://hl7.org/fhir}Patient",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve",
                   "annotation" : [ ],
                   "include" : [ ],
@@ -125,18 +186,13 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : {
-                  "path" : "value",
+                  "path" : "birthDate.value",
                   "type" : "Property",
                   "annotation" : [ ],
                   "source" : {
-                     "path" : "birthDate",
-                     "type" : "Property",
-                     "annotation" : [ ],
-                     "source" : {
-                        "name" : "Patient",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
+                     "name" : "Patient",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }
                }
             }
@@ -146,18 +202,13 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "path" : "value",
+               "path" : "gender",
                "type" : "Property",
                "annotation" : [ ],
                "source" : {
-                  "path" : "gender",
-                  "type" : "Property",
-                  "annotation" : [ ],
-                  "source" : {
-                     "name" : "Patient",
-                     "type" : "ExpressionRef",
-                     "annotation" : [ ]
-                  }
+                  "name" : "Patient",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
                }
             }
          }, {
@@ -216,7 +267,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Procedure",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Procedure",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -240,15 +291,17 @@
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "path" : "value",
-                        "type" : "Property",
+                        "name" : "ToString",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
                         "annotation" : [ ],
-                        "source" : {
+                        "signature" : [ ],
+                        "operand" : [ {
                            "path" : "status",
                            "scope" : "P",
                            "type" : "Property",
                            "annotation" : [ ]
-                        }
+                        } ]
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "completed",
@@ -275,7 +328,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Condition",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -295,32 +348,60 @@
                   "let" : [ ],
                   "relationship" : [ ],
                   "where" : {
-                     "name" : "isActive",
-                     "libraryName" : "QC",
-                     "type" : "FunctionRef",
+                     "type" : "Or",
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "type" : "As",
+                        "type" : "Equal",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "path" : "code",
+                              "type" : "Property",
+                              "annotation" : [ ],
+                              "source" : {
+                                 "type" : "Indexer",
+                                 "annotation" : [ ],
+                                 "signature" : [ ],
+                                 "operand" : [ {
+                                    "path" : "coding",
+                                    "type" : "Property",
+                                    "annotation" : [ ],
+                                    "source" : {
+                                       "path" : "clinicalStatus",
+                                       "scope" : "C",
+                                       "type" : "Property",
+                                       "annotation" : [ ]
+                                    }
+                                 }, {
+                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                    "value" : "0",
+                                    "type" : "Literal",
+                                    "annotation" : [ ]
+                                 } ]
+                              }
+                           } ]
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "active",
+                           "type" : "Literal",
+                           "annotation" : [ ]
+                        } ]
+                     }, {
+                        "type" : "IsNull",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : {
-                           "name" : "C",
-                           "type" : "AliasRef",
+                           "path" : "clinicalStatus",
+                           "scope" : "C",
+                           "type" : "Property",
                            "annotation" : [ ]
-                        },
-                        "asTypeSpecifier" : {
-                           "type" : "ChoiceTypeSpecifier",
-                           "annotation" : [ ],
-                           "choice" : [ {
-                              "name" : "{http://hl7.org/fhir}Condition",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }, {
-                              "name" : "{http://hl7.org/fhir}Condition",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           } ]
                         }
                      } ]
                   }
@@ -362,7 +443,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Observation",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -390,15 +471,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "Obs",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "type" : "List",
                            "annotation" : [ ],
@@ -420,33 +503,32 @@
                            } ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
-                                 "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "path" : "effective",
-                                    "scope" : "Obs",
-                                    "type" : "Property",
-                                    "annotation" : [ ]
-                                 } ]
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "effective",
+                                 "scope" : "Obs",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],
@@ -488,7 +570,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Observation",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-lab",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -516,15 +598,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "Obs",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "type" : "List",
                            "annotation" : [ ],
@@ -546,33 +630,32 @@
                            } ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
-                                 "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "path" : "effective",
-                                    "scope" : "Obs",
-                                    "type" : "Property",
-                                    "annotation" : [ ]
-                                 } ]
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "effective",
+                                 "scope" : "Obs",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],
@@ -614,7 +697,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Procedure",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Procedure",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -642,15 +725,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "P",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
                            "value" : "completed",
@@ -658,373 +743,32 @@
                            "annotation" : [ ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "type" : "Case",
-                                 "annotation" : [ ],
-                                 "caseItem" : [ {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 } ],
-                                 "else" : {
-                                    "type" : "Null",
-                                    "annotation" : [ ]
-                                 }
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "performed",
+                                 "scope" : "P",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],
@@ -1066,7 +810,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Procedure",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Procedure",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -1094,15 +838,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "P",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
                            "value" : "completed",
@@ -1110,373 +856,32 @@
                            "annotation" : [ ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "type" : "Case",
-                                 "annotation" : [ ],
-                                 "caseItem" : [ {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 } ],
-                                 "else" : {
-                                    "type" : "Null",
-                                    "annotation" : [ ]
-                                 }
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "performed",
+                                 "scope" : "P",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],
@@ -1518,7 +923,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Procedure",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Procedure",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -1546,15 +951,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "P",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
                            "value" : "completed",
@@ -1562,373 +969,32 @@
                            "annotation" : [ ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "type" : "Case",
-                                 "annotation" : [ ],
-                                 "caseItem" : [ {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 } ],
-                                 "else" : {
-                                    "type" : "Null",
-                                    "annotation" : [ ]
-                                 }
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "performed",
+                                 "scope" : "P",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],
@@ -1970,7 +1036,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Procedure",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-procedure",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Procedure",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -1998,15 +1064,17 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
-                           "source" : {
+                           "signature" : [ ],
+                           "operand" : [ {
                               "path" : "status",
                               "scope" : "P",
                               "type" : "Property",
                               "annotation" : [ ]
-                           }
+                           } ]
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
                            "value" : "completed",
@@ -2014,373 +1082,32 @@
                            "annotation" : [ ]
                         } ]
                      }, {
-                        "type" : "After",
+                        "type" : "GreaterOrEqual",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "End",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
                               "annotation" : [ ],
                               "signature" : [ ],
-                              "operand" : [ {
-                                 "type" : "Case",
-                                 "annotation" : [ ],
-                                 "caseItem" : [ {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "isType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "asType" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 }, {
-                                    "annotation" : [ ],
-                                    "when" : {
-                                       "type" : "Is",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "name" : "ToValue",
-                                          "libraryName" : "FHIRHelpers",
-                                          "type" : "FunctionRef",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : [ {
-                                             "path" : "performed",
-                                             "scope" : "P",
-                                             "type" : "Property",
-                                             "annotation" : [ ]
-                                          } ]
-                                       },
-                                       "isTypeSpecifier" : {
-                                          "type" : "IntervalTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "pointType" : {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }
-                                       }
-                                    },
-                                    "then" : {
-                                       "type" : "As",
-                                       "annotation" : [ ],
-                                       "signature" : [ ],
-                                       "operand" : {
-                                          "type" : "As",
-                                          "annotation" : [ ],
-                                          "signature" : [ ],
-                                          "operand" : {
-                                             "name" : "ToValue",
-                                             "libraryName" : "FHIRHelpers",
-                                             "type" : "FunctionRef",
-                                             "annotation" : [ ],
-                                             "signature" : [ ],
-                                             "operand" : [ {
-                                                "path" : "performed",
-                                                "scope" : "P",
-                                                "type" : "Property",
-                                                "annotation" : [ ]
-                                             } ]
-                                          },
-                                          "asTypeSpecifier" : {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }
-                                       },
-                                       "asTypeSpecifier" : {
-                                          "type" : "ChoiceTypeSpecifier",
-                                          "annotation" : [ ],
-                                          "choice" : [ {
-                                             "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "type" : "IntervalTypeSpecifier",
-                                             "annotation" : [ ],
-                                             "pointType" : {
-                                                "name" : "{urn:hl7-org:elm-types:r1}Quantity",
-                                                "type" : "NamedTypeSpecifier",
-                                                "annotation" : [ ]
-                                             }
-                                          }, {
-                                             "name" : "{http://hl7.org/fhir}Timing",
-                                             "type" : "NamedTypeSpecifier",
-                                             "annotation" : [ ]
-                                          } ]
-                                       }
-                                    }
-                                 } ],
-                                 "else" : {
-                                    "type" : "Null",
-                                    "annotation" : [ ]
-                                 }
-                              } ]
-                           }
+                              "operand" : {
+                                 "path" : "performed",
+                                 "scope" : "P",
+                                 "type" : "Property",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }, {
                            "type" : "ToDateTime",
                            "annotation" : [ ],

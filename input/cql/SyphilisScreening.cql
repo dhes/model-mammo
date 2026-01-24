@@ -1,7 +1,10 @@
-library SyphilisScreening version '0.0.1'
+library SyphilisScreening version '0.0.2'
 
 // Syphilis Screening (Composite: Pregnancy and Non-Pregnancy)
 // USPSTF Grade A Recommendations (two populations):
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // 1. Non-Pregnant Population:
 //    "Recommends screening for syphilis infection in persons who are at increased risk."
@@ -20,7 +23,7 @@ library SyphilisScreening version '0.0.1'
 // - https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-nonpregnant-adults-adolescents-screening
 // - https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/syphilis-infection-in-pregnancy-screening
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -53,7 +56,9 @@ define AdolescentOrAdult:
 // ============================================================================
 
 define PregnancyConditions:
-  [ConditionProblemsHealthConcerns: "Pregnancy"]
+  [Condition: "Pregnancy"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 define Pregnant:
   exists(PregnancyConditions)
@@ -95,9 +100,9 @@ define AtIncreasedRisk:
 
 // Syphilis tests performed (any of the common test types)
 define SyphilisTests:
-  ([SimpleObservation: "Syphilis Serology"]
-    union [SimpleObservation: "RPR"]
-    union [SimpleObservation: "VDRL"]) Obs
+  ([Observation: "Syphilis Serology"]
+    union [Observation: "RPR"]
+    union [Observation: "VDRL"]) Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define PregnancyScreeningDone:

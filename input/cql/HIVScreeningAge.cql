@@ -1,7 +1,10 @@
-library HIVScreeningAge version '0.0.1'
+library HIVScreeningAge version '0.0.2'
 
 // HIV Screening (Age-Based)
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population:
 // - Ages 15-65: Universal screening (screen all, once)
@@ -22,7 +25,7 @@ library HIVScreeningAge version '0.0.1'
 //
 // Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/human-immunodeficiency-virus-hiv-infection-screening
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -60,9 +63,9 @@ define IsOverScreeningAge:
 // ============================================================================
 
 define HIVTests:
-  ([SimpleObservation: "HIV 1+2 Ab"]
-    union [SimpleObservation: "HIV 1+2 Ag+Ab"]
-    union [SimpleObservation: "HIV 1 Ab Rapid"]) Obs
+  ([Observation: "HIV 1+2 Ab"]
+    union [Observation: "HIV 1+2 Ag+Ab"]
+    union [Observation: "HIV 1 Ab Rapid"]) Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define HasHIVTest:

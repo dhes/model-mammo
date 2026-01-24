@@ -5,10 +5,20 @@
          "translatorOptions" : "",
          "signatureLevel" : "None",
          "type" : "CqlToElmInfo"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "SyphilisScreening",
-         "version" : "0.0.1"
+         "version" : "0.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -20,8 +30,9 @@
             "uri" : "urn:hl7-org:elm-types:r1",
             "annotation" : [ ]
          }, {
-            "localIdentifier" : "QICore",
+            "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -106,7 +117,7 @@
                "signature" : [ ],
                "operand" : {
                   "dataType" : "{http://hl7.org/fhir}Patient",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve",
                   "annotation" : [ ],
                   "include" : [ ],
@@ -126,18 +137,13 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : {
-                  "path" : "value",
+                  "path" : "birthDate.value",
                   "type" : "Property",
                   "annotation" : [ ],
                   "source" : {
-                     "path" : "birthDate",
-                     "type" : "Property",
-                     "annotation" : [ ],
-                     "source" : {
-                        "name" : "Patient",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
+                     "name" : "Patient",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }
                }
             }
@@ -167,26 +173,94 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "dataType" : "{http://hl7.org/fhir}Condition",
-               "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
-               "codeProperty" : "code",
-               "codeComparator" : "~",
-               "type" : "Retrieve",
+               "type" : "Query",
                "annotation" : [ ],
-               "codes" : {
-                  "type" : "ToList",
+               "source" : [ {
+                  "alias" : "C",
+                  "annotation" : [ ],
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Condition",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                     "codeProperty" : "code",
+                     "codeComparator" : "~",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "type" : "ToList",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : {
+                           "name" : "Pregnancy",
+                           "type" : "CodeRef",
+                           "annotation" : [ ]
+                        }
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Or",
                   "annotation" : [ ],
                   "signature" : [ ],
-                  "operand" : {
-                     "name" : "Pregnancy",
-                     "type" : "CodeRef",
-                     "annotation" : [ ]
-                  }
-               },
-               "include" : [ ],
-               "codeFilter" : [ ],
-               "dateFilter" : [ ],
-               "otherFilter" : [ ]
+                  "operand" : [ {
+                     "type" : "Equal",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "ToString",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "path" : "code",
+                           "type" : "Property",
+                           "annotation" : [ ],
+                           "source" : {
+                              "type" : "Indexer",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "coding",
+                                 "type" : "Property",
+                                 "annotation" : [ ],
+                                 "source" : {
+                                    "path" : "clinicalStatus",
+                                    "scope" : "C",
+                                    "type" : "Property",
+                                    "annotation" : [ ]
+                                 }
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "0",
+                                 "type" : "Literal",
+                                 "annotation" : [ ]
+                              } ]
+                           }
+                        } ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "active",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  }, {
+                     "type" : "IsNull",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : {
+                        "path" : "clinicalStatus",
+                        "scope" : "C",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     }
+                  } ]
+               }
             }
          }, {
             "name" : "Pregnant",
@@ -246,7 +320,7 @@
                         "signature" : [ ],
                         "operand" : [ {
                            "dataType" : "{http://hl7.org/fhir}Observation",
-                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                           "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                            "codeProperty" : "code",
                            "codeComparator" : "~",
                            "type" : "Retrieve",
@@ -267,7 +341,7 @@
                            "otherFilter" : [ ]
                         }, {
                            "dataType" : "{http://hl7.org/fhir}Observation",
-                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                           "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                            "codeProperty" : "code",
                            "codeComparator" : "~",
                            "type" : "Retrieve",
@@ -289,7 +363,7 @@
                         } ]
                      }, {
                         "dataType" : "{http://hl7.org/fhir}Observation",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-simple-observation",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
                         "codeProperty" : "code",
                         "codeComparator" : "~",
                         "type" : "Retrieve",
@@ -318,15 +392,17 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "path" : "value",
-                     "type" : "Property",
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
-                     "source" : {
+                     "signature" : [ ],
+                     "operand" : [ {
                         "path" : "status",
                         "scope" : "Obs",
                         "type" : "Property",
                         "annotation" : [ ]
-                     }
+                     } ]
                   }, {
                      "type" : "List",
                      "annotation" : [ ],

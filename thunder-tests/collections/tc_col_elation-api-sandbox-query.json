@@ -1,0 +1,43 @@
+{
+    "_id": "3857ecd2-5619-4cfc-b295-fd557fa10c4f",
+    "colName": "Elation API Sandbox Query",
+    "created": "2026-01-18T01:40:37.783Z",
+    "sortNum": 50000,
+    "folders": [],
+    "settings": {
+        "headers": [
+            {
+                "name": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "options": {
+            "baseUrl": "https://sandbox.elationemr.com/api/2.0/"
+        }
+    },
+    "requests": [
+        {
+            "_id": "581af83e-c995-47d4-991c-57c3a03117a2",
+            "colId": "3857ecd2-5619-4cfc-b295-fd557fa10c4f",
+            "containerId": "",
+            "name": "POST for Bearer token",
+            "url": "patients/?_format=json",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2026-01-18T01:40:37.788Z",
+            "modified": "2026-01-18T01:43:21.560Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "_format",
+                    "value": "json",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJraWQiOiJhS1ZXTlVucGxzRVhSX2VucV9sOGw2emdFejBwbWZTUm9YZERnQ3VRT284IiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjVoTlhsMmd1ak1VS19vTU5NZzFJc2RiVGFBQkNhYXhqeVVnQUx0YldzaGciLCJpc3MiOiJodHRwczovL3Nzby5zYW5kYm94LmVsYXRpb25lbXIuY29tL29hdXRoMi9hdXMyYzJ5aDE0RllpTjdzcTFkNyIsImF1ZCI6ImFwaTovL2FwcGxpY2F0aW9ucyIsImlhdCI6MTc2ODcwMDI4MCwiZXhwIjoxNzY4NzAzODgwLCJjaWQiOiJldGFCbm1zaTlMRWJrUlZFVTBlbDVOSTZYblBtaUNjWlZ1Qlo0ZTdiIiwic2NwIjpbImFwaXYyIl0sInN1YiI6ImV0YUJubXNpOUxFYmtSVkVVMGVsNU5JNlhuUG1pQ2NaVnVCWjRlN2IiLCJoc3AiOiJzYW5kYm94MSIsInByYWN0aWNlX2lkcyI6WzE0Mzk0NjA2MTk3MTQ2MF19.eWmXd4smIkbSg1-P7ErJQ2yv-UXztNCLYwc5DsvLmqJuf1qQ96CW1AvJu_akKBdic6m_MCS-UJnyrxeJIA1fdj6FP8Zxg3A3Mk_obQ6fPojzwPPVL_p_s-BY3kMKNcbGYIWf3ncIJQkLSeDI81CmCV9mrDKaVm5qhQFOsDjR9zYag5sTiN47s9C6-MP_LH0-z1R719ZooKpJKnKhY7wyiqc7WDkFOac4ih8PixZcHP1KUjrcmLjBNsaxyl-grSlyacGsmuwxaDhFXBZ1ubtnv6SJAvp6prXLyyESdz2CNYQ8tvNsnJViCOHu6zR9LFXpOcFaYaZbv1Us_81t27Hg8Q"
+            }
+        }
+    ]
+}

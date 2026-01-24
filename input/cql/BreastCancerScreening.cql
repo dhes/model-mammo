@@ -1,12 +1,21 @@
-library BreastCancerScreening version '0.0.1'
+library BreastCancerScreening version '0.0.2'
 
-// using FHIR version '4.0.1'
-using QICore version '6.0.0'
+// Breast Cancer Screening
+// USPSTF Grade B Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
+//
+// Population: Women aged 40-74 years
+// Recommendation: Biennial screening mammography
+//
+// Exclusions:
+// - History of bilateral mastectomy
+// - Breast cancer diagnosis (managed, not screened)
+
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
-// include FHIRCommon version '4.0.1' called FC
-include QICoreCommon version '4.0.000' called QC
-include Status version '1.13.000' called Status
 
 valueset "Mammography": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1018'
 valueset "History of bilateral mastectomy": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.198.12.1068'
@@ -15,10 +24,10 @@ valueset "Breast Cancer SNOMED": 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.
 
 context Patient
 
-define PatientName: 
+define PatientName:
   Patient.name[0].given[0] + ' ' + Patient.name[0].family
 
-define PatientId: 
+define PatientId:
   Patient.id
 
 define AgeInYears:
@@ -28,37 +37,43 @@ define Gender:
   Patient.gender
 
 // Get all qualifying mammograms, sorted by date
+// Using FHIR Observation instead of ObservationClinicalResult
 define QualifyingMammograms:
-  ([ObservationClinicalResult: "Mammography"]).isDiagnosticStudyPerformed()
+  [Observation: "Mammography"] Obs
+    where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentMammogram:
   Last(
     QualifyingMammograms Mammogram
-      sort by effective.toInterval().low
+      sort by (effective as dateTime)
   )
 
 define DateOfMostRecentMammogram:
-  MostRecentMammogram.effective.toInterval().low
+  MostRecentMammogram.effective as dateTime
 
 define MammogramInLastTwoYears:
   Coalesce(DateOfMostRecentMammogram after (Today() - 2 years), false)
 
 // Check for history of bilateral mastectomy (no breast tissue to screen)
+// Using FHIR Condition instead of ConditionProblemsHealthConcerns
 define HasBilateralMastectomy:
   exists (
-    [ConditionProblemsHealthConcerns: "History of bilateral mastectomy"] C
-      where C.isActive()
+    [Condition: "History of bilateral mastectomy"] C
+      where C.clinicalStatus.coding[0].code = 'active'
+        or C.clinicalStatus is null
   )
 
 define HasBreastCancerDiagnosis:
   exists (
-    [ConditionProblemsHealthConcerns: "Breast Cancer ICD-10"] C
-      where C.isActive()
+    [Condition: "Breast Cancer ICD-10"] C
+      where C.clinicalStatus.coding[0].code = 'active'
+        or C.clinicalStatus is null
   )
   or
   exists (
-    [ConditionProblemsHealthConcerns: "Breast Cancer SNOMED"] C
-      where C.isActive()
+    [Condition: "Breast Cancer SNOMED"] C
+      where C.clinicalStatus.coding[0].code = 'active'
+        or C.clinicalStatus is null
   )
 
 define RecommendMammogram:
@@ -69,4 +84,3 @@ define RecommendMammogram:
     and HasBreastCancerDiagnosis = false
   then true
   else false
-

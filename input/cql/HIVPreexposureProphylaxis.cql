@@ -1,7 +1,10 @@
-library HIVPreexposureProphylaxis version '0.0.1'
+library HIVPreexposureProphylaxis version '0.0.2'
 
 // HIV Pre-Exposure Prophylaxis (PrEP)
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: Adults and adolescents weighing at least 35 kg (77 lb)
 // Recommendation: Prescribe PrEP to persons at increased risk of HIV acquisition
@@ -30,7 +33,7 @@ library HIVPreexposureProphylaxis version '0.0.1'
 //
 // Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prevention-of-human-immunodeficiency-virus-hiv-infection-pre-exposure-prophylaxis
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -70,10 +73,9 @@ define MeetsAgeRequirement:
 // Weight Eligibility (>= 35 kg per FDA threshold)
 // ============================================================================
 
-// For POC, look for recent weight observation
-// In production, would filter to most recent observation
+// Using base FHIR Observation type for compatibility with real EHR data
 define WeightObservations:
-  [SimpleObservation: "Body Weight"] Obs
+  [Observation: "Body Weight"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentWeight:
@@ -97,9 +99,9 @@ define MeetsWeightRequirement:
 // HIV Status (must be HIV-negative)
 // ============================================================================
 
-// Check for documented negative HIV test
+// Using base FHIR Observation type for compatibility with real EHR data
 define HIVTests:
-  [LaboratoryResultObservation: "HIV Tests"] Obs
+  [Observation: "HIV Tests"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define NegativeHIVTests:
@@ -142,10 +144,10 @@ define NoContraindications:
 // ============================================================================
 
 // Check for recent STI (syphilis, gonorrhea, chlamydia) in past 6 months
-// This is one of the key indicators for PrEP
+// Using base FHIR Condition type for compatibility with real EHR data
 define RecentSTIConditions:
-  [ConditionProblemsHealthConcerns: "Sexually Transmitted Infections"] C
-    where (C.onset as DateTime) >= Today() - 6 months
+  [Condition: "Sexually Transmitted Infections"] C
+    where (C.onset as dateTime) >= Today() - 6 months
       or C.recordedDate >= Today() - 6 months
 
 define HasRecentSTI:

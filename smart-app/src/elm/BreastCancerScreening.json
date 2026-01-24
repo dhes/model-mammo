@@ -5,10 +5,60 @@
          "translatorOptions" : "",
          "signatureLevel" : "None",
          "type" : "CqlToElmInfo"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
+      }, {
+         "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
+         "errorType" : "semantic",
+         "errorSeverity" : "warning",
+         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "BreastCancerScreening",
-         "version" : "0.0.1"
+         "version" : "0.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -20,8 +70,9 @@
             "uri" : "urn:hl7-org:elm-types:r1",
             "annotation" : [ ]
          }, {
-            "localIdentifier" : "QICore",
+            "localIdentifier" : "FHIR",
             "uri" : "http://hl7.org/fhir",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -30,16 +81,6 @@
             "localIdentifier" : "FHIRHelpers",
             "path" : "FHIRHelpers",
             "version" : "4.4.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "QC",
-            "path" : "QICoreCommon",
-            "version" : "4.0.000",
-            "annotation" : [ ]
-         }, {
-            "localIdentifier" : "Status",
-            "path" : "Status",
-            "version" : "1.13.000",
             "annotation" : [ ]
          } ]
       },
@@ -87,7 +128,7 @@
                "signature" : [ ],
                "operand" : {
                   "dataType" : "{http://hl7.org/fhir}Patient",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
                   "type" : "Retrieve",
                   "annotation" : [ ],
                   "include" : [ ],
@@ -110,58 +151,45 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "type" : "Indexer",
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "type" : "Query",
+                        "type" : "Indexer",
                         "annotation" : [ ],
-                        "source" : [ {
-                           "alias" : "$this",
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "path" : "given",
+                           "type" : "Property",
                            "annotation" : [ ],
-                           "expression" : {
-                              "path" : "given",
-                              "type" : "Property",
+                           "source" : {
+                              "type" : "Indexer",
                               "annotation" : [ ],
-                              "source" : {
-                                 "type" : "Indexer",
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "name",
+                                 "type" : "Property",
                                  "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "path" : "name",
-                                    "type" : "Property",
-                                    "annotation" : [ ],
-                                    "source" : {
-                                       "name" : "Patient",
-                                       "type" : "ExpressionRef",
-                                       "annotation" : [ ]
-                                    }
-                                 }, {
-                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                                    "value" : "0",
-                                    "type" : "Literal",
+                                 "source" : {
+                                    "name" : "Patient",
+                                    "type" : "ExpressionRef",
                                     "annotation" : [ ]
-                                 } ]
-                              }
+                                 }
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "0",
+                                 "type" : "Literal",
+                                 "annotation" : [ ]
+                              } ]
                            }
-                        } ],
-                        "let" : [ ],
-                        "relationship" : [ ],
-                        "return" : {
-                           "distinct" : false,
-                           "annotation" : [ ],
-                           "expression" : {
-                              "path" : "value",
-                              "scope" : "$this",
-                              "type" : "Property",
-                              "annotation" : [ ]
-                           }
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "0",
-                        "type" : "Literal",
-                        "annotation" : [ ]
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal",
+                           "annotation" : [ ]
+                        } ]
                      } ]
                   }, {
                      "valueType" : "{urn:hl7-org:elm-types:r1}String",
@@ -170,10 +198,12 @@
                      "annotation" : [ ]
                   } ]
                }, {
-                  "path" : "value",
-                  "type" : "Property",
+                  "name" : "ToString",
+                  "libraryName" : "FHIRHelpers",
+                  "type" : "FunctionRef",
                   "annotation" : [ ],
-                  "source" : {
+                  "signature" : [ ],
+                  "operand" : [ {
                      "path" : "family",
                      "type" : "Property",
                      "annotation" : [ ],
@@ -197,7 +227,7 @@
                            "annotation" : [ ]
                         } ]
                      }
-                  }
+                  } ]
                } ]
             }
          }, {
@@ -206,18 +236,13 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "path" : "value",
+               "path" : "id",
                "type" : "Property",
                "annotation" : [ ],
                "source" : {
-                  "path" : "id",
-                  "type" : "Property",
-                  "annotation" : [ ],
-                  "source" : {
-                     "name" : "Patient",
-                     "type" : "ExpressionRef",
-                     "annotation" : [ ]
-                  }
+                  "name" : "Patient",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
                }
             }
          }, {
@@ -231,32 +256,7 @@
                "annotation" : [ ],
                "signature" : [ ],
                "operand" : {
-                  "path" : "value",
-                  "type" : "Property",
-                  "annotation" : [ ],
-                  "source" : {
-                     "path" : "birthDate",
-                     "type" : "Property",
-                     "annotation" : [ ],
-                     "source" : {
-                        "name" : "Patient",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "Gender",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "annotation" : [ ],
-            "expression" : {
-               "path" : "value",
-               "type" : "Property",
-               "annotation" : [ ],
-               "source" : {
-                  "path" : "gender",
+                  "path" : "birthDate.value",
                   "type" : "Property",
                   "annotation" : [ ],
                   "source" : {
@@ -267,34 +267,89 @@
                }
             }
          }, {
+            "name" : "Gender",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "annotation" : [ ],
+            "expression" : {
+               "path" : "gender",
+               "type" : "Property",
+               "annotation" : [ ],
+               "source" : {
+                  "name" : "Patient",
+                  "type" : "ExpressionRef",
+                  "annotation" : [ ]
+               }
+            }
+         }, {
             "name" : "QualifyingMammograms",
             "context" : "Patient",
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "name" : "isDiagnosticStudyPerformed",
-               "libraryName" : "Status",
-               "type" : "FunctionRef",
+               "type" : "Query",
                "annotation" : [ ],
-               "signature" : [ ],
-               "operand" : [ {
-                  "dataType" : "{http://hl7.org/fhir}Observation",
-                  "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-observation-clinical-result",
-                  "codeProperty" : "code",
-                  "codeComparator" : "in",
-                  "type" : "Retrieve",
+               "source" : [ {
+                  "alias" : "Obs",
                   "annotation" : [ ],
-                  "codes" : {
-                     "name" : "Mammography",
-                     "preserve" : true,
-                     "type" : "ValueSetRef",
-                     "annotation" : [ ]
-                  },
-                  "include" : [ ],
-                  "codeFilter" : [ ],
-                  "dateFilter" : [ ],
-                  "otherFilter" : [ ]
-               } ]
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Observation",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                     "codeProperty" : "code",
+                     "codeComparator" : "in",
+                     "type" : "Retrieve",
+                     "annotation" : [ ],
+                     "codes" : {
+                        "name" : "Mammography",
+                        "preserve" : true,
+                        "type" : "ValueSetRef",
+                        "annotation" : [ ]
+                     },
+                     "include" : [ ],
+                     "codeFilter" : [ ],
+                     "dateFilter" : [ ],
+                     "otherFilter" : [ ]
+                  }
+               } ],
+               "let" : [ ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "In",
+                  "annotation" : [ ],
+                  "signature" : [ ],
+                  "operand" : [ {
+                     "name" : "ToString",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "path" : "status",
+                        "scope" : "Obs",
+                        "type" : "Property",
+                        "annotation" : [ ]
+                     } ]
+                  }, {
+                     "type" : "List",
+                     "annotation" : [ ],
+                     "element" : [ {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "final",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "amended",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "corrected",
+                        "type" : "Literal",
+                        "annotation" : [ ]
+                     } ]
+                  } ]
+               }
             }
          }, {
             "name" : "MostRecentMammogram",
@@ -326,27 +381,19 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "path" : "low",
-                           "type" : "Property",
+                           "strict" : false,
+                           "type" : "As",
                            "annotation" : [ ],
-                           "source" : {
-                              "name" : "toInterval",
-                              "libraryName" : "QC",
-                              "type" : "FunctionRef",
-                              "annotation" : [ ],
-                              "signature" : [ ],
-                              "operand" : [ {
-                                 "name" : "ToValue",
-                                 "libraryName" : "FHIRHelpers",
-                                 "type" : "FunctionRef",
-                                 "annotation" : [ ],
-                                 "signature" : [ ],
-                                 "operand" : [ {
-                                    "name" : "effective",
-                                    "type" : "IdentifierRef",
-                                    "annotation" : [ ]
-                                 } ]
-                              } ]
+                           "signature" : [ ],
+                           "operand" : {
+                              "name" : "effective",
+                              "type" : "IdentifierRef",
+                              "annotation" : [ ]
+                           },
+                           "asTypeSpecifier" : {
+                              "name" : "{http://hl7.org/fhir}dateTime",
+                              "type" : "NamedTypeSpecifier",
+                              "annotation" : [ ]
                            }
                         }
                      } ]
@@ -359,32 +406,24 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "path" : "low",
-               "type" : "Property",
+               "strict" : false,
+               "type" : "As",
                "annotation" : [ ],
-               "source" : {
-                  "name" : "toInterval",
-                  "libraryName" : "QC",
-                  "type" : "FunctionRef",
+               "signature" : [ ],
+               "operand" : {
+                  "path" : "effective",
+                  "type" : "Property",
                   "annotation" : [ ],
-                  "signature" : [ ],
-                  "operand" : [ {
-                     "name" : "ToValue",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : [ {
-                        "path" : "effective",
-                        "type" : "Property",
-                        "annotation" : [ ],
-                        "source" : {
-                           "name" : "MostRecentMammogram",
-                           "type" : "ExpressionRef",
-                           "annotation" : [ ]
-                        }
-                     } ]
-                  } ]
+                  "source" : {
+                     "name" : "MostRecentMammogram",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
+                  }
+               },
+               "asTypeSpecifier" : {
+                  "name" : "{http://hl7.org/fhir}dateTime",
+                  "type" : "NamedTypeSpecifier",
+                  "annotation" : [ ]
                }
             }
          }, {
@@ -401,9 +440,16 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "name" : "DateOfMostRecentMammogram",
-                     "type" : "ExpressionRef",
-                     "annotation" : [ ]
+                     "name" : "ToDateTime",
+                     "libraryName" : "FHIRHelpers",
+                     "type" : "FunctionRef",
+                     "annotation" : [ ],
+                     "signature" : [ ],
+                     "operand" : [ {
+                        "name" : "DateOfMostRecentMammogram",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     } ]
                   }, {
                      "type" : "ToDateTime",
                      "annotation" : [ ],
@@ -448,7 +494,7 @@
                      "annotation" : [ ],
                      "expression" : {
                         "dataType" : "{http://hl7.org/fhir}Condition",
-                        "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
                         "codeProperty" : "code",
                         "codeComparator" : "in",
                         "type" : "Retrieve",
@@ -468,32 +514,60 @@
                   "let" : [ ],
                   "relationship" : [ ],
                   "where" : {
-                     "name" : "isActive",
-                     "libraryName" : "QC",
-                     "type" : "FunctionRef",
+                     "type" : "Or",
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "type" : "As",
+                        "type" : "Equal",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "name" : "ToString",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "path" : "code",
+                              "type" : "Property",
+                              "annotation" : [ ],
+                              "source" : {
+                                 "type" : "Indexer",
+                                 "annotation" : [ ],
+                                 "signature" : [ ],
+                                 "operand" : [ {
+                                    "path" : "coding",
+                                    "type" : "Property",
+                                    "annotation" : [ ],
+                                    "source" : {
+                                       "path" : "clinicalStatus",
+                                       "scope" : "C",
+                                       "type" : "Property",
+                                       "annotation" : [ ]
+                                    }
+                                 }, {
+                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                    "value" : "0",
+                                    "type" : "Literal",
+                                    "annotation" : [ ]
+                                 } ]
+                              }
+                           } ]
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "active",
+                           "type" : "Literal",
+                           "annotation" : [ ]
+                        } ]
+                     }, {
+                        "type" : "IsNull",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : {
-                           "name" : "C",
-                           "type" : "AliasRef",
+                           "path" : "clinicalStatus",
+                           "scope" : "C",
+                           "type" : "Property",
                            "annotation" : [ ]
-                        },
-                        "asTypeSpecifier" : {
-                           "type" : "ChoiceTypeSpecifier",
-                           "annotation" : [ ],
-                           "choice" : [ {
-                              "name" : "{http://hl7.org/fhir}Condition",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }, {
-                              "name" : "{http://hl7.org/fhir}Condition",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           } ]
                         }
                      } ]
                   }
@@ -520,7 +594,7 @@
                         "annotation" : [ ],
                         "expression" : {
                            "dataType" : "{http://hl7.org/fhir}Condition",
-                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+                           "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
                            "codeProperty" : "code",
                            "codeComparator" : "in",
                            "type" : "Retrieve",
@@ -540,32 +614,60 @@
                      "let" : [ ],
                      "relationship" : [ ],
                      "where" : {
-                        "name" : "isActive",
-                        "libraryName" : "QC",
-                        "type" : "FunctionRef",
+                        "type" : "Or",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "As",
+                           "type" : "Equal",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "name" : "ToString",
+                              "libraryName" : "FHIRHelpers",
+                              "type" : "FunctionRef",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "code",
+                                 "type" : "Property",
+                                 "annotation" : [ ],
+                                 "source" : {
+                                    "type" : "Indexer",
+                                    "annotation" : [ ],
+                                    "signature" : [ ],
+                                    "operand" : [ {
+                                       "path" : "coding",
+                                       "type" : "Property",
+                                       "annotation" : [ ],
+                                       "source" : {
+                                          "path" : "clinicalStatus",
+                                          "scope" : "C",
+                                          "type" : "Property",
+                                          "annotation" : [ ]
+                                       }
+                                    }, {
+                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "value" : "0",
+                                       "type" : "Literal",
+                                       "annotation" : [ ]
+                                    } ]
+                                 }
+                              } ]
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                              "value" : "active",
+                              "type" : "Literal",
+                              "annotation" : [ ]
+                           } ]
+                        }, {
+                           "type" : "IsNull",
                            "annotation" : [ ],
                            "signature" : [ ],
                            "operand" : {
-                              "name" : "C",
-                              "type" : "AliasRef",
+                              "path" : "clinicalStatus",
+                              "scope" : "C",
+                              "type" : "Property",
                               "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "type" : "ChoiceTypeSpecifier",
-                              "annotation" : [ ],
-                              "choice" : [ {
-                                 "name" : "{http://hl7.org/fhir}Condition",
-                                 "type" : "NamedTypeSpecifier",
-                                 "annotation" : [ ]
-                              }, {
-                                 "name" : "{http://hl7.org/fhir}Condition",
-                                 "type" : "NamedTypeSpecifier",
-                                 "annotation" : [ ]
-                              } ]
                            }
                         } ]
                      }
@@ -582,7 +684,7 @@
                         "annotation" : [ ],
                         "expression" : {
                            "dataType" : "{http://hl7.org/fhir}Condition",
-                           "templateId" : "http://hl7.org/fhir/us/qicore/StructureDefinition/qicore-condition-problems-health-concerns",
+                           "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
                            "codeProperty" : "code",
                            "codeComparator" : "in",
                            "type" : "Retrieve",
@@ -602,32 +704,60 @@
                      "let" : [ ],
                      "relationship" : [ ],
                      "where" : {
-                        "name" : "isActive",
-                        "libraryName" : "QC",
-                        "type" : "FunctionRef",
+                        "type" : "Or",
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : [ {
-                           "type" : "As",
+                           "type" : "Equal",
+                           "annotation" : [ ],
+                           "signature" : [ ],
+                           "operand" : [ {
+                              "name" : "ToString",
+                              "libraryName" : "FHIRHelpers",
+                              "type" : "FunctionRef",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "code",
+                                 "type" : "Property",
+                                 "annotation" : [ ],
+                                 "source" : {
+                                    "type" : "Indexer",
+                                    "annotation" : [ ],
+                                    "signature" : [ ],
+                                    "operand" : [ {
+                                       "path" : "coding",
+                                       "type" : "Property",
+                                       "annotation" : [ ],
+                                       "source" : {
+                                          "path" : "clinicalStatus",
+                                          "scope" : "C",
+                                          "type" : "Property",
+                                          "annotation" : [ ]
+                                       }
+                                    }, {
+                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "value" : "0",
+                                       "type" : "Literal",
+                                       "annotation" : [ ]
+                                    } ]
+                                 }
+                              } ]
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                              "value" : "active",
+                              "type" : "Literal",
+                              "annotation" : [ ]
+                           } ]
+                        }, {
+                           "type" : "IsNull",
                            "annotation" : [ ],
                            "signature" : [ ],
                            "operand" : {
-                              "name" : "C",
-                              "type" : "AliasRef",
+                              "path" : "clinicalStatus",
+                              "scope" : "C",
+                              "type" : "Property",
                               "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "type" : "ChoiceTypeSpecifier",
-                              "annotation" : [ ],
-                              "choice" : [ {
-                                 "name" : "{http://hl7.org/fhir}Condition",
-                                 "type" : "NamedTypeSpecifier",
-                                 "annotation" : [ ]
-                              }, {
-                                 "name" : "{http://hl7.org/fhir}Condition",
-                                 "type" : "NamedTypeSpecifier",
-                                 "annotation" : [ ]
-                              } ]
                            }
                         } ]
                      }
@@ -689,9 +819,16 @@
                               "annotation" : [ ],
                               "signature" : [ ],
                               "operand" : [ {
-                                 "name" : "Gender",
-                                 "type" : "ExpressionRef",
-                                 "annotation" : [ ]
+                                 "name" : "ToString",
+                                 "libraryName" : "FHIRHelpers",
+                                 "type" : "FunctionRef",
+                                 "annotation" : [ ],
+                                 "signature" : [ ],
+                                 "operand" : [ {
+                                    "name" : "Gender",
+                                    "type" : "ExpressionRef",
+                                    "annotation" : [ ]
+                                 } ]
                               }, {
                                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
                                  "value" : "female",

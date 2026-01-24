@@ -26,3 +26,6 @@ tests/generated/
 
 # HAPI/FHIR temp files
 *.cache
+
+# Vite build output (regenerate via: npm run build)
+smart-app/dist/

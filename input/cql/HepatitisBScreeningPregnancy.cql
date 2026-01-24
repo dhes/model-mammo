@@ -1,7 +1,10 @@
-library HepatitisBScreeningPregnancy version '0.0.1'
+library HepatitisBScreeningPregnancy version '0.0.2'
 
 // Hepatitis B Virus Infection in Pregnant Persons: Screening
 // USPSTF Grade A Recommendation (July 2019)
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: All pregnant persons
 // Recommendation: Screen for hepatitis B virus (HBV) infection at first prenatal visit
@@ -16,7 +19,7 @@ library HepatitisBScreeningPregnancy version '0.0.1'
 //
 // This is a persistent reminder pattern: the alert fires until HBsAg screening is documented.
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -61,7 +64,9 @@ define IsFemale:
 // Simplified: any pregnancy condition present indicates current pregnancy
 // In production, would filter by clinicalStatus = active
 define PregnancyConditions:
-  [ConditionProblemsHealthConcerns: "Pregnancy"]
+  [Condition: "Pregnancy"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 define IsCurrentlyPregnant:
   exists(PregnancyConditions)
@@ -73,7 +78,7 @@ define IsCurrentlyPregnant:
 // Check for documented HBsAg test results in this pregnancy
 // In production, would filter to tests performed during current pregnancy
 define HBsAgTests:
-  [LaboratoryResultObservation: "HBsAg Tests"] Obs
+  [Observation: "HBsAg Tests"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define HBsAgScreeningPerformed:

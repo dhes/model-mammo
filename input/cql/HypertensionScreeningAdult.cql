@@ -1,7 +1,10 @@
-library HypertensionScreeningAdult version '0.0.1'
+library HypertensionScreeningAdult version '0.0.2'
 
 // Hypertension Screening in Adults
 // USPSTF Grade A Recommendation
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
 // Population: Adults 18 years or older
 // Recommendation: Screen with office blood pressure measurement (OBPM)
@@ -21,7 +24,7 @@ library HypertensionScreeningAdult version '0.0.1'
 //
 // Source: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/hypertension-in-adults-screening
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
 
@@ -55,7 +58,7 @@ define AgeInYears:
 // Patients with existing hypertension diagnosis are excluded from screening
 // They are managed under treatment protocols, not screening
 define HypertensionConditions:
-  [ConditionProblemsHealthConcerns: "Hypertension"] C
+  [Condition: "Hypertension"] C
     where C.clinicalStatus ~ "Active"
       or C.clinicalStatus is null
 
@@ -69,12 +72,12 @@ define DiagnosisOfHypertension:
 // Office blood pressure measurements
 // Using BP panel code - in production would also check component codes
 define BloodPressureObservations:
-  [SimpleObservation: "Blood Pressure Panel"] Obs
+  [Observation: "Blood Pressure Panel"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 // Also check for systolic BP observations (common alternative coding)
 define SystolicBPObservations:
-  [SimpleObservation: "Systolic BP"] Obs
+  [Observation: "Systolic BP"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 // Combined BP observations
@@ -84,7 +87,7 @@ define AllBPObservations:
 // BP within last year (for annual screening populations)
 define BPObservationsLastYear:
   AllBPObservations Obs
-    where (Obs.effective as DateTime) >= Today() - 1 year
+    where (Obs.effective as dateTime) >= Today() - 1 year
 
 define OBPMBInTheLastYear:
   exists(BPObservationsLastYear)
@@ -92,7 +95,7 @@ define OBPMBInTheLastYear:
 // BP within last 4 years (for low-risk 18-39 population)
 define BPObservationsLast4Years:
   AllBPObservations Obs
-    where (Obs.effective as DateTime) >= Today() - 4 years
+    where (Obs.effective as dateTime) >= Today() - 4 years
 
 define OBPMBInTheLast4Years:
   exists(BPObservationsLast4Years)

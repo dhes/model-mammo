@@ -1,20 +1,22 @@
-library TobaccoScreening version '0.0.1'
+library TobaccoScreening version '0.0.2'
 
 // Tobacco Cessation Interventions (Adults)
 // Implements USPSTF Grade A Recommendations:
 // - Non-pregnant adults: behavioral interventions + FDA-approved pharmacotherapy
 // - Pregnant persons: behavioral interventions only (pharmacotherapy is Grade I)
+//
+// REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
+// with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 
-using QICore version '6.0.0'
+using FHIR version '4.0.1'
 
 include FHIRHelpers version '4.4.000' called FHIRHelpers
-include QICoreCommon version '4.0.000' called QC
-include Status version '1.13.000'
 
 // LOINC codes for observations
 codesystem "LOINC": 'http://loinc.org'
 codesystem "SNOMED": 'http://snomed.info/sct'
 
+// Smoking status observation code
 code "Tobacco smoking status LOINC": '72166-2' from "LOINC" display 'Tobacco smoking status'
 code "Pregnancy status LOINC": '82810-3' from "LOINC" display 'Pregnancy status'
 code "Pregnant LOINC": 'LA15173-0' from "LOINC" display 'Pregnant'
@@ -43,13 +45,15 @@ define AgeInYears:
   AgeInYears()
 
 // Get smoking status observations, sorted by date (most recent last)
+// Using FHIR Observation instead of USCoreSmokingStatusProfile
 define SmokingStatusObservations:
-  ([USCoreSmokingStatusProfile]).isObservationSmokingStatus()
+  [Observation: "Tobacco smoking status LOINC"] Obs
+    where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentSmokingStatus:
   Last(
     SmokingStatusObservations Obs
-      sort by effective.toInterval().low
+      sort by (effective as dateTime)
   )
 
 // Helper to check if value matches any tobacco user code
@@ -77,13 +81,13 @@ define TobaccoUseStatus:
 
 // Get pregnancy status observations
 define PregnancyStatusObservations:
-  [SimpleObservation: "Pregnancy status LOINC"] Obs
+  [Observation: "Pregnancy status LOINC"] Obs
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentPregnancyStatus:
   Last(
     PregnancyStatusObservations Obs
-      sort by effective.toInterval().low
+      sort by (effective as dateTime)
   )
 
 // Is patient currently pregnant?
@@ -128,4 +132,3 @@ define OfferPharmacotherapy:
 // USPSTF: "provide behavioral interventions" (applies to both pregnant and non-pregnant)
 define OfferBehavioralTherapy:
   IsAdult and IsCurrentTobaccoUser
-
