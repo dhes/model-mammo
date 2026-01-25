@@ -52,6 +52,7 @@ function parseParameters(parameters) {
     if ('valueBoolean' in param) result[name] = param.valueBoolean;
     else if ('valueInteger' in param) result[name] = param.valueInteger;
     else if ('valueString' in param) result[name] = param.valueString;
+    else if ('valueCode' in param) result[name] = param.valueCode;
     else if ('valueDecimal' in param) result[name] = param.valueDecimal;
     else if ('valueDate' in param) result[name] = param.valueDate;
     else if ('valueDateTime' in param) result[name] = param.valueDateTime;

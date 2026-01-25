@@ -1303,6 +1303,25 @@
                 "form": [],
                 "binary": "../input/resources/library/Library-HypertensionScreeningAdult.json"
             }
+        },
+        {
+            "_id": "29c2b996-cdb7-4d20-84cf-523323c0e5ef",
+            "colId": "ba6a8e96-98bd-4558-9741-f73c52c1d034",
+            "containerId": "68282985-2860-47a5-9865-ba2e27cd515d",
+            "name": "$evaluate tob-unknown-status",
+            "url": "Library/TobaccoScreening/$evaluate?subject=Patient/tob-unknown-status",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2026-01-24T19:16:20.029Z",
+            "modified": "2026-01-24T19:16:50.386Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "subject",
+                    "value": "Patient/tob-unknown-status",
+                    "isPath": false
+                }
+            ]
         }
     ],
     "settings": {

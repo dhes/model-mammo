@@ -939,6 +939,68 @@ export const valueSets = {
       }
     ]
   },
+  "http://example.org/fhir/ValueSet/hbsag-tests": {
+    "oid": "hbsag-tests",
+    "name": "HBsAgTests",
+    "codes": [
+      {
+        "code": "5196-1",
+        "system": "http://loinc.org",
+        "display": "Hepatitis B virus surface Ag [Presence] in Serum or Plasma by Immunoassay"
+      },
+      {
+        "code": "7905-3",
+        "system": "http://loinc.org",
+        "display": "Hepatitis B virus surface Ag [Presence] in Serum or Plasma"
+      },
+      {
+        "code": "75410-1",
+        "system": "http://loinc.org",
+        "display": "Hepatitis B virus surface Ag [Presence] in Serum, Plasma or Blood by Rapid immunoassay"
+      },
+      {
+        "code": "87516-1",
+        "system": "http://loinc.org",
+        "display": "Hepatitis B virus surface Ag [Presence] in Serum or Plasma by Confirmatory method"
+      }
+    ]
+  },
+  "http://example.org/fhir/ValueSet/hiv-tests": {
+    "oid": "hiv-tests",
+    "name": "HIVTests",
+    "codes": [
+      {
+        "code": "75622-1",
+        "system": "http://loinc.org",
+        "display": "HIV 1 and 2 tests - Meaningful Use set"
+      },
+      {
+        "code": "56888-1",
+        "system": "http://loinc.org",
+        "display": "HIV 1+2 Ab+HIV1 p24 Ag [Presence] in Serum or Plasma by Immunoassay"
+      },
+      {
+        "code": "68961-2",
+        "system": "http://loinc.org",
+        "display": "HIV 1 Ab [Presence] in Serum, Plasma or Blood by Rapid immunoassay"
+      },
+      {
+        "code": "5221-7",
+        "system": "http://loinc.org",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma by Immunoblot"
+      },
+      {
+        "code": "7917-8",
+        "system": "http://loinc.org",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma"
+      },
+      {
+        "code": "29893-5",
+        "system": "http://loinc.org",
+        "display": "HIV 1 Ab [Presence] in Serum or Plasma by Immunoassay"
+      }
+    ]
+  },
   "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.110.12.1059": {
     "oid": "2.16.840.1.113883.3.464.1003.110.12.1059",
     "name": "HPVTest",
@@ -1053,6 +1115,52 @@ export const valueSets = {
         "code": "Z90.13",
         "system": "http://hl7.org/fhir/sid/icd-10-cm",
         "display": "Acquired absence of bilateral breasts and nipples"
+      }
+    ]
+  },
+  "http://example.org/fhir/ValueSet/hypertension": {
+    "oid": "hypertension",
+    "name": "Hypertension",
+    "codes": [
+      {
+        "code": "38341003",
+        "system": "http://snomed.info/sct",
+        "display": "Hypertensive disorder, systemic arterial"
+      },
+      {
+        "code": "59621000",
+        "system": "http://snomed.info/sct",
+        "display": "Essential hypertension"
+      },
+      {
+        "code": "1201005",
+        "system": "http://snomed.info/sct",
+        "display": "Benign essential hypertension"
+      },
+      {
+        "code": "78975002",
+        "system": "http://snomed.info/sct",
+        "display": "Malignant essential hypertension"
+      },
+      {
+        "code": "I10",
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "display": "Essential (primary) hypertension"
+      },
+      {
+        "code": "I11",
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "display": "Hypertensive heart disease"
+      },
+      {
+        "code": "I12",
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "display": "Hypertensive chronic kidney disease"
+      },
+      {
+        "code": "I13",
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "display": "Hypertensive heart and chronic kidney disease"
       }
     ]
   },
@@ -2599,6 +2707,22 @@ export const valueSets = {
       }
     ]
   },
+  "http://example.org/fhir/ValueSet/ocular-prophylaxis-procedures": {
+    "oid": "ocular-prophylaxis-procedures",
+    "name": "OcularProphylaxisProcedures",
+    "codes": [
+      {
+        "code": "438998000",
+        "system": "http://snomed.info/sct",
+        "display": "Administration of prophylactic ophthalmic medication to newborn"
+      },
+      {
+        "code": "787421009",
+        "system": "http://snomed.info/sct",
+        "display": "Topical application of ophthalmic ointment"
+      }
+    ]
+  },
   "http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.464.1003.108.12.1017": {
     "oid": "2.16.840.1.113883.3.464.1003.108.12.1017",
     "name": "PapTest",
@@ -2652,6 +2776,62 @@ export const valueSets = {
         "code": "47528-5",
         "system": "http://loinc.org",
         "display": "Cytology report of Cervical or vaginal smear or scraping Cyto stain"
+      }
+    ]
+  },
+  "http://example.org/fhir/ValueSet/sexually-transmitted-infections": {
+    "oid": "sexually-transmitted-infections",
+    "name": "SexuallyTransmittedInfections",
+    "codes": [
+      {
+        "code": "76272004",
+        "system": "http://snomed.info/sct",
+        "display": "Syphilis"
+      },
+      {
+        "code": "15628003",
+        "system": "http://snomed.info/sct",
+        "display": "Gonorrhea"
+      },
+      {
+        "code": "240589008",
+        "system": "http://snomed.info/sct",
+        "display": "Chlamydia trachomatis infection"
+      },
+      {
+        "code": "186946009",
+        "system": "http://snomed.info/sct",
+        "display": "Secondary syphilis"
+      },
+      {
+        "code": "266138003",
+        "system": "http://snomed.info/sct",
+        "display": "Acquired syphilis"
+      },
+      {
+        "code": "186943001",
+        "system": "http://snomed.info/sct",
+        "display": "Primary syphilis"
+      },
+      {
+        "code": "9091006",
+        "system": "http://snomed.info/sct",
+        "display": "Gonococcal urethritis"
+      },
+      {
+        "code": "236687003",
+        "system": "http://snomed.info/sct",
+        "display": "Gonococcal cervicitis"
+      },
+      {
+        "code": "237091009",
+        "system": "http://snomed.info/sct",
+        "display": "Urethritis caused by Chlamydia trachomatis"
+      },
+      {
+        "code": "236776000",
+        "system": "http://snomed.info/sct",
+        "display": "Chlamydial cervicitis"
       }
     ]
   },

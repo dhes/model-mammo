@@ -1789,6 +1789,81 @@ The app falls back to eligibility-based selection for patients without test tags
 
 Client-side execution is more forgiving for real EHR data that may not be QICore-profiled. This is advantageous for point-of-care CDS.
 
+### CQL-to-ELM Version Tracking
+
+**Motivation:**
+
+This project has two CQL execution pathways that should produce identical results:
+
+1. **HAPI server-side** — HAPI compiles CQL to ELM internally using its bundled translator
+2. **smart-app client-side** — We pre-compile CQL to ELM using `tools/cql-translator`, then execute in-browser with `cql-execution`
+
+Both pathways start from the same CQL source files, but use different CQL-to-ELM translators and different execution engines. To ensure consistency, we track the translator versions to confirm they're compatible.
+
+| Pathway | Translator | Execution Engine |
+|---------|------------|------------------|
+| HAPI | cql-to-elm (bundled in clinical-reasoning) | cql-evaluator (Java) |
+| smart-app | cql-to-elm-cli (our Maven wrapper) | cql-execution (JavaScript) |
+
+Both translators and engines are from the [cqframework](https://github.com/cqframework) project, but version mismatches could theoretically cause behavioral differences.
+
+**How to trace HAPI's cql-to-elm version:**
+
+HAPI JPA Server Starter doesn't declare the cql-to-elm version directly. It's a transitive dependency through clinical-reasoning. To find it:
+
+1. Check the HAPI JPA starter pom.xml for the `clinical-reasoning.version` property:
+   ```xml
+   <clinical-reasoning.version>3.24.0-SNAPSHOT</clinical-reasoning.version>
+   ```
+
+2. Find the clinical-reasoning dependency:
+   ```xml
+   <dependency>
+       <groupId>org.opencds.cqf.fhir</groupId>
+       <artifactId>cqf-fhir-cr-hapi</artifactId>
+       <version>${clinical-reasoning.version}</version>
+   </dependency>
+   ```
+
+3. Look up that version's pom.xml on GitHub to find its `cql.version`:
+   ```
+   https://raw.githubusercontent.com/cqframework/clinical-reasoning/v3.24.0/pom.xml
+   ```
+
+   Search for `<cql.version>` — this is the cql-to-elm version used.
+
+**Current version alignment (January 2026):**
+
+| Component | Version | Group ID |
+|-----------|---------|----------|
+| HAPI 8.2.0 → clinical-reasoning 3.24.0 → cql | **3.28.0** | info.cqframework |
+| Our tools/cql-translator | **3.29.0** | info.cqframework |
+
+The versions are closely aligned (3.28 vs 3.29, same group ID). Both are from the 3.x series of the translator.
+
+**Note on cqframework versioning:**
+
+The cqframework project has two group IDs in Maven Central:
+
+| Group ID | Versions | Status |
+|----------|----------|--------|
+| `info.cqframework` | 2.x - 3.29.0 | Legacy (still active) |
+| `org.cqframework` | 4.0.0+ | Current |
+
+The group ID changed at version 4.0.0. clinical-reasoning v3.24.0 still uses `info.cqframework`. Newer versions of clinical-reasoning (on master) have migrated to `org.cqframework` 4.x.
+
+**The cql-bom:**
+
+The cqframework publishes a Bill of Materials (BOM) that coordinates versions across all CQL-related artifacts. It lives in:
+- GitHub: [cqframework/clinical_quality_language/Src/java/cql-bom](https://github.com/cqframework/clinical_quality_language/tree/master/Src/java/cql-bom)
+- Maven: `org.cqframework:cql-bom` (for 4.x) or individual artifacts for 3.x
+
+Projects like clinical-reasoning import the BOM or set `cql.version` to ensure all CQL dependencies use compatible versions.
+
+**Validation approach:**
+
+Rather than requiring exact version matches, we validate equivalence empirically: the same 77 test cases pass on both HAPI and smart-app execution pathways. This confirms that for our use cases, the translator and engine differences don't affect results.
+
 ## Target Market and Strategic Context
 
 ### Value Proposition

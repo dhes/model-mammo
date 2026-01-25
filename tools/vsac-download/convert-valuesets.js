@@ -2,8 +2,12 @@
 /**
  * Convert FHIR ValueSet resources to cql-execution format
  *
- * Input:  input/valuesets/*.json (FHIR ValueSet resources from VSAC)
- * Output: mock-emr/src/valuesets.js (importable code service data)
+ * Input:  input/valuesets/*.json (FHIR ValueSet resources - both VSAC and custom)
+ * Output: smart-app/src/valuesets.js (importable code service data)
+ *
+ * Handles two types of ValueSets:
+ * 1. VSAC ValueSets: URL like http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1...
+ * 2. Custom ValueSets: URL like http://example.org/fhir/ValueSet/hiv-tests
  */
 
 import { readdir, readFile, writeFile } from 'fs/promises'
@@ -38,9 +42,15 @@ async function main() {
       continue
     }
 
-    // Extract the OID from the URL
-    // Format: http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1...
-    const oid = vs.url?.split('/').pop() || vs.id
+    // Use the actual URL from the ValueSet (works for both VSAC and custom)
+    const url = vs.url
+    if (!url) {
+      console.log(`  ✗ ${file}: no URL defined`)
+      continue
+    }
+
+    // Extract identifier (OID for VSAC, id for custom)
+    const oid = url.split('/').pop() || vs.id
     const name = vs.name || vs.title || file
 
     // Extract codes from expansion
@@ -62,15 +72,17 @@ async function main() {
       continue
     }
 
-    // Key by the full VSAC URL (what CQL uses)
-    const vsacUrl = `http://cts.nlm.nih.gov/fhir/ValueSet/${oid}`
-    valueSets[vsacUrl] = {
+    // Key by the actual URL (what CQL uses in valueset declarations)
+    valueSets[url] = {
       oid,
       name,
       codes,
     }
 
-    console.log(`  ✓ ${name}: ${codes.length} codes`)
+    // Identify if this is a VSAC or custom ValueSet
+    const isVsac = url.includes('cts.nlm.nih.gov')
+    const type = isVsac ? 'VSAC' : 'custom'
+    console.log(`  ✓ ${name}: ${codes.length} codes (${type})`)
   }
 
   // Generate JavaScript module

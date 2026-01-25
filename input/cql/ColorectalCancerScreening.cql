@@ -78,20 +78,21 @@ define IsExcluded:
 // ============================================================================
 
 // FOBT or FIT in last 1 year (includes both HSgFOBT and FIT)
-// Using FHIR Observation instead of LaboratoryResultObservation
+// Using "after" operator so exactly 1 year ago = due (interval model)
 define HasFOBTInLastYear:
   exists(
     [Observation: "Fecal Occult Blood Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and (Obs.effective as dateTime) >= Today() - 1 year
+        and (Obs.effective as dateTime) > Today() - 1 year
   )
 
 // sDNA-FIT (Cologuard) in last 2 years
+// Using "after" operator so exactly 2 years ago = due
 define HasDNAFITInLastTwoYears:
   exists(
     [Observation: "Stool DNA with FIT Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and (Obs.effective as dateTime) >= Today() - 2 years
+        and (Obs.effective as dateTime) > Today() - 2 years
   )
 
 // CT Colonography in last 5 years
@@ -99,7 +100,7 @@ define HasCTColonographyInLastFiveYears:
   exists(
     [Procedure: "CT Colonography"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) >= Today() - 5 years
+        and (P.performed as dateTime) > Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 5 years
@@ -107,7 +108,7 @@ define HasFlexSigInLastFiveYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) >= Today() - 5 years
+        and (P.performed as dateTime) > Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 10 years (for combo strategy)
@@ -115,15 +116,16 @@ define HasFlexSigInLastTenYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) >= Today() - 10 years
+        and (P.performed as dateTime) > Today() - 10 years
   )
 
 // Colonoscopy in last 10 years
+// Using ">" (after) so exactly 10 years ago = due (interval model per CLAUDE.md)
 define HasColonoscopyInLastTenYears:
   exists(
     [Procedure: "Colonoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) >= Today() - 10 years
+        and (P.performed as dateTime) > Today() - 10 years
   )
 
 // ============================================================================
