@@ -155,13 +155,30 @@ class FhirService {
   }
 
   /**
+   * Get a date string for N years ago (YYYY-MM-DD format for FHIR date parameter)
+   */
+  getDateYearsAgo(years) {
+    const date = new Date()
+    date.setFullYear(date.getFullYear() - years)
+    return date.toISOString().split('T')[0]
+  }
+
+  /**
    * Fetch resources related to a patient
    *
    * Note: Epic requires 'category' or 'code' for Observation queries.
    * We query Observations by category to ensure compatibility.
+   *
+   * Date filtering: Observations and Procedures are filtered to the last 10 years
+   * (covers colonoscopy, the longest USPSTF lookback). Conditions are not filtered
+   * since they represent ongoing health issues regardless of diagnosis date.
    */
   async fetchPatientResources(patientId, resourceTypes = ['Observation', 'Condition', 'Procedure']) {
     const resources = []
+
+    // 10-year lookback covers all USPSTF guidelines (colonoscopy is the longest at 10 years)
+    const tenYearsAgo = this.getDateYearsAgo(10)
+    console.log(`[FhirService] Using date filter: ge${tenYearsAgo} (10-year lookback)`)
 
     for (const type of resourceTypes) {
       try {
@@ -177,7 +194,7 @@ class FhirService {
           for (const category of categories) {
             try {
               const bundle = await this.client.request(
-                `Observation?patient=${patientId}&category=${encodeURIComponent(category)}&_count=100`
+                `Observation?patient=${patientId}&category=${encodeURIComponent(category)}&date=ge${tenYearsAgo}&_count=500`
               )
               const entries = bundle.entry?.map(e => e.resource) || []
               resources.push(...entries)
@@ -190,7 +207,7 @@ class FhirService {
             }
           }
         } else if (type === 'Condition') {
-          // Using full system|code format for explicitness (short-form also works)
+          // Conditions are not date-filtered - ongoing health issues are relevant regardless of diagnosis date
           const categories = [
             'http://terminology.hl7.org/CodeSystem/condition-category|problem-list-item',
             'http://terminology.hl7.org/CodeSystem/condition-category|encounter-diagnosis',
@@ -210,9 +227,9 @@ class FhirService {
             }
           }
         } else {
-          // Other resource types (Procedure, etc.) can be queried directly
+          // Other resource types (Procedure, etc.) - apply 10-year date filter
           const bundle = await this.client.request(
-            `${type}?patient=${patientId}&_count=100`
+            `${type}?patient=${patientId}&date=ge${tenYearsAgo}&_count=500`
           )
           const entries = bundle.entry?.map(e => e.resource) || []
           resources.push(...entries)
@@ -227,13 +244,33 @@ class FhirService {
   }
 
   /**
+   * Filter out OperationOutcome resources from bundle entries
+   * Epic includes these as warnings in search results; they lack IDs and aren't useful for CQL
+   */
+  filterOperationOutcomes(bundle) {
+    const originalCount = bundle.entry?.length || 0
+    bundle.entry = (bundle.entry || []).filter(entry => {
+      if (entry.resource?.resourceType === 'OperationOutcome') {
+        console.log('[FhirService] Filtering out OperationOutcome (not useful for CQL)')
+        return false
+      }
+      return true
+    })
+    const filtered = originalCount - (bundle.entry?.length || 0)
+    if (filtered > 0) {
+      console.log(`[FhirService] Filtered out ${filtered} OperationOutcome resource(s)`)
+    }
+    return bundle
+  }
+
+  /**
    * Build a FHIR bundle for CQL execution
    */
   async buildPatientBundle(patientId) {
     const patient = await this.fetchPatient(patientId)
     const relatedResources = await this.fetchPatientResources(patientId)
 
-    return {
+    const bundle = {
       resourceType: 'Bundle',
       type: 'collection',
       entry: [
@@ -241,6 +278,9 @@ class FhirService {
         ...relatedResources.map(r => ({ resource: r }))
       ]
     }
+
+    // Filter out OperationOutcome resources (Epic includes these as warnings, they lack IDs)
+    return this.filterOperationOutcomes(bundle)
   }
 
   /**
@@ -248,6 +288,99 @@ class FhirService {
    */
   getServerUrl() {
     return this.client?.state?.serverUrl || 'unknown'
+  }
+
+  /**
+   * Evaluate CQL on a server (HAPI with clinical-reasoning module)
+   *
+   * @param {string} cqlServerBaseUrl - Base URL of HAPI server (e.g., '/fhir' or 'http://localhost:8080/fhir')
+   * @param {string} libraryId - CQL Library ID (e.g., 'BreastCancerScreening')
+   * @param {object} patientBundle - FHIR Bundle containing patient and related resources
+   * @returns {object} - Parsed CQL results as key-value pairs
+   */
+  async evaluateCqlOnServer(cqlServerBaseUrl, libraryId, patientBundle) {
+    const url = `${cqlServerBaseUrl}/Library/${libraryId}/$evaluate`
+
+    // Extract patient ID from bundle for the subject parameter
+    const patientEntry = patientBundle.entry?.find(e => e.resource?.resourceType === 'Patient')
+    const patientId = patientEntry?.resource?.id
+    const subject = patientId ? `Patient/${patientId}` : null
+
+    console.log(`[FhirService] Evaluating CQL on server: ${url}`)
+    console.log(`[FhirService] Subject: ${subject}`)
+    console.log(`[FhirService] Bundle has ${patientBundle.entry?.length || 0} entries`)
+
+    const requestParams = [
+      {
+        name: 'data',
+        resource: patientBundle
+      }
+    ]
+
+    // HAPI requires subject parameter to identify which patient to evaluate
+    if (subject) {
+      requestParams.unshift({
+        name: 'subject',
+        valueString: subject
+      })
+    }
+
+    const requestBody = {
+      resourceType: 'Parameters',
+      parameter: requestParams
+    }
+
+    // Log the full request body (truncated for readability)
+    console.log(`[FhirService] POST body:`, JSON.stringify(requestBody, null, 2).slice(0, 2000) + '...')
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/fhir+json',
+        'Accept': 'application/fhir+json',
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`CQL evaluation failed: ${response.status} - ${errorText}`)
+    }
+
+    const parameters = await response.json()
+    return this.parseParametersResponse(parameters)
+  }
+
+  /**
+   * Parse FHIR Parameters response from $evaluate into simple key-value object
+   */
+  parseParametersResponse(parameters) {
+    const result = {}
+
+    for (const param of parameters.parameter || []) {
+      const name = param.name
+
+      // Handle different value types
+      if ('valueBoolean' in param) result[name] = param.valueBoolean
+      else if ('valueInteger' in param) result[name] = param.valueInteger
+      else if ('valueString' in param) result[name] = param.valueString
+      else if ('valueCode' in param) result[name] = param.valueCode
+      else if ('valueDecimal' in param) result[name] = param.valueDecimal
+      else if ('valueDate' in param) result[name] = param.valueDate
+      else if ('valueDateTime' in param) result[name] = param.valueDateTime
+      else if ('resource' in param) result[name] = '[Resource]'
+      else if ('_valueBoolean' in param) {
+        // Handle data-absent-reason extension
+        const ext = param._valueBoolean?.extension?.[0]
+        if (ext?.url?.includes('data-absent-reason')) {
+          result[name] = null
+        } else if (ext?.url?.includes('cqf-isEmptyList')) {
+          result[name] = []
+        }
+      }
+    }
+
+    return result
   }
 
   /**

@@ -29,3 +29,5 @@ tests/generated/
 
 # Vite build output (regenerate via: npm run build)
 smart-app/dist/
+
+scratch/

@@ -1,4 +1,4 @@
-library TobaccoScreening version '0.0.2'
+library TobaccoScreening version '0.0.4'
 
 // Tobacco Cessation Interventions (Adults)
 // Implements USPSTF Grade A Recommendations:
@@ -7,10 +7,12 @@ library TobaccoScreening version '0.0.2'
 //
 // REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
 // with real EHR data (Epic, etc.) that doesn't use QICore profiles.
+//
+// v0.0.4: Switched to FHIRHelpers 4.0.1 (IG-provided); idiomatic CQL throughout.
 
 using FHIR version '4.0.1'
 
-include FHIRHelpers version '4.4.000' called FHIRHelpers
+include FHIRHelpers version '4.0.1' called FHIRHelpers
 
 // LOINC codes for observations
 codesystem "LOINC": 'http://loinc.org'

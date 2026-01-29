@@ -1,4 +1,4 @@
-library OphthalmiaNeonatorumProphylaxis version '0.0.2'
+library OphthalmiaNeonatorumProphylaxis version '0.0.3'
 
 // Ocular Prophylaxis for Gonococcal Ophthalmia Neonatorum
 // USPSTF Grade A Recommendation
@@ -12,10 +12,15 @@ library OphthalmiaNeonatorumProphylaxis version '0.0.2'
 //
 // This is a persistent reminder pattern: the alert fires until prophylaxis is documented.
 // Ensures prophylaxis is not forgotten in complicated deliveries or unit transfers.
+//
+// v0.0.3: Fixed AgeInDays to use Date-based calculation (Today()) instead of
+// DateTime-based (Now()) to avoid uncertainty interval in JavaScript cql-execution.
+// See: https://cql.hl7.org/09-b-cqlreference.html - AgeInDays uses DateTime semantics,
+// which causes Date-to-DateTime coercion uncertainty when birthDate is a FHIR Date.
 
 using FHIR version '4.0.1'
 
-include FHIRHelpers version '4.4.000' called FHIRHelpers
+include FHIRHelpers version '4.0.1' called FHIRHelpers
 
 codesystem "SNOMED": 'http://snomed.info/sct'
 
@@ -29,8 +34,12 @@ context Patient
 // Basic Patient Information
 // ============================================================================
 
+// WORKAROUND: Use Date-based calculation to avoid DateTime coercion uncertainty.
+// The built-in AgeInDays() uses DateTime semantics (Now()), which causes
+// JavaScript cql-execution to return an uncertainty interval when birthDate
+// is a FHIR Date (not DateTime). Using Today() keeps everything as Dates.
 define AgeInDays:
-  AgeInDays()
+  difference in days between Patient.birthDate and Today()
 
 define AgeInYears:
   AgeInYears()

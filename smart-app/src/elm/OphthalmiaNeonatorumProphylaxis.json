@@ -13,7 +13,7 @@
       } ],
       "identifier" : {
          "id" : "OphthalmiaNeonatorumProphylaxis",
-         "version" : "0.0.2"
+         "version" : "0.0.3"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -35,7 +35,7 @@
          "def" : [ {
             "localIdentifier" : "FHIRHelpers",
             "path" : "FHIRHelpers",
-            "version" : "4.4.000",
+            "version" : "4.0.1",
             "annotation" : [ ]
          } ]
       },
@@ -89,15 +89,17 @@
             "annotation" : [ ],
             "expression" : {
                "precision" : "Day",
-               "type" : "CalculateAge",
+               "type" : "DifferenceBetween",
                "annotation" : [ ],
                "signature" : [ ],
-               "operand" : {
-                  "type" : "ToDateTime",
+               "operand" : [ {
+                  "name" : "ToDate",
+                  "libraryName" : "FHIRHelpers",
+                  "type" : "FunctionRef",
                   "annotation" : [ ],
                   "signature" : [ ],
-                  "operand" : {
-                     "path" : "birthDate.value",
+                  "operand" : [ {
+                     "path" : "birthDate",
                      "type" : "Property",
                      "annotation" : [ ],
                      "source" : {
@@ -105,8 +107,12 @@
                         "type" : "ExpressionRef",
                         "annotation" : [ ]
                      }
-                  }
-               }
+                  } ]
+               }, {
+                  "type" : "Today",
+                  "annotation" : [ ],
+                  "signature" : [ ]
+               } ]
             }
          }, {
             "name" : "AgeInYears",

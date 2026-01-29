@@ -2,7 +2,7 @@ library Status version '1.13.000'
 
 using QICore version '6.0.0'
 
-include FHIRHelpers version '4.4.000' called FHIRHelpers
+include FHIRHelpers version '4.0.1' called FHIRHelpers
 
 codesystem "ObservationCategoryCodes": 'http://terminology.hl7.org/CodeSystem/observation-category'
 

@@ -348,7 +348,41 @@ const GUIDELINE_CONFIG = {
 }
 
 // =============================================================================
-// CQL Execution Engine
+// CQL Execution Mode Configuration
+// =============================================================================
+// 'client' = JavaScript cql-execution (runs in browser)
+// 'server' = HAPI $evaluate (Java CQL engine, 100% accurate)
+const DEFAULT_CQL_MODE = 'client'
+
+// Server URL for server-side CQL evaluation
+// In production with nginx proxy: '/fhir' (same origin)
+// For local development: 'http://localhost:8080/fhir'
+const DEFAULT_CQL_SERVER_URL = '/fhir'
+
+// =============================================================================
+// Result Normalization (for client-side execution)
+// =============================================================================
+// cql-execution returns FHIR type wrappers (e.g., {value: "female"})
+// while HAPI returns primitives directly. This normalizes to primitives.
+function normalizeValue(value) {
+  if (value === null || value === undefined) return value
+  if (typeof value !== 'object') return value
+  if (Array.isArray(value)) return value.map(normalizeValue)
+  if ('value' in value) return normalizeValue(value.value)
+  if ('code' in value) return value.code
+  return value
+}
+
+function normalizeResults(results) {
+  const normalized = {}
+  for (const [key, value] of Object.entries(results)) {
+    normalized[key] = normalizeValue(value)
+  }
+  return normalized
+}
+
+// =============================================================================
+// CQL Execution Engine (Client-Side)
 // =============================================================================
 async function executeCqlLocally(libraryId, patientBundle) {
   const elmJson = elmLibraries[libraryId]
@@ -415,6 +449,7 @@ function App() {
   const [executionTime, setExecutionTime] = useState(null)
   const [fhirReady, setFhirReady] = useState(false)
   const [launchMode, setLaunchMode] = useState(null) // 'standalone' or 'smart'
+  const [cqlMode, setCqlMode] = useState(DEFAULT_CQL_MODE) // 'client' or 'server'
 
   // Check if ELM is loaded
   const elmLoaded = Object.keys(elmLibraries).length > 0
@@ -431,7 +466,7 @@ function App() {
     }
   }, [fhirReady, launchMode])
 
-  // Evaluate CDS when patient is selected
+  // Evaluate CDS when patient is selected or CQL mode changes
   useEffect(() => {
     if (selectedPatientId) {
       evaluateCds(selectedPatientId)
@@ -440,7 +475,7 @@ function App() {
       setSelectedPatient(null)
       setExecutionTime(null)
     }
-  }, [selectedPatientId])
+  }, [selectedPatientId, cqlMode])
 
   async function initFhirClient() {
     try {
@@ -574,8 +609,8 @@ function App() {
         return
       }
 
-      // Check if ELM is loaded
-      if (!elmLoaded) {
+      // Check if ELM is loaded (only needed for client-side mode)
+      if (cqlMode === 'client' && !elmLoaded) {
         setError('ELM libraries not loaded. Complete the setup steps first.')
         return
       }
@@ -584,7 +619,19 @@ function App() {
       const startTime = performance.now()
       const results = await Promise.all(
         guidelines.map(async (guideline) => {
-          const result = await executeCqlLocally(guideline.libraryId, bundle)
+          let result
+          if (cqlMode === 'server') {
+            // Server-side execution via HAPI $evaluate
+            result = await fhirService.evaluateCqlOnServer(
+              DEFAULT_CQL_SERVER_URL,
+              guideline.libraryId,
+              bundle
+            )
+          } else {
+            // Client-side execution via cql-execution (JavaScript)
+            const rawResult = await executeCqlLocally(guideline.libraryId, bundle)
+            result = normalizeResults(rawResult)
+          }
           return { guideline, result }
         })
       )
@@ -688,6 +735,23 @@ function App() {
             ? `Connected to: ${fhirService.getServerUrl()}`
             : 'Initializing FHIR client...'}
         </p>
+        <div className="cql-mode-toggle">
+          <label>
+            CQL Engine:
+            <select
+              value={cqlMode}
+              onChange={(e) => setCqlMode(e.target.value)}
+            >
+              <option value="client">Client (JavaScript)</option>
+              <option value="server">Server (HAPI Java)</option>
+            </select>
+          </label>
+          <span className="cql-mode-info">
+            {cqlMode === 'server'
+              ? 'Using HAPI $evaluate (100% accurate)'
+              : 'Using cql-execution (browser)'}
+          </span>
+        </div>
       </header>
 
       <main className="main">
@@ -743,13 +807,16 @@ mvn exec:java -q -Dexec.args="..."
 
         {loading && (
           <div className="loading">
-            Evaluating CDS locally...
+            Evaluating CDS {cqlMode === 'server' ? 'via HAPI server' : 'locally'}...
           </div>
         )}
 
         {executionTime !== null && !loading && (
           <div className="execution-info">
-            CQL executed in <code>{executionTime}ms</code> (client-side, no server round-trip)
+            CQL executed in <code>{executionTime}ms</code>
+            {cqlMode === 'server'
+              ? ' (server-side via HAPI $evaluate)'
+              : ' (client-side, no server round-trip)'}
           </div>
         )}
 

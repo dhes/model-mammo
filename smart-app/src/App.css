@@ -45,6 +45,48 @@ body {
   margin-left: 0.5rem;
 }
 
+.cql-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cql-mode-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.cql-mode-toggle select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.cql-mode-toggle select:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.cql-mode-toggle select option {
+  color: #333;
+  background: white;
+}
+
+.cql-mode-info {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
 .main {
   flex: 1;
   padding: 2rem;
