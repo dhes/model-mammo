@@ -511,7 +511,7 @@ function App() {
     }
   }
 
-  function getApplicableGuidelines(patient) {
+  function getApplicableGuidelines(patient, bundle) {
     const applicable = []
     const age = getPatientAge(patient)
     const gender = patient.gender?.toLowerCase()
@@ -582,10 +582,19 @@ function App() {
       applicable.push(GUIDELINE_CONFIG.syp)
     }
 
-    // Pregnancy-specific guidelines (hbv, rhd, hvp) require pregnancy status
-    // which we can't determine from demographics alone. These will only
-    // appear for tagged test patients or if we add pregnancy detection logic.
-    // For now, they are available via test tags only.
+    // Pregnancy-specific guidelines: check bundle for active pregnancy Condition
+    const isPregnant = bundle?.entry?.some(e => {
+      const r = e.resource
+      return r?.resourceType === 'Condition'
+        && r?.code?.coding?.some(c => c.system === 'http://snomed.info/sct' && c.code === '77386006')
+        && (r?.clinicalStatus?.coding?.[0]?.code === 'active' || !r?.clinicalStatus)
+    })
+
+    if (isPregnant) {
+      applicable.push(GUIDELINE_CONFIG.hbv)
+      applicable.push(GUIDELINE_CONFIG.rhd)
+      applicable.push(GUIDELINE_CONFIG.hvp)
+    }
 
     return applicable
   }
@@ -603,7 +612,7 @@ function App() {
       setSelectedPatient(patient)
 
       // Determine which guidelines apply to this patient
-      const guidelines = getApplicableGuidelines(patient)
+      const guidelines = getApplicableGuidelines(patient, bundle)
       if (guidelines.length === 0) {
         setError('No applicable CDS guidelines found for this patient')
         return

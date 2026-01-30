@@ -31,11 +31,6 @@
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
       }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
-      }, {
          "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
          "errorType" : "semantic",
          "errorSeverity" : "warning",
@@ -58,7 +53,7 @@
       } ],
       "identifier" : {
          "id" : "BreastCancerScreening",
-         "version" : "0.0.2"
+         "version" : "0.0.3"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -381,20 +376,27 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "strict" : false,
-                           "type" : "As",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "effective",
-                              "type" : "IdentifierRef",
-                              "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "name" : "{http://hl7.org/fhir}dateTime",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "effective",
+                                 "type" : "IdentifierRef",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }
                      } ]
                   }
@@ -406,25 +408,32 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "strict" : false,
-               "type" : "As",
+               "name" : "ToDateTime",
+               "libraryName" : "FHIRHelpers",
+               "type" : "FunctionRef",
                "annotation" : [ ],
                "signature" : [ ],
-               "operand" : {
-                  "path" : "effective",
-                  "type" : "Property",
+               "operand" : [ {
+                  "strict" : false,
+                  "type" : "As",
                   "annotation" : [ ],
-                  "source" : {
-                     "name" : "MostRecentMammogram",
-                     "type" : "ExpressionRef",
+                  "signature" : [ ],
+                  "operand" : {
+                     "path" : "effective",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "MostRecentMammogram",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "asTypeSpecifier" : {
+                     "name" : "{http://hl7.org/fhir}dateTime",
+                     "type" : "NamedTypeSpecifier",
                      "annotation" : [ ]
                   }
-               },
-               "asTypeSpecifier" : {
-                  "name" : "{http://hl7.org/fhir}dateTime",
-                  "type" : "NamedTypeSpecifier",
-                  "annotation" : [ ]
-               }
+               } ]
             }
          }, {
             "name" : "MammogramInLastTwoYears",
@@ -440,16 +449,9 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "name" : "ToDateTime",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : [ {
-                        "name" : "DateOfMostRecentMammogram",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     } ]
+                     "name" : "DateOfMostRecentMammogram",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }, {
                      "type" : "ToDateTime",
                      "annotation" : [ ],

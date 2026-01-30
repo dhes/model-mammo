@@ -1,4 +1,4 @@
-library CervicalCancerScreening version '1.0.1'
+library CervicalCancerScreening version '1.0.2'
 
 // Cervical Cancer Screening
 // Implements USPSTF Grade A Recommendations:
@@ -48,11 +48,11 @@ define QualifyingCervicalCytology:
 define MostRecentCervicalCytology:
   Last(
     QualifyingCervicalCytology Obs
-      sort by (effective as dateTime)
+      sort by FHIRHelpers.ToDateTime(effective as dateTime)
   )
 
 define DateOfMostRecentCervicalCytology:
-  MostRecentCervicalCytology.effective as dateTime
+  FHIRHelpers.ToDateTime(MostRecentCervicalCytology.effective as dateTime)
 
 define HasCervicalCytologyInLastThreeYears:
   Coalesce(DateOfMostRecentCervicalCytology after (Today() - 3 years), false)
@@ -68,11 +68,11 @@ define QualifyingHPVTests:
 define MostRecentHPVTest:
   Last(
     QualifyingHPVTests Obs
-      sort by (effective as dateTime)
+      sort by FHIRHelpers.ToDateTime(effective as dateTime)
   )
 
 define DateOfMostRecentHPVTest:
-  MostRecentHPVTest.effective as dateTime
+  FHIRHelpers.ToDateTime(MostRecentHPVTest.effective as dateTime)
 
 define HasHrHPVInLastFiveYears:
   Coalesce(DateOfMostRecentHPVTest after (Today() - 5 years), false)

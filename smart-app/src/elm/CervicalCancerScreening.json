@@ -31,17 +31,7 @@
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
       }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
-      }, {
          "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
-      }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
          "errorType" : "semantic",
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
@@ -73,7 +63,7 @@
       } ],
       "identifier" : {
          "id" : "CervicalCancerScreening",
-         "version" : "1.0.1"
+         "version" : "1.0.2"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -396,20 +386,27 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "strict" : false,
-                           "type" : "As",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "effective",
-                              "type" : "IdentifierRef",
-                              "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "name" : "{http://hl7.org/fhir}dateTime",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "effective",
+                                 "type" : "IdentifierRef",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }
                      } ]
                   }
@@ -421,25 +418,32 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "strict" : false,
-               "type" : "As",
+               "name" : "ToDateTime",
+               "libraryName" : "FHIRHelpers",
+               "type" : "FunctionRef",
                "annotation" : [ ],
                "signature" : [ ],
-               "operand" : {
-                  "path" : "effective",
-                  "type" : "Property",
+               "operand" : [ {
+                  "strict" : false,
+                  "type" : "As",
                   "annotation" : [ ],
-                  "source" : {
-                     "name" : "MostRecentCervicalCytology",
-                     "type" : "ExpressionRef",
+                  "signature" : [ ],
+                  "operand" : {
+                     "path" : "effective",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "MostRecentCervicalCytology",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "asTypeSpecifier" : {
+                     "name" : "{http://hl7.org/fhir}dateTime",
+                     "type" : "NamedTypeSpecifier",
                      "annotation" : [ ]
                   }
-               },
-               "asTypeSpecifier" : {
-                  "name" : "{http://hl7.org/fhir}dateTime",
-                  "type" : "NamedTypeSpecifier",
-                  "annotation" : [ ]
-               }
+               } ]
             }
          }, {
             "name" : "HasCervicalCytologyInLastThreeYears",
@@ -455,16 +459,9 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "name" : "ToDateTime",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : [ {
-                        "name" : "DateOfMostRecentCervicalCytology",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     } ]
+                     "name" : "DateOfMostRecentCervicalCytology",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }, {
                      "type" : "ToDateTime",
                      "annotation" : [ ],
@@ -592,20 +589,27 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "strict" : false,
-                           "type" : "As",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "effective",
-                              "type" : "IdentifierRef",
-                              "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "name" : "{http://hl7.org/fhir}dateTime",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "effective",
+                                 "type" : "IdentifierRef",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }
                      } ]
                   }
@@ -617,25 +621,32 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "strict" : false,
-               "type" : "As",
+               "name" : "ToDateTime",
+               "libraryName" : "FHIRHelpers",
+               "type" : "FunctionRef",
                "annotation" : [ ],
                "signature" : [ ],
-               "operand" : {
-                  "path" : "effective",
-                  "type" : "Property",
+               "operand" : [ {
+                  "strict" : false,
+                  "type" : "As",
                   "annotation" : [ ],
-                  "source" : {
-                     "name" : "MostRecentHPVTest",
-                     "type" : "ExpressionRef",
+                  "signature" : [ ],
+                  "operand" : {
+                     "path" : "effective",
+                     "type" : "Property",
+                     "annotation" : [ ],
+                     "source" : {
+                        "name" : "MostRecentHPVTest",
+                        "type" : "ExpressionRef",
+                        "annotation" : [ ]
+                     }
+                  },
+                  "asTypeSpecifier" : {
+                     "name" : "{http://hl7.org/fhir}dateTime",
+                     "type" : "NamedTypeSpecifier",
                      "annotation" : [ ]
                   }
-               },
-               "asTypeSpecifier" : {
-                  "name" : "{http://hl7.org/fhir}dateTime",
-                  "type" : "NamedTypeSpecifier",
-                  "annotation" : [ ]
-               }
+               } ]
             }
          }, {
             "name" : "HasHrHPVInLastFiveYears",
@@ -651,16 +662,9 @@
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "name" : "ToDateTime",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : [ {
-                        "name" : "DateOfMostRecentHPVTest",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     } ]
+                     "name" : "DateOfMostRecentHPVTest",
+                     "type" : "ExpressionRef",
+                     "annotation" : [ ]
                   }, {
                      "type" : "ToDateTime",
                      "annotation" : [ ],

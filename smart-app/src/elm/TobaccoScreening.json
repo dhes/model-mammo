@@ -26,17 +26,7 @@
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
       }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
-      }, {
          "message" : "The function FHIRHelpers.ToString has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
-      }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
          "errorType" : "semantic",
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
@@ -48,7 +38,7 @@
       } ],
       "identifier" : {
          "id" : "TobaccoScreening",
-         "version" : "0.0.4"
+         "version" : "0.0.7"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -451,20 +441,27 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "strict" : false,
-                           "type" : "As",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "effective",
-                              "type" : "IdentifierRef",
-                              "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "name" : "{http://hl7.org/fhir}dateTime",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "effective",
+                                 "type" : "IdentifierRef",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }
                      } ]
                   }
@@ -972,20 +969,27 @@
                         "type" : "ByExpression",
                         "annotation" : [ ],
                         "expression" : {
-                           "strict" : false,
-                           "type" : "As",
+                           "name" : "ToDateTime",
+                           "libraryName" : "FHIRHelpers",
+                           "type" : "FunctionRef",
                            "annotation" : [ ],
                            "signature" : [ ],
-                           "operand" : {
-                              "name" : "effective",
-                              "type" : "IdentifierRef",
-                              "annotation" : [ ]
-                           },
-                           "asTypeSpecifier" : {
-                              "name" : "{http://hl7.org/fhir}dateTime",
-                              "type" : "NamedTypeSpecifier",
-                              "annotation" : [ ]
-                           }
+                           "operand" : [ {
+                              "strict" : false,
+                              "type" : "As",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : {
+                                 "name" : "effective",
+                                 "type" : "IdentifierRef",
+                                 "annotation" : [ ]
+                              },
+                              "asTypeSpecifier" : {
+                                 "name" : "{http://hl7.org/fhir}dateTime",
+                                 "type" : "NamedTypeSpecifier",
+                                 "annotation" : [ ]
+                              }
+                           } ]
                         }
                      } ]
                   }

@@ -1,4 +1,4 @@
-library BreastCancerScreening version '0.0.2'
+library BreastCancerScreening version '0.0.3'
 
 // Breast Cancer Screening
 // USPSTF Grade B Recommendation
@@ -45,11 +45,11 @@ define QualifyingMammograms:
 define MostRecentMammogram:
   Last(
     QualifyingMammograms Mammogram
-      sort by (effective as dateTime)
+      sort by FHIRHelpers.ToDateTime(effective as dateTime)
   )
 
 define DateOfMostRecentMammogram:
-  MostRecentMammogram.effective as dateTime
+  FHIRHelpers.ToDateTime(MostRecentMammogram.effective as dateTime)
 
 define MammogramInLastTwoYears:
   Coalesce(DateOfMostRecentMammogram after (Today() - 2 years), false)

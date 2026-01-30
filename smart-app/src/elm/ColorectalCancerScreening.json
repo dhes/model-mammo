@@ -78,7 +78,7 @@
       } ],
       "identifier" : {
          "id" : "ColorectalCancerScreening",
-         "version" : "0.0.2"
+         "version" : "0.0.3"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",

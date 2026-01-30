@@ -1,4 +1,4 @@
-library ColorectalCancerScreening version '0.0.2'
+library ColorectalCancerScreening version '0.0.3'
 
 // Colorectal Cancer: Screening
 // Implements USPSTF Grade A Recommendation (ages 50-75) and Grade B (ages 45-49)
@@ -83,7 +83,7 @@ define HasFOBTInLastYear:
   exists(
     [Observation: "Fecal Occult Blood Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and (Obs.effective as dateTime) > Today() - 1 year
+        and FHIRHelpers.ToDateTime(Obs.effective as dateTime) > Today() - 1 year
   )
 
 // sDNA-FIT (Cologuard) in last 2 years
@@ -92,7 +92,7 @@ define HasDNAFITInLastTwoYears:
   exists(
     [Observation: "Stool DNA with FIT Test"] Obs
       where Obs.status in { 'final', 'amended', 'corrected' }
-        and (Obs.effective as dateTime) > Today() - 2 years
+        and FHIRHelpers.ToDateTime(Obs.effective as dateTime) > Today() - 2 years
   )
 
 // CT Colonography in last 5 years
@@ -100,7 +100,7 @@ define HasCTColonographyInLastFiveYears:
   exists(
     [Procedure: "CT Colonography"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) > Today() - 5 years
+        and FHIRHelpers.ToDateTime(P.performed as dateTime) > Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 5 years
@@ -108,7 +108,7 @@ define HasFlexSigInLastFiveYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) > Today() - 5 years
+        and FHIRHelpers.ToDateTime(P.performed as dateTime) > Today() - 5 years
   )
 
 // Flexible Sigmoidoscopy in last 10 years (for combo strategy)
@@ -116,7 +116,7 @@ define HasFlexSigInLastTenYears:
   exists(
     [Procedure: "Flexible Sigmoidoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) > Today() - 10 years
+        and FHIRHelpers.ToDateTime(P.performed as dateTime) > Today() - 10 years
   )
 
 // Colonoscopy in last 10 years
@@ -125,7 +125,7 @@ define HasColonoscopyInLastTenYears:
   exists(
     [Procedure: "Colonoscopy"] P
       where P.status = 'completed'
-        and (P.performed as dateTime) > Today() - 10 years
+        and FHIRHelpers.ToDateTime(P.performed as dateTime) > Today() - 10 years
   )
 
 // ============================================================================

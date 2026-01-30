@@ -1,4 +1,4 @@
-library HypertensionScreeningAdult version '0.0.2'
+library HypertensionScreeningAdult version '0.0.3'
 
 // Hypertension Screening in Adults
 // USPSTF Grade A Recommendation
@@ -87,7 +87,7 @@ define AllBPObservations:
 // BP within last year (for annual screening populations)
 define BPObservationsLastYear:
   AllBPObservations Obs
-    where (Obs.effective as dateTime) >= Today() - 1 year
+    where FHIRHelpers.ToDateTime(Obs.effective as dateTime) >= Today() - 1 year
 
 define OBPMBInTheLastYear:
   exists(BPObservationsLastYear)
@@ -95,7 +95,7 @@ define OBPMBInTheLastYear:
 // BP within last 4 years (for low-risk 18-39 population)
 define BPObservationsLast4Years:
   AllBPObservations Obs
-    where (Obs.effective as dateTime) >= Today() - 4 years
+    where FHIRHelpers.ToDateTime(Obs.effective as dateTime) >= Today() - 4 years
 
 define OBPMBInTheLast4Years:
   exists(BPObservationsLast4Years)

@@ -1,4 +1,4 @@
-library TobaccoScreening version '0.0.4'
+library TobaccoScreening version '0.0.7'
 
 // Tobacco Cessation Interventions (Adults)
 // Implements USPSTF Grade A Recommendations:
@@ -8,7 +8,8 @@ library TobaccoScreening version '0.0.4'
 // REFACTORED: Using FHIR R4 base types instead of QICore for compatibility
 // with real EHR data (Epic, etc.) that doesn't use QICore profiles.
 //
-// v0.0.4: Switched to FHIRHelpers 4.0.1 (IG-provided); idiomatic CQL throughout.
+// v0.0.7: FHIRHelpers 4.0.1; ToDateTime workaround for HAPI v8.6.0 Kotlin engine
+//   DateTimeType sort bug on Bundle-parameter data path.
 
 using FHIR version '4.0.1'
 
@@ -55,7 +56,7 @@ define SmokingStatusObservations:
 define MostRecentSmokingStatus:
   Last(
     SmokingStatusObservations Obs
-      sort by (effective as dateTime)
+      sort by FHIRHelpers.ToDateTime(effective as dateTime)
   )
 
 // Helper to check if value matches any tobacco user code
@@ -89,7 +90,7 @@ define PregnancyStatusObservations:
 define MostRecentPregnancyStatus:
   Last(
     PregnancyStatusObservations Obs
-      sort by (effective as dateTime)
+      sort by FHIRHelpers.ToDateTime(effective as dateTime)
   )
 
 // Is patient currently pregnant?

@@ -1,4 +1,4 @@
-library HIVPreexposureProphylaxis version '0.0.2'
+library HIVPreexposureProphylaxis version '0.0.3'
 
 // HIV Pre-Exposure Prophylaxis (PrEP)
 // USPSTF Grade A Recommendation
@@ -79,7 +79,7 @@ define WeightObservations:
     where Obs.status in { 'final', 'amended', 'corrected' }
 
 define MostRecentWeight:
-  First(WeightObservations Obs sort by (effective as dateTime) desc)
+  First(WeightObservations Obs sort by FHIRHelpers.ToDateTime(effective as dateTime) desc)
 
 define WeightQuantity:
   MostRecentWeight.value as Quantity
@@ -147,8 +147,8 @@ define NoContraindications:
 // Using base FHIR Condition type for compatibility with real EHR data
 define RecentSTIConditions:
   [Condition: "Sexually Transmitted Infections"] C
-    where (C.onset as dateTime) >= Today() - 6 months
-      or C.recordedDate >= Today() - 6 months
+    where FHIRHelpers.ToDateTime(C.onset as dateTime) >= Today() - 6 months
+      or FHIRHelpers.ToDateTime(C.recordedDate) >= Today() - 6 months
 
 define HasRecentSTI:
   exists(RecentSTIConditions)

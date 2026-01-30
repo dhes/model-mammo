@@ -7,7 +7,7 @@
  *   node src/generate-library.js input/cql/MyLibrary.cql     # full path
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname, basename } from 'path';
 
 let cqlPath = process.argv[2];
@@ -54,6 +54,14 @@ while ((match = valuesetRegex.exec(cqlContent)) !== null) {
 // Base64 encode the CQL
 const cqlBase64 = Buffer.from(cqlContent, 'utf-8').toString('base64');
 
+// Look for pre-compiled ELM JSON in smart-app/src/elm/
+const elmPath = resolve(dirname(cqlPath), '..', '..', 'smart-app', 'src', 'elm', `${libraryName}.json`);
+let elmBase64 = null;
+if (existsSync(elmPath)) {
+  const elmContent = readFileSync(elmPath, 'utf-8');
+  elmBase64 = Buffer.from(elmContent, 'utf-8').toString('base64');
+}
+
 // Build the Library resource
 const library = {
   resourceType: 'Library',
@@ -90,7 +98,11 @@ const library = {
     {
       contentType: 'text/cql',
       data: cqlBase64
-    }
+    },
+    ...(elmBase64 ? [{
+      contentType: 'application/elm+json',
+      data: elmBase64
+    }] : [])
   ]
 };
 
@@ -111,3 +123,4 @@ console.log(`Generated: ${outputPath}`);
 console.log(`  Library: ${libraryName} v${libraryVersion}`);
 console.log(`  Dependencies: ${dependencies.map(d => d.name).join(', ') || 'none'}`);
 console.log(`  Valuesets: ${valuesets.map(v => v.name).join(', ') || 'none'}`);
+console.log(`  ELM: ${elmBase64 ? elmPath : 'not found (CQL only)'}`);
