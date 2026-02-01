@@ -30,15 +30,10 @@
          "errorType" : "semantic",
          "errorSeverity" : "warning",
          "type" : "CqlToElmError"
-      }, {
-         "message" : "The function FHIRHelpers.ToDateTime has multiple overloads and due to the SignatureLevel setting (None), the overload signature is not being included in the output. This may result in ambiguous function resolution at runtime, consider setting the SignatureLevel to Overloads or All to ensure that the output includes sufficient information to support correct overload selection at runtime.",
-         "errorType" : "semantic",
-         "errorSeverity" : "warning",
-         "type" : "CqlToElmError"
       } ],
       "identifier" : {
          "id" : "TobaccoScreening",
-         "version" : "0.0.7"
+         "version" : "0.0.8"
       },
       "schemaIdentifier" : {
          "id" : "urn:hl7-org:elm",
@@ -89,23 +84,13 @@
                "annotation" : [ ]
             }
          }, {
-            "name" : "Pregnancy status LOINC",
-            "id" : "82810-3",
-            "display" : "Pregnancy status",
+            "name" : "Pregnancy",
+            "id" : "77386006",
+            "display" : "Pregnancy (finding)",
             "accessLevel" : "Public",
             "annotation" : [ ],
             "codeSystem" : {
-               "name" : "LOINC",
-               "annotation" : [ ]
-            }
-         }, {
-            "name" : "Pregnant LOINC",
-            "id" : "LA15173-0",
-            "display" : "Pregnant",
-            "accessLevel" : "Public",
-            "annotation" : [ ],
-            "codeSystem" : {
-               "name" : "LOINC",
+               "name" : "SNOMED",
                "annotation" : [ ]
             }
          }, {
@@ -866,7 +851,7 @@
                }
             }
          }, {
-            "name" : "PregnancyStatusObservations",
+            "name" : "PregnancyConditions",
             "context" : "Patient",
             "accessLevel" : "Public",
             "annotation" : [ ],
@@ -874,11 +859,11 @@
                "type" : "Query",
                "annotation" : [ ],
                "source" : [ {
-                  "alias" : "Obs",
+                  "alias" : "C",
                   "annotation" : [ ],
                   "expression" : {
-                     "dataType" : "{http://hl7.org/fhir}Observation",
-                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Observation",
+                     "dataType" : "{http://hl7.org/fhir}Condition",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
                      "codeProperty" : "code",
                      "codeComparator" : "~",
                      "type" : "Retrieve",
@@ -888,7 +873,7 @@
                         "annotation" : [ ],
                         "signature" : [ ],
                         "operand" : {
-                           "name" : "Pregnancy status LOINC",
+                           "name" : "Pregnancy",
                            "type" : "CodeRef",
                            "annotation" : [ ]
                         }
@@ -902,97 +887,62 @@
                "let" : [ ],
                "relationship" : [ ],
                "where" : {
-                  "type" : "In",
+                  "type" : "Or",
                   "annotation" : [ ],
                   "signature" : [ ],
                   "operand" : [ {
-                     "name" : "ToString",
-                     "libraryName" : "FHIRHelpers",
-                     "type" : "FunctionRef",
+                     "type" : "Equal",
                      "annotation" : [ ],
                      "signature" : [ ],
                      "operand" : [ {
-                        "path" : "status",
-                        "scope" : "Obs",
-                        "type" : "Property",
+                        "name" : "ToString",
+                        "libraryName" : "FHIRHelpers",
+                        "type" : "FunctionRef",
+                        "annotation" : [ ],
+                        "signature" : [ ],
+                        "operand" : [ {
+                           "path" : "code",
+                           "type" : "Property",
+                           "annotation" : [ ],
+                           "source" : {
+                              "type" : "Indexer",
+                              "annotation" : [ ],
+                              "signature" : [ ],
+                              "operand" : [ {
+                                 "path" : "coding",
+                                 "type" : "Property",
+                                 "annotation" : [ ],
+                                 "source" : {
+                                    "path" : "clinicalStatus",
+                                    "scope" : "C",
+                                    "type" : "Property",
+                                    "annotation" : [ ]
+                                 }
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "0",
+                                 "type" : "Literal",
+                                 "annotation" : [ ]
+                              } ]
+                           }
+                        } ]
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "active",
+                        "type" : "Literal",
                         "annotation" : [ ]
                      } ]
                   }, {
-                     "type" : "List",
+                     "type" : "IsNull",
                      "annotation" : [ ],
-                     "element" : [ {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "final",
-                        "type" : "Literal",
-                        "annotation" : [ ]
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "amended",
-                        "type" : "Literal",
-                        "annotation" : [ ]
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "corrected",
-                        "type" : "Literal",
-                        "annotation" : [ ]
-                     } ]
-                  } ]
-               }
-            }
-         }, {
-            "name" : "MostRecentPregnancyStatus",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "annotation" : [ ],
-            "expression" : {
-               "type" : "Last",
-               "annotation" : [ ],
-               "signature" : [ ],
-               "source" : {
-                  "type" : "Query",
-                  "annotation" : [ ],
-                  "source" : [ {
-                     "alias" : "Obs",
-                     "annotation" : [ ],
-                     "expression" : {
-                        "name" : "PregnancyStatusObservations",
-                        "type" : "ExpressionRef",
+                     "signature" : [ ],
+                     "operand" : {
+                        "path" : "clinicalStatus",
+                        "scope" : "C",
+                        "type" : "Property",
                         "annotation" : [ ]
                      }
-                  } ],
-                  "let" : [ ],
-                  "relationship" : [ ],
-                  "sort" : {
-                     "annotation" : [ ],
-                     "by" : [ {
-                        "direction" : "asc",
-                        "type" : "ByExpression",
-                        "annotation" : [ ],
-                        "expression" : {
-                           "name" : "ToDateTime",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
-                           "annotation" : [ ],
-                           "signature" : [ ],
-                           "operand" : [ {
-                              "strict" : false,
-                              "type" : "As",
-                              "annotation" : [ ],
-                              "signature" : [ ],
-                              "operand" : {
-                                 "name" : "effective",
-                                 "type" : "IdentifierRef",
-                                 "annotation" : [ ]
-                              },
-                              "asTypeSpecifier" : {
-                                 "name" : "{http://hl7.org/fhir}dateTime",
-                                 "type" : "NamedTypeSpecifier",
-                                 "annotation" : [ ]
-                              }
-                           } ]
-                        }
-                     } ]
-                  }
+                  } ]
                }
             }
          }, {
@@ -1001,76 +951,12 @@
             "accessLevel" : "Public",
             "annotation" : [ ],
             "expression" : {
-               "type" : "Case",
+               "type" : "Exists",
                "annotation" : [ ],
-               "caseItem" : [ {
-                  "annotation" : [ ],
-                  "when" : {
-                     "type" : "IsNull",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : {
-                        "name" : "MostRecentPregnancyStatus",
-                        "type" : "ExpressionRef",
-                        "annotation" : [ ]
-                     }
-                  },
-                  "then" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
-                     "value" : "false",
-                     "type" : "Literal",
-                     "annotation" : [ ]
-                  }
-               }, {
-                  "annotation" : [ ],
-                  "when" : {
-                     "type" : "Equivalent",
-                     "annotation" : [ ],
-                     "signature" : [ ],
-                     "operand" : [ {
-                        "name" : "ToConcept",
-                        "libraryName" : "FHIRHelpers",
-                        "type" : "FunctionRef",
-                        "annotation" : [ ],
-                        "signature" : [ ],
-                        "operand" : [ {
-                           "asType" : "{http://hl7.org/fhir}CodeableConcept",
-                           "type" : "As",
-                           "annotation" : [ ],
-                           "signature" : [ ],
-                           "operand" : {
-                              "path" : "value",
-                              "type" : "Property",
-                              "annotation" : [ ],
-                              "source" : {
-                                 "name" : "MostRecentPregnancyStatus",
-                                 "type" : "ExpressionRef",
-                                 "annotation" : [ ]
-                              }
-                           }
-                        } ]
-                     }, {
-                        "type" : "ToConcept",
-                        "annotation" : [ ],
-                        "signature" : [ ],
-                        "operand" : {
-                           "name" : "Pregnant LOINC",
-                           "type" : "CodeRef",
-                           "annotation" : [ ]
-                        }
-                     } ]
-                  },
-                  "then" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
-                     "value" : "true",
-                     "type" : "Literal",
-                     "annotation" : [ ]
-                  }
-               } ],
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
-                  "value" : "false",
-                  "type" : "Literal",
+               "signature" : [ ],
+               "operand" : {
+                  "name" : "PregnancyConditions",
+                  "type" : "ExpressionRef",
                   "annotation" : [ ]
                }
             }

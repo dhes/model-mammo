@@ -1,4 +1,4 @@
-library TobaccoScreening version '0.0.7'
+library TobaccoScreening version '0.0.8'
 
 // Tobacco Cessation Interventions (Adults)
 // Implements USPSTF Grade A Recommendations:
@@ -10,6 +10,8 @@ library TobaccoScreening version '0.0.7'
 //
 // v0.0.7: FHIRHelpers 4.0.1; ToDateTime workaround for HAPI v8.6.0 Kotlin engine
 //   DateTimeType sort bug on Bundle-parameter data path.
+// v0.0.8: Align pregnancy detection with other libraries — Condition-based (SNOMED 77386006)
+//   instead of Observation-based (LOINC 82810-3). Fixes IsPregnant=false in Epic/SmartHealthIT.
 
 using FHIR version '4.0.1'
 
@@ -21,8 +23,7 @@ codesystem "SNOMED": 'http://snomed.info/sct'
 
 // Smoking status observation code
 code "Tobacco smoking status LOINC": '72166-2' from "LOINC" display 'Tobacco smoking status'
-code "Pregnancy status LOINC": '82810-3' from "LOINC" display 'Pregnancy status'
-code "Pregnant LOINC": 'LA15173-0' from "LOINC" display 'Pregnant'
+code "Pregnancy": '77386006' from "SNOMED" display 'Pregnancy (finding)'
 
 // Tobacco User codes from valueset 2.16.840.1.113883.3.526.3.1170
 code "Current every day smoker": '449868002' from "SNOMED"
@@ -82,25 +83,16 @@ define TobaccoUseStatus:
     else null
   end
 
-// Get pregnancy status observations
-define PregnancyStatusObservations:
-  [Observation: "Pregnancy status LOINC"] Obs
-    where Obs.status in { 'final', 'amended', 'corrected' }
-
-define MostRecentPregnancyStatus:
-  Last(
-    PregnancyStatusObservations Obs
-      sort by FHIRHelpers.ToDateTime(effective as dateTime)
-  )
+// Get active pregnancy conditions (SNOMED 77386006)
+// Aligned with SyphilisScreening, RhdIncompatibility, HIVScreeningPregnancy, HepatitisBScreeningPregnancy
+define PregnancyConditions:
+  [Condition: "Pregnancy"] C
+    where C.clinicalStatus.coding[0].code = 'active'
+      or C.clinicalStatus is null
 
 // Is patient currently pregnant?
-// True if most recent pregnancy observation value indicates pregnant
 define IsPregnant:
-  case
-    when MostRecentPregnancyStatus is null then false
-    when MostRecentPregnancyStatus.value ~ "Pregnant LOINC" then true
-    else false
-  end
+  exists(PregnancyConditions)
 
 // Is this an adult (18+ years)?
 define IsAdult:
