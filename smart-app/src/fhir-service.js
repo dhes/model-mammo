@@ -37,6 +37,23 @@ class FhirService {
       console.log('[FhirService] SMART launch successful!')
       console.log('[FhirService] Server URL:', this.client.state.serverUrl)
       console.log('[FhirService] Patient ID:', this.client.patient?.id)
+
+      // Keycloak 26 workaround: extract patient ID from access token JWT
+      // if not present in the token response (KC26 oidc-usermodel-attribute-mapper
+      // doesn't support access.tokenResponse.claim)
+      if (!this.client.patient?.id && this.client.state.tokenResponse?.access_token) {
+        try {
+          const payload = JSON.parse(atob(this.client.state.tokenResponse.access_token.split('.')[1]))
+          const patientId = payload.patient || payload.patient_id || payload.resourceId
+          if (patientId) {
+            console.log('[FhirService] Extracted patient ID from JWT:', patientId)
+            this.client.state.tokenResponse.patient = patientId
+          }
+        } catch (e) {
+          console.warn('[FhirService] Could not parse access token JWT:', e.message)
+        }
+      }
+
       // Debug: log the granted scopes and token info
       console.log('[FhirService] Granted scopes:', this.client.state.scope)
       console.log('[FhirService] Token response:', this.client.state.tokenResponse)
